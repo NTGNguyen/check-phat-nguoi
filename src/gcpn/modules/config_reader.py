@@ -1,6 +1,6 @@
 from yaml import safe_load
 
-from src.types.config import Config
+from ..types.config import Config
 
 
 def get_config(file):

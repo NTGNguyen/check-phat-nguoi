@@ -2,8 +2,12 @@
 
 ```sh
 python -m venv .venv
-pip install -r requirements.txt
+.\.venv\Scripts\activate # For windows
+pip install --editable .
+gcpn # or "python -m gcpn"
 ```
+
+> [!NOTE] > **main**.py is optional for another way to run project
 
 ### API
 
