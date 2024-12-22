@@ -1,7 +1,7 @@
 [project]
 name = 'gha-check-phat-nguoi'
 dynamic = ["version"]
-dependencies = ["PyYAML == 6.0.2"]
+dependencies = ["PyYAML == 6.0.2","requests == 2.32.2"]
 
 [project.scripts]
 gcpn = "gcpn:main"
