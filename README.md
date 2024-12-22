@@ -8,7 +8,8 @@ gcpn # or "python -m gcpn"
 ```
 
 > [!NOTE]
-> **main**.py is optional for another way to run project
+>
+> \_\_main\_\_.py is optional for another way to run project
 
 ### API
 
