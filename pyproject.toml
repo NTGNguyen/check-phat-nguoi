@@ -1,10 +1,10 @@
 [project]
-name = 'gha-check-phat-nguoi'
-dynamic = ["version"]
-dependencies = ["PyYAML == 6.0.2","requests == 2.32.2"]
+name = 'check-phat-nguoi'
+version = "0.1.0-dev.1"
+dependencies = ["PyYAML == 6.0.2", "requests == 2.32.2", "pydantic == 2.10.4"]
 
 [project.scripts]
-gcpn = "gcpn:main"
+check-phat-nguoi = "check_phat_nguoi:main"
 
 [build-system]
 requires = ["setuptools"]

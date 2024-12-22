@@ -1,26 +1,26 @@
 """Get datas"""
-import requests
-import json
+
 import threading
-from requests import Response
-
-from ..types.config import Config
-from ..constants import URL
-
 from typing import Dict
 
+import requests
+from requests import Response
 
-class _GetData:
+from check_phat_nguoi.models.plate_info import PlateInfo
+
+from ..utils.constants import URL
+
+
+class GetData:
     """Get data by sending a request"""
 
-    def __init__(self, config: Config, url=URL) -> None:
+    def __init__(self, plate_infos: list[PlateInfo]) -> None:
         """The initialise for GetData class
 
         Args:
-            config: config object
+            plate_infos: List of PlateInfo
         """
-        self._config: Config = config
-        self._url = url
+        self._plate_infos = plate_infos
 
     def _get_data(self) -> None | Dict:
         """Get data with a single object
@@ -28,12 +28,10 @@ class _GetData:
         Returns:
             None | Dict: _description_
         """
-        payload: dict[str, str] = {
-            "bienso": self._config.bien_so
-        }
+        # TODO: Iterate từng _plate_infos lấy biển plate nha Nguyễn
+        payload: dict[str, str] = {"bienso": ""}
         try:
-            response: Response = requests.post(
-                url=self.url, json=payload)
+            response: Response = requests.post(url=URL, json=payload)
             response.raise_for_status()
             response_data: Dict = response.json()
             if response_data.get("data") is None:
@@ -48,5 +46,5 @@ class _GetDataThread(threading.Thread):
     pass
 
 
-class GetDataMultiThread():
+class GetDataMultiThread:
     pass
