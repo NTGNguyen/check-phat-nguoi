@@ -7,7 +7,8 @@ pip install --editable .
 gcpn # or "python -m gcpn"
 ```
 
-> [!NOTE] > **main**.py is optional for another way to run project
+> [!NOTE]
+> **main**.py is optional for another way to run project
 
 ### API
 
