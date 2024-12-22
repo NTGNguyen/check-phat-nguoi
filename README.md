@@ -42,3 +42,8 @@ curl --data '{"bienso": "60A64685"}' -X POST -H "Content-Type: application/json"
   }
 }
 ```
+
+### REFS
+
+- List bien so: https://voz.vn/t/trang-check-phat-nguoi-tu-phat-trien.1048134/
+- https://github.com/thaoanhhaa1/phat-nguoi-bot
