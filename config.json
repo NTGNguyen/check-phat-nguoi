@@ -13,6 +13,9 @@
     },
     {
       "plate": "30F88251"
+    },
+    {
+      "plate": "30F0000000"
     }
   ],
   "notify": [
@@ -22,5 +25,7 @@
         "chat_id": "-1001790012349"
       }
     }
-  ]
+  ],
+  "havent_paid_only": true,
+  "log_level": "DEBUG"
 }

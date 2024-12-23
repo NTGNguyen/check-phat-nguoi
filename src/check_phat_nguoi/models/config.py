@@ -10,6 +10,8 @@ class Config(BaseModel):
 
     data: list[PlateInfo] = []
     notify: list[TelegramNotify] = []
+    havent_paid_only: bool = True
+    detail_log: bool = False
     log_level: LogLevel = LogLevel.warning
 
 
