@@ -1,7 +1,7 @@
 [project]
 name = 'check-phat-nguoi'
 version = "0.1.0-dev.1"
-dependencies = ["PyYAML == 6.0.2", "requests == 2.32.2", "pydantic == 2.10.4"]
+dependencies = ["requests == 2.32.2", "pydantic == 2.10.4"]
 
 [project.scripts]
 check-phat-nguoi = "check_phat_nguoi:main"

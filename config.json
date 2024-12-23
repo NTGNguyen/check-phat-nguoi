@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/KevinNitroG/check-phat-nguoi/refs/heads/main/schemas/config.json",
+  "data": [
+    {
+      "plate": "59XA00000",
+      "owner": "@kevinnitro"
+    },
+    {
+      "plate": "60A64685"
+    },
+    {
+      "plate": "98A56604"
+    },
+    {
+      "plate": "30F88251"
+    }
+  ]
+}
