@@ -5,6 +5,7 @@ dependencies = ["PyYAML == 6.0.2", "requests == 2.32.2", "pydantic == 2.10.4"]
 
 [project.scripts]
 check-phat-nguoi = "check_phat_nguoi:main"
+generate-config-schema = "generate_config_schema:main"
 
 [build-system]
 requires = ["setuptools"]

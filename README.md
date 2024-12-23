@@ -4,7 +4,7 @@
 python -m venv .venv
 .\.venv\Scripts\activate # For windows
 pip install --editable .
-gcpn # or "python -m gcpn"
+check-phat-nguoi # or "python -m check_phat_nguoi"
 ```
 
 > [!NOTE]

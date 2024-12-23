@@ -1,3 +1,5 @@
+$schema: 'https://raw.githubusercontent.com/KevinNitroG/check-phat-nguoi/refs/heads/main/schemas/config.json'
+
 data:
   - plate: 59XA00000
     owner: '@kevinnitro'
