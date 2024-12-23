@@ -1,0 +1,5 @@
+commitizen:
+  name: cz_conventional_commits
+  version_files:
+    - 'pyproject.toml:version'
+  version_provider: commitizen
