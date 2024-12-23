@@ -1,1 +1,105 @@
-{"$defs": {"LogLevel": {"enum": ["NOTSET", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], "title": "LogLevel", "type": "string"}, "PlateInfo": {"properties": {"plate": {"title": "Plate", "type": "string"}, "owner": {"anyOf": [{"type": "string"}, {"type": "null"}], "default": null, "title": "Owner"}}, "required": ["plate"], "title": "PlateInfo", "type": "object"}, "Telegram": {"properties": {"bot_token": {"title": "Bot Token", "type": "string"}, "chat_id": {"title": "Chat Id", "type": "string"}}, "required": ["bot_token", "chat_id"], "title": "Telegram", "type": "object"}, "TelegramNotify": {"properties": {"telegram": {"$ref": "#/$defs/Telegram"}}, "required": ["telegram"], "title": "TelegramNotify", "type": "object"}}, "properties": {"data": {"default": [], "items": {"$ref": "#/$defs/PlateInfo"}, "title": "Data", "type": "array"}, "notify": {"default": [], "items": {"$ref": "#/$defs/TelegramNotify"}, "title": "Notify", "type": "array"}, "havent_paid_only": {"default": true, "title": "Havent Paid Only", "type": "boolean"}, "detail_log": {"default": false, "title": "Detail Log", "type": "boolean"}, "log_level": {"$ref": "#/$defs/LogLevel", "default": "WARNING"}}, "title": "Config", "type": "object"}
+{
+  "$defs": {
+    "LogLevel": {
+      "enum": [
+        "NOTSET",
+        "DEBUG",
+        "INFO",
+        "WARNING",
+        "ERROR",
+        "CRITICAL"
+      ],
+      "title": "LogLevel",
+      "type": "string"
+    },
+    "PlateInfo": {
+      "properties": {
+        "plate": {
+          "title": "Plate",
+          "type": "string"
+        },
+        "owner": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Owner"
+        }
+      },
+      "required": [
+        "plate"
+      ],
+      "title": "PlateInfo",
+      "type": "object"
+    },
+    "Telegram": {
+      "properties": {
+        "bot_token": {
+          "title": "Bot Token",
+          "type": "string"
+        },
+        "chat_id": {
+          "title": "Chat Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bot_token",
+        "chat_id"
+      ],
+      "title": "Telegram",
+      "type": "object"
+    },
+    "TelegramNotify": {
+      "properties": {
+        "telegram": {
+          "$ref": "#/$defs/Telegram"
+        }
+      },
+      "required": [
+        "telegram"
+      ],
+      "title": "TelegramNotify",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "data": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/PlateInfo"
+      },
+      "title": "Data",
+      "type": "array"
+    },
+    "notify": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/TelegramNotify"
+      },
+      "title": "Notify",
+      "type": "array"
+    },
+    "havent_paid_only": {
+      "default": true,
+      "title": "Havent Paid Only",
+      "type": "boolean"
+    },
+    "detail_log": {
+      "default": false,
+      "title": "Detail Log",
+      "type": "boolean"
+    },
+    "log_level": {
+      "$ref": "#/$defs/LogLevel",
+      "default": "WARNING"
+    }
+  },
+  "title": "Config",
+  "type": "object"
+}
