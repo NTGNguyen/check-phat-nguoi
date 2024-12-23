@@ -1,7 +1,7 @@
 [project]
 name = 'check-phat-nguoi'
 version = "0.1.0-dev.1"
-dependencies = ["requests == 2.32.2", "pydantic == 2.10.4"]
+dynamic = ["dependencies"]
 
 [project.scripts]
 check-phat-nguoi = "check_phat_nguoi:main"
@@ -10,3 +10,6 @@ generate-config-schema = "generate_config_schema:main"
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+dependencies = { file = "requirements.txt" }
