@@ -4,6 +4,7 @@
 python -m venv .venv
 .\.venv\Scripts\activate # For windows
 pip install --editable .[dev]
+pre-commit install
 
 check-phat-nguoi # or "python -m check_phat_nguoi"
 
