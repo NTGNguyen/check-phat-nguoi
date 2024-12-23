@@ -1,10 +1,13 @@
 [project]
-authors = [{ name = "KevinNitroG" }, { name = "NTGNguyen" }]
+authors = [
+  { name = "KevinNitroG", email = "kevinnitro@duck.com" },
+  { name = "NTGNguyen", email = 'ntgnguyen@duck.com' },
+]
 description = "Check phạt nguội"
 name = "check-phat-nguoi"
 version = "0.1.0-dev.1"
 requires-python = "==3.13.*"
-dynamic = ["dependencies"]
+dynamic = ["dependencies", "optional-dependencies"]
 
 [project.scripts]
 check-phat-nguoi = "check_phat_nguoi:main"
@@ -16,3 +19,4 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.dynamic]
 dependencies = { file = "requirements.txt" }
+optional-dependencies = { dev = { file = ["requirements-dev.txt"] } }

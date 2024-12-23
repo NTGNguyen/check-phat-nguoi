@@ -3,13 +3,16 @@
 ```sh
 python -m venv .venv
 .\.venv\Scripts\activate # For windows
-pip install --editable .
+pip install --editable .[dev]
+
 check-phat-nguoi # or "python -m check_phat_nguoi"
+
+generate-config-schema # or "python -m generate_config_schema"
 ```
 
 > [!NOTE]
 >
-> \_\_main\_\_.py is optional for another way to run project
+> - \_\_main\_\_.py is for running as module (python -m)
 
 ### API
 
