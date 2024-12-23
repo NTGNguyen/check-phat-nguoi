@@ -7,8 +7,7 @@ import requests
 from requests import Response
 
 from check_phat_nguoi.models.plate_info import PlateInfo
-
-from ..utils.constants import URL
+from check_phat_nguoi.utils.constants import URL
 
 
 class GetData:

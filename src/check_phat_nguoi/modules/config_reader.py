@@ -1,6 +1,6 @@
 from json import load
 
-from ..models.config import Config
+from check_phat_nguoi.models.config import Config
 
 
 def config_reader(config_path) -> Config:

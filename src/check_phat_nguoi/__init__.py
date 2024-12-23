@@ -1,4 +1,4 @@
-from .modules.config_reader import config_reader
+from check_phat_nguoi.modules.config_reader import config_reader
 
 
 def main():
