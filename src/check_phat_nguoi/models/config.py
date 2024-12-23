@@ -1,9 +1,16 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
+from check_phat_nguoi.models.log_level import LogLevel
+from check_phat_nguoi.models.notify.telegram_notify import TelegramNotify
 from check_phat_nguoi.models.plate_info import PlateInfo
-from check_phat_nguoi.models.telegram import Telegram
 
 
 class Config(BaseModel):
+    model_config = ConfigDict(use_enum_values=True, validate_default=True)
+
     data: list[PlateInfo] = []
-    notify: list[Telegram] = []
+    notify: list[TelegramNotify] = []
+    log_level: LogLevel = LogLevel.warning
+
+
+__all__ = ["Config"]
