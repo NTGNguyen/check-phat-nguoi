@@ -1,6 +1,9 @@
 [project]
-name = 'check-phat-nguoi'
+authors = [{ name = "KevinNitroG" }, { name = "NTGNguyen" }]
+description = "Check phạt nguội"
+name = "check-phat-nguoi"
 version = "0.1.0-dev.1"
+requires-python = "==3.13.*"
 dynamic = ["dependencies"]
 
 [project.scripts]
