@@ -12,7 +12,7 @@
       "title": "LogLevelModel",
       "type": "string"
     },
-    "PlateInfoConfigModel": {
+    "PlateInfoModel": {
       "properties": {
         "plate": {
           "title": "Plate",
@@ -34,7 +34,7 @@
       "required": [
         "plate"
       ],
-      "title": "PlateInfoConfigModel",
+      "title": "PlateInfoModel",
       "type": "object"
     },
     "TelegramConfigModel": {
@@ -77,7 +77,7 @@
     "data": {
       "default": [],
       "items": {
-        "$ref": "#/$defs/PlateInfoConfigModel"
+        "$ref": "#/$defs/PlateInfoModel"
       },
       "title": "Data",
       "type": "array"

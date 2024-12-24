@@ -1,9 +1,9 @@
 from pydantic import BaseModel
 
 
-class PlateInfoConfigModel(BaseModel):
+class PlateInfoModel(BaseModel):
     plate: str
     owner: str | None = None
 
 
-__all__ = ["PlateInfoConfigModel"]
+__all__ = ["PlateInfoModel"]
