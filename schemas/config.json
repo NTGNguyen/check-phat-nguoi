@@ -12,7 +12,7 @@
       "title": "LogLevelModel",
       "type": "string"
     },
-    "PlateInfoModel": {
+    "PlateInfoConfigModel": {
       "properties": {
         "plate": {
           "title": "Plate",
@@ -34,10 +34,10 @@
       "required": [
         "plate"
       ],
-      "title": "PlateInfoModel",
+      "title": "PlateInfoConfigModel",
       "type": "object"
     },
-    "TelegramModel": {
+    "TelegramConfigModel": {
       "properties": {
         "bot_token": {
           "title": "Bot Token",
@@ -52,7 +52,7 @@
         "bot_token",
         "chat_id"
       ],
-      "title": "TelegramModel",
+      "title": "TelegramConfigModel",
       "type": "object"
     },
     "TelegramNotifyModel": {
@@ -63,7 +63,7 @@
           "type": "boolean"
         },
         "telegram": {
-          "$ref": "#/$defs/TelegramModel"
+          "$ref": "#/$defs/TelegramConfigModel"
         }
       },
       "required": [
@@ -77,7 +77,7 @@
     "data": {
       "default": [],
       "items": {
-        "$ref": "#/$defs/PlateInfoModel"
+        "$ref": "#/$defs/PlateInfoConfigModel"
       },
       "title": "Data",
       "type": "array"

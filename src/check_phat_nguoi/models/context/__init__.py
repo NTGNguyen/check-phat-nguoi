@@ -1,3 +1,5 @@
-from check_phat_nguoi.models.context.context import ContextModel
+from check_phat_nguoi.models.context.plate_context.plate_context import (
+    PlatesContextModel,
+)
 
-__all__ = ["ContextModel"]
+__all__ = ["PlatesContextModel"]

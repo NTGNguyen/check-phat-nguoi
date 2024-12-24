@@ -1,9 +1,11 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
 
-class ViolationModel(BaseModel):
+class ViolationContextModel(BaseModel):
+    type: Literal["Ô tô", "Xe máy", "Xe đạp điện"]
     date: datetime
     location: str
     action: str

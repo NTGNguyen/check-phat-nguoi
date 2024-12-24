@@ -1,18 +1,20 @@
-from check_phat_nguoi.models.config.plate_info import (
-    PlateInfoModel as _PlateInfoConfigModel,
-)
-from check_phat_nguoi.models.context.violation import ViolationModel
-from check_phat_nguoi.utils.constants import DATETIME_STRING_FORMAT
+from datetime import datetime
 from logging import getLogger
 from typing import Dict
 
-from datetime import datetime
+from check_phat_nguoi.models.context.plate_context.violation import (
+    ViolationContextModel,
+)
+from check_phat_nguoi.models.plate_info import (
+    PlateInfoConfigModel as _PlateInfoConfigModel,
+)
+from check_phat_nguoi.utils.constants import DATETIME_STRING_FORMAT
 
 logging = getLogger(__name__)
 
 
-class PlateInfoModel(_PlateInfoConfigModel):
-    violation: list[ViolationModel] = []
+class PlateInfoContextModel(_PlateInfoConfigModel):
+    violation: list[ViolationContextModel] = []
 
     def get_plate_info(self, plate: str, plate_violation_dict: Dict | None) -> None:
         self.plate = plate
@@ -35,8 +37,8 @@ class PlateInfoModel(_PlateInfoConfigModel):
                     "enforcement_unit": violation_info_dict["Đơn vị phát hiện vi phạm"],
                     "resolution_office": violation_info_dict["Nơi giải quyết vụ việc"],
                 }
-                violation_model = ViolationModel(**violation_data)
+                violation_model = ViolationContextModel(**violation_data)
                 self.violation.append(violation_model)
 
 
-__all__ = ["PlateInfoModel"]
+__all__ = ["PlateInfoContextModel"]

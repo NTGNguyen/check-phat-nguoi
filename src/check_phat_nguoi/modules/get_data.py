@@ -7,7 +7,7 @@ from typing import Dict
 import requests
 from requests import Response
 
-from check_phat_nguoi.models.config.plate_info import PlateInfoModel
+from check_phat_nguoi.models.config.plate_info import PlateInfoConfigModel
 from check_phat_nguoi.utils.constants import URL
 
 logger = getLogger(__name__)
@@ -16,13 +16,13 @@ logger = getLogger(__name__)
 class GetData:
     """Get data by sending a request"""
 
-    def __init__(self, plate_infos: list[PlateInfoModel]) -> None:
+    def __init__(self, plate_infos: list[PlateInfoConfigModel]) -> None:
         """The initialise for GetData class
 
         Args:
             plate_infos: List of PlateInfo
         """
-        self._plate_infos: list[PlateInfoModel] = plate_infos
+        self._plate_infos: list[PlateInfoConfigModel] = plate_infos
         self.data_dict: Dict[str, None | Dict] = {}
 
     def _get_data(self, plate: str, timeout: int = 5) -> None:
