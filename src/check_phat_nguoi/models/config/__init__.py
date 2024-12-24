@@ -1,8 +1,8 @@
 from pydantic import BaseModel, ConfigDict
 
-from check_phat_nguoi.models.log_level import LogLevel
-from check_phat_nguoi.models.notify.telegram_notify import TelegramNotify
-from check_phat_nguoi.models.plate_info import PlateInfo
+from check_phat_nguoi.models.config.log_level import LogLevel
+from check_phat_nguoi.models.config.notify.telegram_notify import TelegramNotify
+from check_phat_nguoi.models.config.plate_info import PlateInfo
 
 
 class Config(BaseModel):
