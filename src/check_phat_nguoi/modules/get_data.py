@@ -37,7 +37,7 @@ class GetData:
         """
         payload: dict[str, str] = {"bienso": f"{plate}"}
         try:
-            response: Response = requests.post(url=URL, json=payload)
+            response: Response = requests.post(url=URL, json=payload, timeout=timeout)
             response.raise_for_status()
 
             logger.info(f"Request successful: {response.status_code}")
@@ -48,7 +48,7 @@ class GetData:
             else:
                 self.data_dict[plate] = response_data
         except requests.exceptions.ConnectionError:
-            logger.error(f"Unable to connect to{URL}")
+            logger.error(f"Unable to connect to {URL}")
         except requests.exceptions.Timeout:
             logger.error(f"Time out of {timeout} seconds from URL {URL}")
 
