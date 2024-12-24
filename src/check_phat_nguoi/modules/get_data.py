@@ -6,7 +6,7 @@ from typing import Dict
 import requests
 from requests import Response
 
-from check_phat_nguoi.models.plate_info import PlateInfo
+from check_phat_nguoi.models.config.plate_info import PlateInfo
 from check_phat_nguoi.utils.constants import URL
 
 from logging import getLogger
@@ -61,8 +61,7 @@ class GetData:
         """
         threads: list[Thread] = []
         for plate_info in self._plate_infos:
-            thread = Thread(target=self._get_data,
-                            args=(plate_info.plate,))
+            thread = Thread(target=self._get_data, args=(plate_info.plate,))
             threads.append(thread)
             thread.start()
         for idx, thread in enumerate(threads, start=1):
