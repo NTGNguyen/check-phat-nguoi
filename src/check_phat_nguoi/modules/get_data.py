@@ -1,15 +1,14 @@
 """Get data"""
 
+from logging import getLogger
 from threading import Thread
 from typing import Dict
 
 import requests
 from requests import Response
 
-from check_phat_nguoi.models.config.plate_info import PlateInfo
+from check_phat_nguoi.models.config.plate_info import PlateInfoModel
 from check_phat_nguoi.utils.constants import URL
-
-from logging import getLogger
 
 logger = getLogger(__name__)
 
@@ -17,13 +16,13 @@ logger = getLogger(__name__)
 class GetData:
     """Get data by sending a request"""
 
-    def __init__(self, plate_infos: list[PlateInfo]) -> None:
+    def __init__(self, plate_infos: list[PlateInfoModel]) -> None:
         """The initialise for GetData class
 
         Args:
             plate_infos: List of PlateInfo
         """
-        self._plate_infos: list[PlateInfo] = plate_infos
+        self._plate_infos: list[PlateInfoModel] = plate_infos
         self.data_dict: Dict[str, None | Dict] = {}
 
     def _get_data(self, plate: str, timeout: int = 5) -> None:
@@ -69,5 +68,4 @@ class GetData:
                 thread.join()
             except Exception:
                 logger.error(f"An error occurs in thread number {idx}")
-
         return self.data_dict

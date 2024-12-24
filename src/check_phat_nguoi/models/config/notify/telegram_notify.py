@@ -1,9 +1,9 @@
-from check_phat_nguoi.models.config.notify.base_notify import BaseNotify
-from check_phat_nguoi.models.config.notify.telegram import Telegram
+from check_phat_nguoi.models.config.notify.base_notify import BaseNotifyModel
+from check_phat_nguoi.models.config.notify.telegram import TelegramModel
 
 
-class TelegramNotify(BaseNotify):
-    telegram: Telegram
+class TelegramNotifyModel(BaseNotifyModel):
+    telegram: TelegramModel
 
 
-__all__ = ["TelegramNotify"]
+__all__ = ["TelegramNotifyModel"]

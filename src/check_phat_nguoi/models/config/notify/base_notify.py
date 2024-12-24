@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
 
-class BaseNotify(BaseModel):
+class BaseNotifyModel(BaseModel):
     enabled: bool = True
 
 
-__all__ = ["BaseNotify"]
+__all__ = ["BaseNotifyModel"]

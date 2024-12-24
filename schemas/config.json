@@ -1,6 +1,6 @@
 {
   "$defs": {
-    "LogLevel": {
+    "LogLevelModel": {
       "enum": [
         "NOTSET",
         "DEBUG",
@@ -9,10 +9,10 @@
         "ERROR",
         "CRITICAL"
       ],
-      "title": "LogLevel",
+      "title": "LogLevelModel",
       "type": "string"
     },
-    "PlateInfo": {
+    "PlateInfoModel": {
       "properties": {
         "plate": {
           "title": "Plate",
@@ -34,10 +34,10 @@
       "required": [
         "plate"
       ],
-      "title": "PlateInfo",
+      "title": "PlateInfoModel",
       "type": "object"
     },
-    "Telegram": {
+    "TelegramModel": {
       "properties": {
         "bot_token": {
           "title": "Bot Token",
@@ -52,10 +52,10 @@
         "bot_token",
         "chat_id"
       ],
-      "title": "Telegram",
+      "title": "TelegramModel",
       "type": "object"
     },
-    "TelegramNotify": {
+    "TelegramNotifyModel": {
       "properties": {
         "enabled": {
           "default": true,
@@ -63,13 +63,13 @@
           "type": "boolean"
         },
         "telegram": {
-          "$ref": "#/$defs/Telegram"
+          "$ref": "#/$defs/TelegramModel"
         }
       },
       "required": [
         "telegram"
       ],
-      "title": "TelegramNotify",
+      "title": "TelegramNotifyModel",
       "type": "object"
     }
   },
@@ -77,7 +77,7 @@
     "data": {
       "default": [],
       "items": {
-        "$ref": "#/$defs/PlateInfo"
+        "$ref": "#/$defs/PlateInfoModel"
       },
       "title": "Data",
       "type": "array"
@@ -85,7 +85,7 @@
     "notify": {
       "default": [],
       "items": {
-        "$ref": "#/$defs/TelegramNotify"
+        "$ref": "#/$defs/TelegramNotifyModel"
       },
       "title": "Notify",
       "type": "array"
@@ -101,10 +101,10 @@
       "type": "boolean"
     },
     "log_level": {
-      "$ref": "#/$defs/LogLevel",
+      "$ref": "#/$defs/LogLevelModel",
       "default": "WARNING"
     }
   },
-  "title": "Config",
+  "title": "ConfigModel",
   "type": "object"
 }

@@ -3,7 +3,7 @@ from re import match as re_match
 from pydantic import BaseModel, field_validator
 
 
-class Telegram(BaseModel):
+class TelegramModel(BaseModel):
     bot_token: str
     chat_id: str
 
@@ -22,4 +22,4 @@ class Telegram(BaseModel):
         return _chat_id
 
 
-__all__ = ["Telegram"]
+__all__ = ["TelegramModel"]

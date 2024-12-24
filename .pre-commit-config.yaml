@@ -25,3 +25,13 @@ repos:
     rev: v4.1.0
     hooks:
       - id: commitizen
+  - repo: local
+    hooks:
+      - id: generate-config-schemas
+        name: Generate Config Schemas
+        language: system
+        entry: python -m generate_config_schema
+        files: '^src/check_phat_nguoi/models/config/.*$'
+        types: [file, python]
+        stages:
+          - pre-commit
