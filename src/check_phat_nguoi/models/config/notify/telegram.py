@@ -4,6 +4,7 @@ from pydantic import BaseModel, field_validator
 
 
 class Telegram(BaseModel):
+    enabled: bool = True
     bot_token: str
     chat_id: str
 

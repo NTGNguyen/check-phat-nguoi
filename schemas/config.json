@@ -39,6 +39,11 @@
     },
     "Telegram": {
       "properties": {
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
         "bot_token": {
           "title": "Bot Token",
           "type": "string"
