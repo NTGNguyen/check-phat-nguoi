@@ -9,6 +9,10 @@ from requests import Response
 from check_phat_nguoi.models.plate_info import PlateInfo
 from check_phat_nguoi.utils.constants import URL
 
+from logging import getLogger
+
+logger = getLogger(__name__)
+
 
 class GetData:
     """Get data by sending a request"""
@@ -22,11 +26,12 @@ class GetData:
         self._plate_infos: list[PlateInfo] = plate_infos
         self.data_dict: Dict[str, None | Dict] = {}
 
-    def _get_data(self, plate: str) -> None:
+    def _get_data(self, plate: str, timeout: int = 5) -> None:
         """Get data with a single object
 
         Args:
             plate: plate's information
+            timeout: maximum wait time in seconds(default is 5)
 
         Returns:
             None | Dict: a dict
@@ -35,13 +40,18 @@ class GetData:
         try:
             response: Response = requests.post(url=URL, json=payload)
             response.raise_for_status()
+
+            logger.info(f"Request successful: {response.status_code}")
+
             response_data: Dict = response.json()
             if response_data.get("data") is None:
                 self.data_dict[plate] = None
             else:
                 self.data_dict[plate] = response_data
-        except Exception:
-            self._data_dict[plate] = None
+        except requests.exceptions.ConnectionError:
+            logger.error(f"Unable to connect to{URL}")
+        except requests.exceptions.Timeout:
+            logger.error(f"Time out of {timeout} seconds from URL {URL}")
 
     def get_data(self) -> Dict[str, None | Dict] | None:
         """Get data
@@ -49,18 +59,16 @@ class GetData:
         Returns:
             Dict: A dictionary mapping plate to response data.
         """
-
         threads: list[Thread] = []
-        try:
-            for plate_info in self._plate_infos:
-                thread = Thread(target=self._get_data,
-                                args=(plate_info.plate,))
-                threads.append(thread)
-                thread.start()
-
-            for thread in threads:
+        for plate_info in self._plate_infos:
+            thread = Thread(target=self._get_data,
+                            args=(plate_info.plate,))
+            threads.append(thread)
+            thread.start()
+        for idx, thread in enumerate(threads, start=1):
+            try:
                 thread.join()
+            except Exception:
+                logger.error(f"An error occurs in thread number {idx}")
 
-            return self.data_dict
-        except Exception:
-            return None
+        return self.data_dict
