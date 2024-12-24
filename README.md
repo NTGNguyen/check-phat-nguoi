@@ -177,6 +177,19 @@ curl --data '{"bienso": "30F88251"}' -X POST -H "Content-Type: application/json"
 }
 ```
 
+4. Example 4
+
+```sh
+curl --data '{"bienso": "59XB00000"}' -X POST -H "Content-Type: application/json" https://api.checkphatnguoi.vn/phatnguoi | jq .
+```
+
+```json
+{
+  "status": 2,
+  "data": null
+}
+```
+
 </details>
 
 ### REFS
