@@ -1,6 +1,3 @@
-from check_phat_nguoi.context.context import Context
+from check_phat_nguoi.context.context import Context, context
 
-context: Context = Context()
-
-
-__all__ = ["context"]
+__all__ = ["Context", "context"]

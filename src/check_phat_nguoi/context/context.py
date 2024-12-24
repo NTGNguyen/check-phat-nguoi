@@ -1,7 +1,8 @@
 from check_phat_nguoi.models.context import ContextModel
+from check_phat_nguoi.utils.singleton import Singleton
 
 
-class Context:
+class Context(Singleton):
     def __init__(self) -> None:
         self._context: ContextModel = ContextModel()
 
@@ -10,4 +11,7 @@ class Context:
         pass
 
 
-__all__ = ["Context"]
+context: Context = Context()
+
+
+__all__ = ["Context", "context"]
