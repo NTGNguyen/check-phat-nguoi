@@ -52,7 +52,7 @@ class GetData:
         except requests.exceptions.Timeout:
             logger.error(f"Time out of {timeout} seconds from URL {URL}")
 
-    def get_data(self) -> Dict[str, None | Dict] | None:
+    def get_data(self) -> Dict[str, None | Dict]:
         """Get data
 
         Returns:
