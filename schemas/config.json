@@ -39,11 +39,6 @@
     },
     "Telegram": {
       "properties": {
-        "enabled": {
-          "default": true,
-          "title": "Enabled",
-          "type": "boolean"
-        },
         "bot_token": {
           "title": "Bot Token",
           "type": "string"
@@ -62,6 +57,11 @@
     },
     "TelegramNotify": {
       "properties": {
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
         "telegram": {
           "$ref": "#/$defs/Telegram"
         }
