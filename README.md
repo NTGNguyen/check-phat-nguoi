@@ -1,3 +1,7 @@
+![pre-commit status](https://img.shields.io/github/actions/workflow/status/NTGNguyen/check-phat-nguoi/pre-commit.yml?style=for-the-badge&label=pre%20commit&branch=main&logo=precommit)
+
+---
+
 ### DEV
 
 ```sh
