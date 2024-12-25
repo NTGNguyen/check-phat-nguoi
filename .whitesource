@@ -10,5 +10,6 @@
   "issueSettings": {
     "minSeverityLevel": "LOW",
     "issueType": "DEPENDENCY"
-  }
+  },
+  "exclusions": ["[.]html$"]
 }
