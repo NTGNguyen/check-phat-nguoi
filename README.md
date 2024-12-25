@@ -1,4 +1,5 @@
 ![pre-commit status](https://img.shields.io/github/actions/workflow/status/NTGNguyen/check-phat-nguoi/pre-commit.yml?style=for-the-badge&label=pre%20commit&branch=main&logo=precommit)
+[![wakatime](https://wakatime.com/badge/github/NTGNguyen/check-phat-nguoi.svg?style=for-the-badge)](https://wakatime.com/badge/github/NTGNguyen/check-phat-nguoi)
 
 ---
 
