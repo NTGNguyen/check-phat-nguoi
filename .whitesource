@@ -11,5 +11,5 @@
     "minSeverityLevel": "LOW",
     "issueType": "DEPENDENCY"
   },
-  "exclusions": ["[.]html$"]
+  "exclusions": ["\\assets\\"]
 }
