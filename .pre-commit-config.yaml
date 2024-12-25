@@ -4,6 +4,10 @@ default_install_hook_types:
   - pre-commit
   - commit-msg
 
+ci:
+  skip:
+    - generate-config-schemas
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0

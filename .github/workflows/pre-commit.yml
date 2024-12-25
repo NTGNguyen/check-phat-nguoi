@@ -16,3 +16,5 @@ jobs:
           cache: pip
           cache-dependency-path: '**/requirements.txt'
       - uses: pre-commit/action@v3.0.1
+        env:
+          SKIP: generate-config-schemas
