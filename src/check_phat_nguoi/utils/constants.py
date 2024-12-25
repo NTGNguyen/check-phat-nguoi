@@ -9,3 +9,28 @@ GET_DATA_API_URL_CHECKPHATNGUOI: str = "https://api.checkphatnguoi.vn/phatnguoi"
 DATETIME_FORMAT_CHECKPHATNGUOI: str = "%H:%M, %d/%m/%Y"
 
 OFFICE_NAME_PATTERN = r"^\d+\."
+
+MESSAGE_MARKDOWN_PATTERN = """
+*🚗 **Thông tin phương tiện**:*
+- **Biển kiểm soát:** `{plate}`
+- **Chủ sở hữu:** `{owner}'
+
+*⚠️ **Thông tin vi phạm**:*
+- **Hành vi vi phạm:** `{action}`
+- **Trạng thái:** {status}
+- **Thời gian vi phạm:** `{date}`
+- **Địa điểm vi phạm** {location}
+
+*🏢 **Đơn vị phát hiện vi phạm**:*
+- **{enforcement_unit}**
+
+*📍 **Nơi giải quyết vụ việc**:*
+{resolution_locations}
+"""
+
+RESOLUTION_LOCATION_MARKDOWN_PATTERN = """
+{idx}. **{location_name}
+- **Địa chỉ:** {address}
+- **Số điện thoại liên lạc:** {phone}
+
+"""
