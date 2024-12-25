@@ -7,3 +7,5 @@ DETAIL_LOG_MESSAGE: str = (
 # API from checkphatnguoi.vn
 GET_DATA_API_URL_CHECKPHATNGUOI: str = "https://api.checkphatnguoi.vn/phatnguoi"
 DATETIME_FORMAT_CHECKPHATNGUOI: str = "%H:%M, %d/%m/%Y"
+
+OFFICE_NAME_PATTERN = r"^\d+\."
