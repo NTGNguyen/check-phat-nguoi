@@ -15,23 +15,33 @@ repos:
       - id: trailing-whitespace
       - id: check-added-large-files
       - id: detect-private-key
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.4
     hooks:
       - id: ruff
         args: [--fix]
       - id: ruff-format
+
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v4.1.0
     hooks:
       - id: commitizen
+
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.30.0
+    hooks:
+      - id: check-github-workflows
+      - id: check-metaschema
+        files: config.json
+
   - repo: local
     hooks:
       - id: generate-config-schemas
         name: Generate Config Schemas
         language: system
         entry: python -m generate_config_schema
-        files: '^src/check_phat_nguoi/models/config/.*$'
+        files: '^src/check_phat_nguoi/models/.*$'
         types: [file, python]
         stages:
           - pre-commit
