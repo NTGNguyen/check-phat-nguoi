@@ -80,6 +80,13 @@ class GetDataCheckPhatNguoi(GetDataBase):
     @override
     def get_data(self) -> list[PlateInfoContextModel]:
         self._multi_thread_get_data()
-        plate_infos = [
-            GetDataCheckPhatNguoi.get_plate_violation(plate) for plate in self.data_dict
+        plate_infos: list[PlateInfoContextModel] = [
+            PlateInfoContextModel(
+                plate=plate,
+                violation=GetDataCheckPhatNguoi.get_plate_violation(
+                    plate_violation_dict=plate_violation_dict
+                ),
+            )
+            for plate, plate_violation_dict in self.data_dict.items()
         ]
+        return plate_infos
