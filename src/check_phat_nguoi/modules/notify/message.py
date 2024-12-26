@@ -1,17 +1,16 @@
-from check_phat_nguoi.utils.constants import (
-    MESSAGE_MARKDOWN_PATTERN,
-    RESOLUTION_LOCATION_MARKDOWN_PATTERN,
-    DATETIME_FORMAT_CHECKPHATNGUOI,
-)
+from typing import Dict, LiteralString
+
 from check_phat_nguoi.models.context.plate_context.plate_context import (
     PlatesContextModel,
 )
 from check_phat_nguoi.models.context.plate_context.plate_info import (
     PlateInfoContextModel,
 )
-
-
-from typing import Dict, LiteralString
+from check_phat_nguoi.utils.constants import (
+    DATETIME_FORMAT_CHECKPHATNGUOI,
+    MESSAGE_MARKDOWN_PATTERN,
+    RESOLUTION_LOCATION_MARKDOWN_PATTERN,
+)
 
 
 class Message:

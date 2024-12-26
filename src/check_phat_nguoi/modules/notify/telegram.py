@@ -1,9 +1,11 @@
-from typing import LiteralString
-from check_phat_nguoi.models.notify.telegram_notify import TelegramNotifyModel
-from check_phat_nguoi.utils.constants import SEND_MESSAGE_API_URL_TELEGRAM as API_URL
-import requests
 from logging import getLogger
 from threading import Thread
+from typing import LiteralString
+
+import requests
+
+from check_phat_nguoi.models.notify.telegram_notify import TelegramNotifyModel
+from check_phat_nguoi.utils.constants import SEND_MESSAGE_API_URL_TELEGRAM as API_URL
 
 logger = getLogger(__name__)
 
