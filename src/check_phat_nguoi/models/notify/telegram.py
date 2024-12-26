@@ -1,11 +1,17 @@
 from re import match as re_match
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class TelegramConfigModel(BaseModel):
-    bot_token: str
-    chat_id: str
+    bot_token: str = Field(
+        description="Bot token Telegram",
+        examples=["2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB"],
+    )
+    chat_id: str = Field(
+        description="Chat ID Telegram",
+        examples=["-1001790012349"],
+    )
 
     @field_validator("bot_token", mode="after")
     @classmethod
@@ -18,7 +24,7 @@ class TelegramConfigModel(BaseModel):
     @classmethod
     def validate_chat_id(cls, _chat_id: str) -> str:
         if not re_match(r"^[+-]?[0-9]+$", _chat_id):
-            raise ValueError("Bot token is not valid")
+            raise ValueError("Chat ID is not valid")
         return _chat_id
 
 
