@@ -41,7 +41,8 @@ repos:
         name: Generate Config Schemas
         language: system
         entry: uv run generate-config-schema # Require venv activated
-        files: '^src/check_phat_nguoi/models/.*$'
+        files: '^src/check_phat_nguoi/models/'
         types: [file, python]
+        verbose: true
         stages:
           - pre-commit

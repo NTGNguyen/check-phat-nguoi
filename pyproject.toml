@@ -11,7 +11,8 @@ dependencies = ["pydantic>=2.10.4", "requests>=2.32.3"]
 
 [project.scripts]
 check-phat-nguoi = "check_phat_nguoi:main"
-generate-config-schema = "generate_config_schema:main"
+generate-config-schema = "generate_schemas:generate_config_schema"
+generate-schema = "generate_schemas:main"
 
 [build-system]
 requires = ["hatchling"]

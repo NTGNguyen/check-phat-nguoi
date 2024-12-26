@@ -15,4 +15,7 @@ class ConfigModel(BaseModel):
     log_level: LogLevelModel = LogLevelModel.warning
 
 
+print("coo")
+
+
 __all__ = ["ConfigModel"]

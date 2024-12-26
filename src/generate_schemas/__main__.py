@@ -1,4 +1,4 @@
-from generate_config_schema import main
+from generate_schemas import main
 
 if __name__ == "__main__":
     main()
