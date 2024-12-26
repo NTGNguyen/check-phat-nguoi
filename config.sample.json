@@ -6,7 +6,8 @@
       "owner": "@kevinnitro"
     },
     {
-      "plate": "60A64685"
+      "plate": "60A64685",
+      "owner": "dad"
     },
     {
       "plate": "98A56604"
@@ -23,9 +24,10 @@
       "telegram": {
         "bot_token": "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB",
         "chat_id": "-1001790012349"
-      }
+      },
+      "enabled": true
     }
   ],
   "havent_paid_only": true,
-  "log_level": "DEBUG"
+  "log_level": "INFO"
 }

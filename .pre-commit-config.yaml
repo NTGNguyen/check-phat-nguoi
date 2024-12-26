@@ -33,7 +33,7 @@ repos:
     hooks:
       - id: check-github-workflows
       - id: check-metaschema
-        files: config.json
+        files: config.sample.json
 
   - repo: local
     hooks:
