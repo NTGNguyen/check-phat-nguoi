@@ -5,7 +5,7 @@
             "label": "Run UV",
             "type": "shell",
             "command":"uv",
-            "args": ["run",".\\src\\check_phat_nguoi\\__main__.py"],
+            "args": ["run","./src/check_phat_nguoi/__main__.py"],
             "options": {
                 "cwd": "${workspaceFolder}"
             },
