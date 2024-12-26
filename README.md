@@ -3,17 +3,29 @@
 
 ---
 
-### DEV
+### USE
 
 ```sh
 python -m venv .venv
-.\.venv\Scripts\activate # For windows
-pip install --editable .[dev]
-pre-commit install
-
+.venv/Scripts/activate # or "source .venv/bin/active" on Linux
+pip install --editable .
 check-phat-nguoi # or "python -m check_phat_nguoi"
+```
 
-generate-config-schema # or "python -m generate_config_schema"
+---
+
+### DEV
+
+> [!IMPORTANT]
+> Require https://github.com/astral-sh/uv
+
+```sh
+uv sync # no need uv venv
+.venv/Scripts/activate # or "source .venv/bin/active" on Linux
+uv run pre-commit install
+
+uv run check-phat-nguoi
+uv run generate-config-schema
 ```
 
 > [!NOTE]

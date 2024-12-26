@@ -6,19 +6,16 @@ authors = [
 description = "Check phạt nguội"
 name = "check-phat-nguoi"
 version = "0.1.0-dev.1"
-requires-python = "==3.13.*"
-dynamic = ["dependencies", "optional-dependencies"]
+requires-python = ">=3.13"
+dependencies = ["pydantic>=2.10.4", "requests>=2.32.3"]
 
 [project.scripts]
 check-phat-nguoi = "check_phat_nguoi:main"
 generate-config-schema = "generate_config_schema:main"
 
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.setuptools.dynamic]
-dependencies = { file = "requirements/requirements.txt" }
-optional-dependencies = { dev = { file = [
-  "requirements/requirements-dev.txt",
-] } }
+[dependency-groups]
+dev = ["pre-commit>=4.0.1"]
