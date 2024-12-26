@@ -27,4 +27,4 @@ jobs:
       - name: Pre-commit check
         env:
           SKIP: generate-config-schemas
-        run: uv run pre-commit -a
+        run: uv run pre-commit run -a
