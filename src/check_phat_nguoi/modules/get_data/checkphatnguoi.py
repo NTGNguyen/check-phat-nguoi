@@ -25,10 +25,12 @@ logger = getLogger(__name__)
 class GetDataCheckPhatNguoi(GetDataBase):
     def __init__(self, plate_infos: list[PlateInfoModel]) -> None:
         super().__init__(plate_infos)
-        self.data_dict: Dict[str, None | Dict] = {}
+        self.data_dict: Dict[PlateInfoModel, None | Dict] = {}
 
-    def _get_data_request(self, plate: str, timeout: int = 5) -> None:
-        payload: dict[str, str] = {"bienso": f"{plate}"}
+    def _get_data_request(
+        self, plate_info_object: PlateInfoModel, timeout: int = 5
+    ) -> None:
+        payload: dict[str, str] = {"bienso": f"{plate_info_object.plate}"}
         try:
             response: Response = requests.post(
                 url=API_URL, json=payload, timeout=timeout
@@ -36,7 +38,7 @@ class GetDataCheckPhatNguoi(GetDataBase):
             response.raise_for_status()
             logger.info(f"Request successful: {response.status_code}")
             response_data: Dict = response.json()
-            self.data_dict[plate] = response_data
+            self.data_dict[plate_info_object] = response_data
         except requests.exceptions.ConnectionError:
             logger.error(f"Unable to connect to {API_URL}")
         except requests.exceptions.Timeout:
@@ -45,7 +47,7 @@ class GetDataCheckPhatNguoi(GetDataBase):
     def _multi_thread_get_data(self) -> None:
         threads: list[Thread] = []
         for plate_info in self._plate_infos:
-            thread = Thread(target=self._get_data_request, args=(plate_info.plate))
+            thread = Thread(target=self._get_data_request, args=(plate_info))
             threads.append(thread)
             thread.start()
         for idx, thread in enumerate(threads, start=1):
@@ -82,11 +84,12 @@ class GetDataCheckPhatNguoi(GetDataBase):
         self._multi_thread_get_data()
         plate_infos: list[PlateInfoContextModel] = [
             PlateInfoContextModel(
-                plate=plate,
+                plate=plate_info_object.plate,
+                owner=plate_info_object.owner,
                 violation=GetDataCheckPhatNguoi.get_plate_violation(
                     plate_violation_dict=plate_violation_dict
                 ),
             )
-            for plate, plate_violation_dict in self.data_dict.items()
+            for plate_info_object, plate_violation_dict in self.data_dict.items()
         ]
         return plate_infos
