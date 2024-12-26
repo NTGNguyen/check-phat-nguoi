@@ -216,3 +216,7 @@ curl --data '{"bienso": "59XB00000"}' -X POST -H "Content-Type: application/json
 
 - List bien so: https://voz.vn/t/trang-check-phat-nguoi-tu-phat-trien.1048134/
 - https://github.com/thaoanhhaa1/phat-nguoi-bot
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=NTGNguyen/check-phat-nguoi&type=Date)](https://star-history.com/#NTGNguyen/check-phat-nguoi&Date)
