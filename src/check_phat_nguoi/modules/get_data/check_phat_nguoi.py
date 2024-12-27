@@ -1,10 +1,10 @@
+import asyncio
 from datetime import datetime
 from logging import getLogger
 from threading import Thread
 from typing import Dict, override
 
-import requests
-from requests import Response
+import aiohttp
 
 from check_phat_nguoi.config import PlateInfoDTO
 from check_phat_nguoi.config.dto.config import ConfigDTO
@@ -20,38 +20,37 @@ logger = getLogger(__name__)
 
 
 class GetDataCheckPhatNguoi(GetDataBase):
-    def __init__(self, plate_infos: list[PlateInfoDTO], config: ConfigDTO) -> None:
+    def __init__(
+        self, plate_infos: list[PlateInfoDTO], config: ConfigDTO, timeout: int = 10
+    ) -> None:
         super().__init__(plate_infos, config)
         self.data_dict: Dict[PlateInfoDTO, None | Dict] = {}
+        self.session = aiohttp.ClientSession()
+        self.timeout = timeout
+        self.headers = {"Content-Type": "application/json"}
 
-    def _get_data_request(
-        self, plate_info_object: PlateInfoDTO, timeout: int = 5
-    ) -> None:
-        payload: dict[str, str] = {"bienso": f"{plate_info_object.plate}"}
+    async def _get_data_request(self, plate_info_object: PlateInfoDTO) -> None:
+        payload: dict[str, str] = {"bienso": plate_info_object.plate}
         try:
-            response: Response = requests.post(
-                url=API_URL, json=payload, timeout=timeout
-            )
-            response.raise_for_status()
-            logger.info(f"Request successful: {response.status_code}")
-            response_data: Dict = response.json()
-            self.data_dict[plate_info_object] = response_data
-        except requests.exceptions.ConnectionError:
-            logger.error(f"Unable to connect to {API_URL}")
-        except requests.exceptions.Timeout:
-            logger.error(f"Time out of {timeout} seconds from URL {API_URL}")
+            async with self.session.post(
+                API_URL, headers=self.headers, json=payload, timeout=self.timeout
+            ) as response:
+                response.raise_for_status()
 
-    def _multi_thread_get_data(self) -> None:
-        threads: list[Thread] = []
-        for plate_info in self._plate_infos:
-            thread = Thread(target=self._get_data_request, args=(plate_info))
-            threads.append(thread)
-            thread.start()
-        for idx, thread in enumerate(threads, start=1):
-            try:
-                thread.join()
-            except Exception:
-                logger.error(f"An error occurs in thread number {idx}")
+                response_data: Dict = await response.json()
+                self.data_dict[plate_info_object] = response_data
+        except asyncio.TimeoutError:
+            logger.error(
+                f"Time out of {self.timeout} seconds from URL {API_URL} for plate: {plate_info_object.plate}"
+            )
+        except aiohttp.ClientConnectionError:
+            logger.error(
+                f"Error ocurs while connecting to {API_URL} for plate: {plate_info_object.plate}"
+            )
+
+    async def _get_data(self) -> None:
+        tasks = [self._get_data_request(plate_info) for plate_info in self._plate_infos]
+        await asyncio.gather(*tasks)
 
     @staticmethod
     def get_plate_violation(
@@ -77,9 +76,9 @@ class GetDataCheckPhatNguoi(GetDataBase):
         ]
 
     @override
-    def get_data(self) -> list[PlateInfoModel]:
-        self._multi_thread_get_data()
-        plate_infos: list[PlateInfoModel] = [
+    async def get_data(self) -> list[PlateInfoModel]:
+        await self._get_data()
+        plate_infos: list[PlateInfoModel] = tuple(
             PlateInfoModel(
                 plate=plate_info_object.plate,
                 owner=plate_info_object.owner,
@@ -92,5 +91,7 @@ class GetDataCheckPhatNguoi(GetDataBase):
                 not self._config.unpaid_only
                 or self.data_dict[plate_info_object]["Trạng thái"] == "Chưa xử phạt"
             )
-        ]
+        )
+        await self.session.close()
+
         return plate_infos

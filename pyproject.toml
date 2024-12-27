@@ -6,7 +6,11 @@ authors = [
 description = "Check phạt nguội"
 name = "check-phat-nguoi"
 version = "0.1.0-dev.1"
-dependencies = ["pydantic>=2.10.4", "requests>=2.32.3"]
+dependencies = [
+    "aiohttp[speedups]>=3.11.11",
+    "pydantic>=2.10.4",
+    "requests>=2.32.3",
+]
 
 [project.scripts]
 check-phat-nguoi = "check_phat_nguoi:main"
