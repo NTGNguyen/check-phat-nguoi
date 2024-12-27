@@ -77,7 +77,7 @@ class GetDataCheckPhatNguoi(GetDataBase):
     @override
     async def get_data(self) -> list[PlateInfoModel]:
         await self._get_data()
-        plate_infos: list[PlateInfoModel] = tuple(
+        plate_infos: tuple[PlateInfoModel] = tuple(
             PlateInfoModel(
                 plate=plate_info_object.plate,
                 owner=plate_info_object.owner,
