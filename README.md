@@ -25,7 +25,7 @@ uv sync # no need uv venv
 uv run pre-commit install
 
 uv run check-phat-nguoi
-uv run generate-schema
+uv run generate-schemas
 
 # Just for single schema generation
 uv run generate-config-schema
