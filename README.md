@@ -1,14 +1,25 @@
 ![pre-commit status](https://img.shields.io/github/actions/workflow/status/NTGNguyen/check-phat-nguoi/pre-commit.yml?style=for-the-badge&label=pre%20commit&branch=main&logo=precommit)
 [![wakatime](https://wakatime.com/badge/github/NTGNguyen/check-phat-nguoi.svg?style=for-the-badge)](https://wakatime.com/badge/github/NTGNguyen/check-phat-nguoi)
 
+> [!NOTE]
+>
+> This project is created using python 3.13. Using other python versions may not work.
+
 ---
 
 ### USE
 
+#### From source
+
+1. Clone repo
+
+2. Run commands
+
 ```sh
 python -m venv .venv
 .venv/Scripts/activate # or "source .venv/bin/active" on Linux
-pip install --editable .
+pip install -e -r requirements.txt
+# Edit config.json
 check-phat-nguoi # or "python -m check_phat_nguoi"
 ```
 
@@ -21,13 +32,14 @@ check-phat-nguoi # or "python -m check_phat_nguoi"
 
 ```sh
 uv sync # no need uv venv
+
 .venv/Scripts/activate # or "source .venv/bin/active" on Linux
+
+# uv can detect env with "uv run", not need active venv
 uv run pre-commit install
 
 uv run check-phat-nguoi
 uv run generate-schemas
-
-# Just for single schema generation
 uv run generate-config-schema
 ```
 
