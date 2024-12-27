@@ -1,14 +1,19 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Run UV",
-            "type":"node",
-            "request": "launch",
-            "program": "${workspaceFolder}/",
-            "console": "integratedTerminal",
-            "preLaunchTask": "Run UV",
-
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run check-phat-nguoi",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "src/check_phat_nguoi",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Run generate-schemas",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "src/generate_schemas",
+      "console": "integratedTerminal"
+    }
+  ]
 }

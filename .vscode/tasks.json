@@ -1,19 +1,33 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Run UV",
-            "type": "shell",
-            "command":"uv",
-            "args": ["run","./src/check_phat_nguoi/__main__.py"],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": []
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Restore Ruff venv",
+      "type": "shell",
+      "command": "uv",
+      "args": ["sync"]
+    },
+    {
+      "label": "Run check-phat-nguoi",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "check-phat-nguoi"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$python"]
+    },
+    {
+      "label": "Run generate-schemas",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "generate-schemas"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$python"]
+    }
+  ]
 }
