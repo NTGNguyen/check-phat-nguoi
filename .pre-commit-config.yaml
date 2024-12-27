@@ -1,8 +1,9 @@
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
 default_install_hook_types:
   - pre-commit
   - commit-msg
+  - post-checkout
+  - post-merge
+  - post-rewrite
 
 ci:
   skip:
@@ -34,6 +35,13 @@ repos:
       - id: check-github-workflows
       - id: check-metaschema
         files: config.sample.json
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.5.12
+    hooks:
+      - id: uv-sync
+      - id: uv-lock # update lock file
+      - id: uv-export # export lock file to requirements.txt
 
   - repo: local
     hooks:
