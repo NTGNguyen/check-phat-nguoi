@@ -7,6 +7,7 @@ import requests
 from requests import Response
 
 from check_phat_nguoi.config import PlateInfoDTO
+from check_phat_nguoi.config.dto.config import ConfigDTO
 from check_phat_nguoi.context import PlateInfoModel, ViolationModel
 from check_phat_nguoi.utils.constants import (
     DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT,
@@ -19,8 +20,8 @@ logger = getLogger(__name__)
 
 
 class GetDataCheckPhatNguoi(GetDataBase):
-    def __init__(self, plate_infos: list[PlateInfoDTO]) -> None:
-        super().__init__(plate_infos)
+    def __init__(self, plate_infos: list[PlateInfoDTO], config: ConfigDTO) -> None:
+        super().__init__(plate_infos, config)
         self.data_dict: Dict[PlateInfoDTO, None | Dict] = {}
 
     def _get_data_request(
@@ -87,5 +88,9 @@ class GetDataCheckPhatNguoi(GetDataBase):
                 ),
             )
             for plate_info_object, plate_violation_dict in self.data_dict.items()
+            if (
+                not self._config.unpaid_only
+                or self.data_dict[plate_info_object]["Trạng thái"] == "Chưa xử phạt"
+            )
         ]
         return plate_infos
