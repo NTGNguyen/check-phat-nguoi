@@ -1,7 +1,6 @@
 import asyncio
 from datetime import datetime
 from logging import getLogger
-from threading import Thread
 from typing import Dict, override
 
 import aiohttp
