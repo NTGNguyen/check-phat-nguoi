@@ -2,7 +2,6 @@ from typing import Dict, LiteralString
 
 from check_phat_nguoi.context import PlateInfoModel, PlatesModel
 from check_phat_nguoi.utils.constants import (
-    DATETIME_FORMAT_CHECKPHATNGUOI,
     MESSAGE_MARKDOWN_PATTERN,
     RESOLUTION_LOCATION_MARKDOWN_PATTERN,
 )
@@ -41,13 +40,12 @@ class Message:
                 owner=plate_info_context.owner,
                 action=vio.action,
                 status=vio.status,
-                date=vio.date.strftime(
-                    DATETIME_FORMAT_CHECKPHATNGUOI,
-                    location=vio.enforcement_unit,
-                    resolution_locations=Message.format_location(vio.resolution_office),
-                ),
+                date=f"{vio.date}",
+                location=vio.enforcement_unit,
+                resolution_locations=Message.format_location(vio.resolution_office),
             )
             for vio in plate_info_context.violation
+            if vio.status
         ]
 
     def format_messages(self) -> dict[str, list[LiteralString]]:
