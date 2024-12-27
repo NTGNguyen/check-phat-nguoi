@@ -20,6 +20,9 @@ class Telegram:
         self._message_dict: dict[str, LiteralString] = message_dict
 
     def _send_message(self, message: LiteralString, timeout=10) -> None:
+        if not self._telegram_notify_object.enabled:
+            logger.info("Not enable to sending")
+            return
         url = API_URL.format(bot_token=self._telegram_notify_object.telegram.bot_token)
         payload = {
             "chat_id": self._telegram_notify_object.telegram.chat_id,
