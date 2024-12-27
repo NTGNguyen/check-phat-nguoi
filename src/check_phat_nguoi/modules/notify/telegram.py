@@ -4,7 +4,7 @@ from typing import LiteralString
 
 import requests
 
-from check_phat_nguoi.models.notify.telegram_notify import TelegramNotifyModel
+from check_phat_nguoi.config import TelegramNotifyDTO
 from check_phat_nguoi.utils.constants import SEND_MESSAGE_API_URL_TELEGRAM as API_URL
 
 logger = getLogger(__name__)
@@ -13,10 +13,10 @@ logger = getLogger(__name__)
 class Telegram:
     def __init__(
         self,
-        telegram_notify_object: TelegramNotifyModel,
+        telegram_notify: TelegramNotifyDTO,
         message_dict: dict[str, LiteralString],
     ):
-        self._telegram_notify_object: TelegramNotifyModel = telegram_notify_object
+        self._telegram_notify_object: TelegramNotifyDTO = telegram_notify
         self._message_dict: dict[str, LiteralString] = message_dict
 
     def _send_message(self, message: LiteralString, timeout=10) -> None:

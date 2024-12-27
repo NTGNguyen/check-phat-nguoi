@@ -1,17 +1,17 @@
 from pydantic import BaseModel, ConfigDict, Field
 
-from check_phat_nguoi.models.log_level import LogLevelModel
-from check_phat_nguoi.models.notify.telegram_notify import TelegramNotifyModel
-from check_phat_nguoi.models.plate_info import PlateInfoModel
+from .log_level import LogLevelDTO
+from .notify.telegram_notify import TelegramNotifyDTO
+from .plate_info import PlateInfoDTO
 
 
-class ConfigModel(BaseModel):
+class ConfigDTO(BaseModel):
     model_config = ConfigDict(use_enum_values=True, validate_default=True)
 
-    data: list[PlateInfoModel] = Field(
+    data: list[PlateInfoDTO] = Field(
         description="Danh sách các biển xe", default_factory=list
     )
-    notify: list[TelegramNotifyModel] = Field(
+    notify: list[TelegramNotifyDTO] = Field(
         description="Danh sách các thiết lập để thông báo", default_factory=list
     )
     unpaid_only: bool = Field(
@@ -21,7 +21,7 @@ class ConfigModel(BaseModel):
         description="Hiển thị tất cả thông tin có thể hiển thị", default=False
     )
     detail_log: bool = True
-    log_level: LogLevelModel = LogLevelModel.info
+    log_level: LogLevelDTO = LogLevelDTO.info
 
 
-__all__ = ["ConfigModel"]
+__all__ = ["ConfigDTO"]

@@ -6,29 +6,25 @@ from typing import Dict, override
 import requests
 from requests import Response
 
-from check_phat_nguoi.models.context.plate_context.plate_info import (
-    PlateInfoContextModel,
-)
-from check_phat_nguoi.models.context.plate_context.violation import (
-    ViolationContextModel,
-)
-from check_phat_nguoi.models.plate_info import PlateInfoModel
-from check_phat_nguoi.modules.get_data.get_data_base import GetDataBase
+from check_phat_nguoi.config import PlateInfoDTO
+from check_phat_nguoi.context import PlateInfoModel, ViolationModel
 from check_phat_nguoi.utils.constants import (
     DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT,
 )
 from check_phat_nguoi.utils.constants import GET_DATA_API_URL_CHECKPHATNGUOI as API_URL
 
+from .get_data_base import GetDataBase
+
 logger = getLogger(__name__)
 
 
 class GetDataCheckPhatNguoi(GetDataBase):
-    def __init__(self, plate_infos: list[PlateInfoModel]) -> None:
+    def __init__(self, plate_infos: list[PlateInfoDTO]) -> None:
         super().__init__(plate_infos)
-        self.data_dict: Dict[PlateInfoModel, None | Dict] = {}
+        self.data_dict: Dict[PlateInfoDTO, None | Dict] = {}
 
     def _get_data_request(
-        self, plate_info_object: PlateInfoModel, timeout: int = 5
+        self, plate_info_object: PlateInfoDTO, timeout: int = 5
     ) -> None:
         payload: dict[str, str] = {"bienso": f"{plate_info_object.plate}"}
         try:
@@ -59,12 +55,12 @@ class GetDataCheckPhatNguoi(GetDataBase):
     @staticmethod
     def get_plate_violation(
         plate_violation_dict: Dict | None,
-    ) -> list[ViolationContextModel]:
+    ) -> list[ViolationModel]:
         if plate_violation_dict is None:
             return []
 
         def _create_violation_model(data: Dict):
-            return ViolationContextModel(
+            return ViolationModel(
                 type=data["Loại phương tiện"],
                 date=datetime.strptime(data["Thời gian vi phạm"], DATETIME_FORMAT),
                 location=data["Địa điểm vi phạm"],
@@ -80,10 +76,10 @@ class GetDataCheckPhatNguoi(GetDataBase):
         ]
 
     @override
-    def get_data(self) -> list[PlateInfoContextModel]:
+    def get_data(self) -> list[PlateInfoModel]:
         self._multi_thread_get_data()
-        plate_infos: list[PlateInfoContextModel] = [
-            PlateInfoContextModel(
+        plate_infos: list[PlateInfoModel] = [
+            PlateInfoModel(
                 plate=plate_info_object.plate,
                 owner=plate_info_object.owner,
                 violation=GetDataCheckPhatNguoi.get_plate_violation(

@@ -1,11 +1,6 @@
 from typing import Dict, LiteralString
 
-from check_phat_nguoi.models.context.plate_context.plate_context import (
-    PlatesContextModel,
-)
-from check_phat_nguoi.models.context.plate_context.plate_info import (
-    PlateInfoContextModel,
-)
+from check_phat_nguoi.context import PlateInfoModel, PlatesModel
 from check_phat_nguoi.utils.constants import (
     DATETIME_FORMAT_CHECKPHATNGUOI,
     MESSAGE_MARKDOWN_PATTERN,
@@ -14,8 +9,8 @@ from check_phat_nguoi.utils.constants import (
 
 
 class Message:
-    def __init__(self, plate_context_object: PlatesContextModel):
-        self._plate_context_object: PlatesContextModel = plate_context_object
+    def __init__(self, plate_context_object: PlatesModel):
+        self._plate_context_object: PlatesModel = plate_context_object
 
     @staticmethod
     def format_location(locations_info: Dict) -> LiteralString:
@@ -38,7 +33,7 @@ class Message:
 
     @staticmethod
     def format_message(
-        plate_info_context: PlateInfoContextModel,
+        plate_info_context: PlateInfoModel,
     ) -> list[LiteralString]:
         return [
             MESSAGE_MARKDOWN_PATTERN.format(

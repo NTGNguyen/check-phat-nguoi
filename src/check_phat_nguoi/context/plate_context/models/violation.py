@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field, field_validator
 from check_phat_nguoi.utils.constants import OFFICE_NAME_PATTERN
 
 
-class ViolationContextModel(BaseModel):
+class ViolationModel(BaseModel):
     type: Literal["Ô tô", "Xe máy", "Xe đạp điện"] | None = Field(
         description="Loại phương tiện giao thông", default=None
     )

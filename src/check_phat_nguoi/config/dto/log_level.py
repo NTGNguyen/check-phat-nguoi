@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class LogLevelModel(str, Enum):
+class LogLevelDTO(str, Enum):
     notset = "NOTSET"
     debug = "DEBUG"
     info = "INFO"
@@ -10,4 +10,4 @@ class LogLevelModel(str, Enum):
     critical = "CRITICAL"
 
 
-__all__ = ["LogLevelModel"]
+__all__ = ["LogLevelDTO"]

@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 
 
-class BaseNotifyConfigModel(BaseModel):
+class BaseNotifyDTO(BaseModel):
     enabled: bool = Field(description="Kích hoạt", default=True)
 
 
-__all__ = ["BaseNotifyConfigModel"]
+__all__ = ["BaseNotifyDTO"]

@@ -1,6 +1,6 @@
 {
   "$defs": {
-    "LogLevelModel": {
+    "LogLevelDTO": {
       "enum": [
         "NOTSET",
         "DEBUG",
@@ -9,20 +9,20 @@
         "ERROR",
         "CRITICAL"
       ],
-      "title": "LogLevelModel",
+      "title": "LogLevelDTO",
       "type": "string"
     },
-    "PlateInfoModel": {
+    "PlateInfoDTO": {
       "properties": {
         "plate": {
-          "description": "Bi\u1ec3n s\u1ed1",
+          "description": "Biển số",
           "examples": [
             "60A64685",
             "98-A-56604",
             "30-F88251",
             "59XB-00000"
           ],
-          "title": "Bi\u1ec3n s\u1ed1",
+          "title": "Biển số",
           "type": "string"
         },
         "owner": {
@@ -35,21 +35,21 @@
             }
           ],
           "default": null,
-          "description": "Ghi ch\u00fa ch\u1ee7 s\u1edf h\u1eefu (ph\u00f9 h\u1ee3p khi d\u00f9ng notify ai \u0111\u00f3)",
+          "description": "Ghi chú chủ sở hữu (phù hợp khi dùng notify ai đó)",
           "examples": [
             "@kevinnitro",
             "dad"
           ],
-          "title": "Ghi ch\u00fa ch\u1ee7 s\u1edf h\u1eefu"
+          "title": "Ghi chú chủ sở hữu"
         }
       },
       "required": [
         "plate"
       ],
-      "title": "PlateInfoModel",
+      "title": "PlateInfoDTO",
       "type": "object"
     },
-    "TelegramConfigModel": {
+    "TelegramDTO": {
       "properties": {
         "bot_token": {
           "description": "Bot token Telegram",
@@ -72,54 +72,54 @@
         "bot_token",
         "chat_id"
       ],
-      "title": "TelegramConfigModel",
+      "title": "TelegramDTO",
       "type": "object"
     },
-    "TelegramNotifyModel": {
+    "TelegramNotifyDTO": {
       "properties": {
         "enabled": {
           "default": true,
-          "description": "K\u00edch ho\u1ea1t",
+          "description": "Kích hoạt",
           "title": "Enabled",
           "type": "boolean"
         },
         "telegram": {
-          "$ref": "#/$defs/TelegramConfigModel"
+          "$ref": "#/$defs/TelegramDTO"
         }
       },
       "required": [
         "telegram"
       ],
-      "title": "TelegramNotifyModel",
+      "title": "TelegramNotifyDTO",
       "type": "object"
     }
   },
   "properties": {
     "data": {
-      "description": "Danh s\u00e1ch c\u00e1c bi\u1ec3n xe",
+      "description": "Danh sách các biển xe",
       "items": {
-        "$ref": "#/$defs/PlateInfoModel"
+        "$ref": "#/$defs/PlateInfoDTO"
       },
       "title": "Data",
       "type": "array"
     },
     "notify": {
-      "description": "Danh s\u00e1ch c\u00e1c thi\u1ebft l\u1eadp \u0111\u1ec3 th\u00f4ng b\u00e1o",
+      "description": "Danh sách các thiết lập để thông báo",
       "items": {
-        "$ref": "#/$defs/TelegramNotifyModel"
+        "$ref": "#/$defs/TelegramNotifyDTO"
       },
       "title": "Notify",
       "type": "array"
     },
     "unpaid_only": {
       "default": true,
-      "description": "Ch\u1ec9 hi\u1ec3n th\u1ecb th\u00f4ng tin vi ph\u1ea1m ch\u01b0a n\u1ed9p ph\u1ea1t",
+      "description": "Chỉ hiển thị thông tin vi phạm chưa nộp phạt",
       "title": "Unpaid Only",
       "type": "boolean"
     },
     "verbose": {
       "default": false,
-      "description": "Hi\u1ec3n th\u1ecb t\u1ea5t c\u1ea3 th\u00f4ng tin c\u00f3 th\u1ec3 hi\u1ec3n th\u1ecb",
+      "description": "Hiển thị tất cả thông tin có thể hiển thị",
       "title": "Verbose",
       "type": "boolean"
     },
@@ -129,10 +129,10 @@
       "type": "boolean"
     },
     "log_level": {
-      "$ref": "#/$defs/LogLevelModel",
+      "$ref": "#/$defs/LogLevelDTO",
       "default": "INFO"
     }
   },
-  "title": "ConfigModel",
+  "title": "ConfigDTO",
   "type": "object"
 }

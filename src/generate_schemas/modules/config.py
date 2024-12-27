@@ -2,12 +2,13 @@ from json import dumps
 
 from pydantic import TypeAdapter
 
-from check_phat_nguoi.models.config import ConfigModel
+from check_phat_nguoi.config import ConfigDTO
 from generate_schemas.utils.constant import CONFIG_SCHEMA_PATH
 
 
 def generate_config_schema():
-    adapter = TypeAdapter(ConfigModel)
+    print("Generating config schema...")
+    adapter = TypeAdapter(ConfigDTO)
     with open(CONFIG_SCHEMA_PATH, "w", encoding="utf8") as file:
-        file.write(dumps(adapter.json_schema(), indent=2))
-    print(f"Created {CONFIG_SCHEMA_PATH} successfully!")
+        file.write(dumps(adapter.json_schema(), indent=2, ensure_ascii=False))
+    print(f"Created config schema successfully at {CONFIG_SCHEMA_PATH}!")

@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 
-class PlateInfoModel(BaseModel):
+class PlateInfoDTO(BaseModel):
     plate: str = Field(
         description="Biển số",
         title="Biển số",
@@ -15,4 +15,4 @@ class PlateInfoModel(BaseModel):
     )
 
 
-__all__ = ["PlateInfoModel"]
+__all__ = ["PlateInfoDTO"]

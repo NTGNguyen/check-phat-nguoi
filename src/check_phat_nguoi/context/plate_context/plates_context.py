@@ -1,9 +1,9 @@
-from check_phat_nguoi.models.context import PlatesContextModel
 from check_phat_nguoi.utils.singleton import Singleton
 
+from .models import PlatesModel
 
-class PlatesContext(Singleton, PlatesContextModel):
-    pass
+
+class PlatesContext(Singleton, PlatesModel): ...
 
 
 plates_context: PlatesContext = PlatesContext()
