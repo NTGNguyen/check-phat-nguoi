@@ -33,8 +33,8 @@ class Message:
     @staticmethod
     def format_message(
         plate_info_context: PlateInfoModel,
-    ) -> list[LiteralString]:
-        return [
+    ) -> tuple[LiteralString]:
+        return tuple(
             MESSAGE_MARKDOWN_PATTERN.format(
                 plate=plate_info_context.plate,
                 owner=plate_info_context.owner,
@@ -46,12 +46,12 @@ class Message:
             )
             for vio in plate_info_context.violation
             if vio.status
-        ]
+        )
 
-    def format_messages(self) -> dict[str, list[LiteralString]]:
-        message_dict: dict[str, list[LiteralString]] = {}
+    def format_messages(self) -> dict[str, tuple[LiteralString]]:
+        message_dict: dict[str, tuple[LiteralString]] = {}
         for plate_info_context in self._plate_context_object.plates:
-            message_dict[f"{plate_info_context.plate}"] = Message.format_message(
+            message_dict[plate_info_context.plate] = Message.format_message(
                 plate_info_context
             )
         return message_dict

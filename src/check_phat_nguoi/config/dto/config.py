@@ -6,13 +6,13 @@ from .plate_info import PlateInfoDTO
 
 
 class ConfigDTO(BaseModel):
-    model_config = ConfigDict(use_enum_values=True, validate_default=True)
+    model_config = ConfigDict(use_enum_values=True, validate_desfault=True)
 
-    data: list[PlateInfoDTO] = Field(
-        description="Danh sách các biển xe", default_factory=list
+    data: tuple[PlateInfoDTO, ...] = Field(
+        description="Danh sách các biển xe", default_factory=tuple
     )
-    notify: list[TelegramNotifyDTO] = Field(
-        description="Danh sách các thiết lập để thông báo", default_factory=list
+    notify: tuple[TelegramNotifyDTO, ...] = Field(
+        description="Danh sách các thiết lập để thông báo", default_factory=tuple
     )
     unpaid_only: bool = Field(
         description="Chỉ hiển thị thông tin vi phạm chưa nộp phạt", default=True

@@ -6,8 +6,8 @@ from check_phat_nguoi.context import PlateInfoModel
 
 
 class GetDataBase:
-    def __init__(self, plate_infos: list[PlateInfoDTO], config: ConfigDTO) -> None:
-        self._plate_infos: list[PlateInfoDTO] = plate_infos
+    def __init__(self, plate_infos: tuple[PlateInfoDTO], config: ConfigDTO) -> None:
+        self._plate_infos: tuple[PlateInfoDTO] = plate_infos
         self._config = config
 
     @abstractmethod

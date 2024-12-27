@@ -20,7 +20,7 @@ logger = getLogger(__name__)
 
 class GetDataCheckPhatNguoi(GetDataBase):
     def __init__(
-        self, plate_infos: list[PlateInfoDTO], config: ConfigDTO, timeout: int = 10
+        self, plate_infos: tuple[PlateInfoDTO], config: ConfigDTO, timeout: int = 10
     ) -> None:
         super().__init__(plate_infos, config)
         self.data_dict: Dict[PlateInfoDTO, None | Dict] = {}
@@ -44,7 +44,7 @@ class GetDataCheckPhatNguoi(GetDataBase):
             )
         except aiohttp.ClientConnectionError:
             logger.error(
-                f"Error ocurs while connecting to {API_URL} for plate: {plate_info_object.plate}"
+                f"Error occurs while connecting to {API_URL} for plate: {plate_info_object.plate}"
             )
 
     async def _get_data(self) -> None:
@@ -54,7 +54,7 @@ class GetDataCheckPhatNguoi(GetDataBase):
     @staticmethod
     def get_plate_violation(
         plate_violation_dict: Dict | None,
-    ) -> list[ViolationModel]:
+    ) -> tuple[ViolationModel]:
         if plate_violation_dict is None:
             return []
 
@@ -69,13 +69,13 @@ class GetDataCheckPhatNguoi(GetDataBase):
                 resolution_office=data["Nơi giải quyết vụ việc"],
             )
 
-        return [
+        return tuple(
             _create_violation_model(violation_info_dict)
             for violation_info_dict in plate_violation_dict["data"]
-        ]
+        )
 
     @override
-    async def get_data(self) -> list[PlateInfoModel]:
+    async def get_data(self) -> tuple[PlateInfoModel]:
         await self._get_data()
         plate_infos: tuple[PlateInfoModel] = tuple(
             PlateInfoModel(
