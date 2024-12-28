@@ -1,4 +1,4 @@
-from check_phat_nguoi.context.plate_context.models.plate_context import (
+from check_phat_nguoi.context.plate_context.models.plate import (
     PlatesModel,
 )
 from check_phat_nguoi.context.plate_context.models.plate_info import (
