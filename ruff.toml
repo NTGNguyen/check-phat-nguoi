@@ -1,2 +1,5 @@
 [lint]
-select = ["I"]
+select = [
+  "I",    # Isort
+  "F401", # Unused imports
+]
