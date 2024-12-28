@@ -6,7 +6,7 @@ from .plate_info import PlateInfoDTO
 
 
 class ConfigDTO(BaseModel):
-    model_config = ConfigDict(use_enum_values=True, validate_desfault=True)
+    model_config = ConfigDict(use_enum_values=True, validate_default=True)
 
     data: tuple[PlateInfoDTO, ...] = Field(
         description="Danh sách các biển xe", default_factory=tuple

@@ -1,19 +1,23 @@
-CONFIG_PATH: str = "config.json"
-SIMPLE_LOG_MESSAGE: str = "[%(levelname)s]: %(message)s"
-DETAIL_LOG_MESSAGE: str = (
+from typing import LiteralString
+
+CONFIG_PATH: LiteralString = "config.json"
+SIMPLE_LOG_MESSAGE: LiteralString = "[%(levelname)s]: %(message)s"
+DETAIL_LOG_MESSAGE: LiteralString = (
     "%(asctime)s [%(levelname)s] - %(message)s (%(filename)s:%(lineno)d)"
 )
 
 # API from checkphatnguoi.vn
-GET_DATA_API_URL_CHECKPHATNGUOI: str = "https://api.checkphatnguoi.vn/phatnguoi"
-SEND_MESSAGE_API_URL_TELEGRAM: str = (
+GET_DATA_API_URL_CHECKPHATNGUOI: LiteralString = (
+    "https://api.checkphatnguoi.vn/phatnguoi"
+)
+SEND_MESSAGE_API_URL_TELEGRAM: LiteralString = (
     "https://api.telegram.org/bot{bot_token}/sendMessage"
 )
-DATETIME_FORMAT_CHECKPHATNGUOI: str = "%H:%M, %d/%m/%Y"
+DATETIME_FORMAT_CHECKPHATNGUOI: LiteralString = "%H:%M, %d/%m/%Y"
 
 OFFICE_NAME_PATTERN = r"^\d+\."
 
-MESSAGE_MARKDOWN_PATTERN = """
+MESSAGE_MARKDOWN_PATTERN: LiteralString = """
 *🚗 **Thông tin phương tiện**:*
 - **Biển kiểm soát:** `{plate}`
 - **Chủ sở hữu:** `{owner}'
@@ -31,7 +35,7 @@ MESSAGE_MARKDOWN_PATTERN = """
 {resolution_locations}
 """
 
-RESOLUTION_LOCATION_MARKDOWN_PATTERN = """
+RESOLUTION_LOCATION_MARKDOWN_PATTERN: LiteralString = """
 {idx}. **{location_name}
 - **Địa chỉ:** {address}
 - **Số điện thoại liên lạc:** {phone}
