@@ -1,10 +1,9 @@
-from typing import Dict, LiteralString
-
 from check_phat_nguoi.context import PlateInfoModel, PlatesModel
 from check_phat_nguoi.context.plate_context.models.resolution_office import (
     ResolutionOfficeModel,
 )
-from check_phat_nguoi.utils.constants import (
+
+from ..modules.constants.notify import (
     MESSAGE_MARKDOWN_PATTERN,
     RESOLUTION_LOCATION_MARKDOWN_PATTERN,
 )

@@ -5,7 +5,8 @@ from typing import LiteralString
 from aiohttp import ClientConnectionError, ClientSession, ClientTimeout
 
 from check_phat_nguoi.config import TelegramNotifyDTO
-from check_phat_nguoi.utils.constants import SEND_MESSAGE_API_URL_TELEGRAM as API_URL
+
+from ..modules.constants.notify import SEND_MESSAGE_API_URL_TELEGRAM as API_URL
 
 logger = getLogger(__name__)
 

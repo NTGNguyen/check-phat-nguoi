@@ -1,7 +1,6 @@
 from abc import abstractmethod
 
 from check_phat_nguoi.config import PlateInfoDTO
-from check_phat_nguoi.config.dto.config import ConfigDTO
 from check_phat_nguoi.context import PlateInfoModel
 
 

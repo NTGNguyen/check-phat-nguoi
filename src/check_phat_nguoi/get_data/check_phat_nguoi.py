@@ -5,19 +5,18 @@ from logging import getLogger
 from typing import Dict, override
 
 from aiohttp import ClientConnectionError, ClientSession, ClientTimeout
-from pydantic_core.core_schema import tuple_positional_schema
 
 from check_phat_nguoi.config import PlateInfoDTO
 from check_phat_nguoi.context import PlateInfoModel, ViolationModel
 from check_phat_nguoi.context.plate_context.models.resolution_office import (
     ResolutionOfficeModel,
 )
-from check_phat_nguoi.utils.constants import (
+
+from ..modules.constants.get_data import (
     DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT,
 )
-from check_phat_nguoi.utils.constants import GET_DATA_API_URL_CHECKPHATNGUOI as API_URL
-from check_phat_nguoi.utils.constants import OFFICE_NAME_PATTERN
-
+from ..modules.constants.get_data import GET_DATA_API_URL_CHECKPHATNGUOI as API_URL
+from ..modules.constants.get_data import OFFICE_NAME_PATTERN
 from .get_data_base import GetDataBase
 
 logger = getLogger(__name__)

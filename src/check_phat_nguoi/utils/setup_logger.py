@@ -1,7 +1,10 @@
 from logging import basicConfig
 
 from check_phat_nguoi.config import config
-from check_phat_nguoi.utils.constants import DETAIL_LOG_MESSAGE, SIMPLE_LOG_MESSAGE
+from check_phat_nguoi.modules.constants.config import (
+    DETAIL_LOG_MESSAGE,
+    SIMPLE_LOG_MESSAGE,
+)
 
 
 def setup_logger() -> None:
