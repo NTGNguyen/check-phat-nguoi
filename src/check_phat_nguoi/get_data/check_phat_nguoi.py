@@ -1,4 +1,5 @@
 import asyncio
+import json
 import re
 from datetime import datetime
 from logging import getLogger
@@ -28,14 +29,14 @@ class GetDataCheckPhatNguoi(GetDataBase):
     ) -> None:
         super().__init__(plate_infos)
         self.data_dict: Dict[PlateInfoDTO, None | Dict] = {}
-        self.session = ClientSession()
         self.timeout = timeout
         self.headers = {"Content-Type": "application/json"}
 
     async def _get_data_request(self, plate_info_object: PlateInfoDTO) -> None:
         payload: dict[str, str] = {"bienso": plate_info_object.plate}
+        session = ClientSession()
         try:
-            async with self.session.post(
+            async with session.post(
                 API_URL,
                 headers=self.headers,
                 json=payload,
@@ -43,7 +44,8 @@ class GetDataCheckPhatNguoi(GetDataBase):
             ) as response:
                 response.raise_for_status()
 
-                response_data: Dict = await response.json()
+                response_data = await response.read()
+                response_data = json.loads(response_data)
                 self.data_dict[plate_info_object] = response_data
         except asyncio.TimeoutError:
             logger.error(
@@ -53,6 +55,8 @@ class GetDataCheckPhatNguoi(GetDataBase):
             logger.error(
                 f"Error occurs while connecting to {API_URL} for plate: {plate_info_object.plate}"
             )
+        finally:
+            await session.close()
 
     async def _get_data(self) -> None:
         tasks = [self._get_data_request(plate_info) for plate_info in self._plate_infos]
@@ -63,6 +67,8 @@ class GetDataCheckPhatNguoi(GetDataBase):
         plate_violation_dict: Dict | None,
     ) -> tuple[ViolationModel, ...]:
         if plate_violation_dict is None:
+            return ()
+        if plate_violation_dict["data"] is None:
             return ()
 
         def _create_resolution_office_mode(
@@ -100,7 +106,7 @@ class GetDataCheckPhatNguoi(GetDataBase):
                 date=datetime.strptime(data["Thời gian vi phạm"], DATETIME_FORMAT),
                 location=data["Địa điểm vi phạm"],
                 action=data["Hành vi vi phạm"],
-                status=data["Trạng thái"],
+                status=False if data["Trạng thái"] == "Chưa xử phạt" else True,
                 enforcement_unit=data["Đơn vị phát hiện vi phạm"],
                 resolution_office=_create_resolution_office_mode(
                     data["Nơi giải quyết vụ việc"]
@@ -125,6 +131,5 @@ class GetDataCheckPhatNguoi(GetDataBase):
             )
             for plate_info_object, plate_violation_dict in self.data_dict.items()
         )
-        await self.session.close()
 
         return plate_infos

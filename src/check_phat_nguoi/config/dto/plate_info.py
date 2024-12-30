@@ -14,5 +14,13 @@ class PlateInfoDTO(BaseModel):
         default=None,
     )
 
+    def __hash__(self):
+        return hash(self.plate)
+
+    def __eq__(self, other):
+        if isinstance(other, PlateInfoDTO):
+            return self.plate == other.plate
+        return False
+
 
 __all__ = ["PlateInfoDTO"]
