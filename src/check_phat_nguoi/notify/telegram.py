@@ -19,7 +19,6 @@ class Telegram:
     ):
         self._telegram_notify_object: TelegramNotifyDTO = telegram_notify
         self._message_dict: dict[str, LiteralString] = message_dict
-        self.session = ClientSession()
         self.timeout = 10
 
     async def _send_message(self, message: LiteralString) -> None:
@@ -32,8 +31,9 @@ class Telegram:
             "text": message,
             "parse_mode": "Markdown",
         }
+        session = ClientSession()
         try:
-            async with self.session.post(
+            async with session.post(
                 url, json=payload, timeout=ClientTimeout(self.timeout)
             ) as response:
                 response.raise_for_status()
@@ -57,6 +57,8 @@ class Telegram:
                     bot_token=self._telegram_notify_object.telegram.bot_token,
                 )
             )
+        finally:
+            await session.close()
 
     async def send_messages(self) -> None:
         async def _concurent_send_messages():
@@ -66,4 +68,3 @@ class Telegram:
             await asyncio.gather(*tasks)
 
         await _concurent_send_messages()
-        await self.session.close()
