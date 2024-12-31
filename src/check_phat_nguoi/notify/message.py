@@ -21,7 +21,7 @@ class Message:
             return ""
         resolution_markdown: str = ""
         for idx, location_detail in enumerate(locations_info, start=1):
-            resolution: str = RESOLUTION_LOCATION_MARKDOWN_PATTERN.format(
+            resolution: str = RESOLUTION_LOCATION_MARKDOWN_PATTERN.substitute(
                 idx=idx,
                 location_name=location_detail.location_name,
                 address=location_detail.address
@@ -37,17 +37,22 @@ class Message:
         plate_info_context: PlateInfoModel,
     ) -> tuple[str, ...]:
         return tuple(
-            MESSAGE_MARKDOWN_PATTERN.format(
-                plate=plate_info_context.plate,
-                owner=plate_info_context.owner,
-                action=vio.action,
-                status=vio.status,
-                date=f"{vio.date}",
-                location=vio.enforcement_unit,
-                resolution_locations=Message.format_location(vio.resolution_office),
-            )
-            for vio in plate_info_context.violation
-            if vio.status
+            [
+                MESSAGE_MARKDOWN_PATTERN.substitute(
+                    plate=plate_info_context.plate,
+                    owner="Không biết"
+                    if not plate_info_context.owner
+                    else plate_info_context.owner,
+                    action=vio.action,
+                    status="Đã nộp phạt" if vio.status else "Chưa nộp phạt",
+                    date=f"{vio.date}",
+                    location=vio.location,
+                    enforcement_unit=vio.enforcement_unit,
+                    resolution_locations=Message.format_location(vio.resolution_office),
+                )
+                for vio in plate_info_context.violation
+                if vio.status
+            ]
         )
 
     def format_messages(self) -> dict[str, tuple[str, ...]]:

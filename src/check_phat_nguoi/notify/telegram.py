@@ -1,6 +1,5 @@
 import asyncio
 from logging import getLogger
-from typing import LiteralString
 
 from aiohttp import ClientConnectionError, ClientSession, ClientTimeout
 
@@ -15,13 +14,13 @@ class Telegram:
     def __init__(
         self,
         telegram_notify: TelegramNotifyDTO,
-        message_dict: dict[str, LiteralString],
+        message_dict: dict[str, tuple[str, ...]],
     ):
         self._telegram_notify_object: TelegramNotifyDTO = telegram_notify
-        self._message_dict: dict[str, LiteralString] = message_dict
+        self._message_dict: dict[str, tuple[str, ...]] = message_dict
         self.timeout = 10
 
-    async def _send_message(self, message: LiteralString) -> None:
+    async def _send_message(self, message: str) -> None:
         if not self._telegram_notify_object.enabled:
             logger.info("Not enable to sending")
             return
@@ -57,14 +56,17 @@ class Telegram:
                     bot_token=self._telegram_notify_object.telegram.bot_token,
                 )
             )
+        except Exception as e:
+            logger.error(e)
         finally:
             await session.close()
 
     async def send_messages(self) -> None:
         async def _concurent_send_messages():
-            tasks = [
-                self._send_message(message) for _, message in self._message_dict.items()
-            ]
+            tasks = []
+            for _, message_tuple in self._message_dict.items():
+                for message in message_tuple:
+                    tasks.append(self._send_message(message))
             await asyncio.gather(*tasks)
 
         await _concurent_send_messages()
