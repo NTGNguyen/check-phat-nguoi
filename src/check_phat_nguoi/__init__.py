@@ -16,12 +16,15 @@ logger: Logger = getLogger(__name__)
 async def _main():
     setup_logger()
     logger.debug(config)
-    get_data_object = GetDataCheckPhatNguoi(_config_reader().data)
+    config_object = _config_reader()
+    get_data_object = GetDataCheckPhatNguoi(config_object.data)
     data = await get_data_object.get_data()
     plate_object = PlatesModel(plates=data)
-    message_object = Message(plate_context_object=plate_object)
+    message_object = Message(
+        plate_context_object=plate_object, config_object=config_object
+    )
     message_dict = message_object.format_messages()
-    for notify_object in _config_reader().notify:
+    for notify_object in config_object.notify:
         telegram_object = Telegram(notify_object, message_dict)
         await telegram_object.send_messages()
 

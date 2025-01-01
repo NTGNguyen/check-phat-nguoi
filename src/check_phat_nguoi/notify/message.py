@@ -1,3 +1,4 @@
+from check_phat_nguoi.config.dto.config import ConfigDTO
 from check_phat_nguoi.context import PlateInfoModel, PlatesModel
 from check_phat_nguoi.context.plate_context.models.resolution_office import (
     ResolutionOfficeModel,
@@ -10,8 +11,9 @@ from ..modules.constants.notify import (
 
 
 class Message:
-    def __init__(self, plate_context_object: PlatesModel):
+    def __init__(self, plate_context_object: PlatesModel, config_object: ConfigDTO):
         self._plate_context_object: PlatesModel = plate_context_object
+        self._config_object: ConfigDTO = config_object
 
     @staticmethod
     def format_location(
@@ -34,7 +36,7 @@ class Message:
 
     @staticmethod
     def format_message(
-        plate_info_context: PlateInfoModel,
+        plate_info_context: PlateInfoModel, unpaid_paid_only: bool
     ) -> tuple[str, ...]:
         return tuple(
             [
@@ -51,7 +53,7 @@ class Message:
                     resolution_locations=Message.format_location(vio.resolution_office),
                 )
                 for vio in plate_info_context.violation
-                if vio.status
+                if not vio.status or unpaid_paid_only
             ]
         )
 
@@ -59,6 +61,6 @@ class Message:
         message_dict: dict[str, tuple[str, ...]] = {}
         for plate_info_context in self._plate_context_object.plates:
             message_dict[plate_info_context.plate] = Message.format_message(
-                plate_info_context
+                plate_info_context, self._config_object.unpaid_only
             )
         return message_dict
