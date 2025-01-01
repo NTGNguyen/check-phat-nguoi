@@ -25,6 +25,8 @@ class Telegram(NotificationEngine):
         self.session: ClientSession = ClientSession()
 
     async def _send_message(self, message: str) -> None:
+        # FIXME: specify which plate is successfully send, or fail
+        # FIXME: use fstring instead of string format
         url = API_URL.format(bot_token=self._telegram.bot_token)
         payload = {
             "chat_id": self._telegram.chat_id,
@@ -52,10 +54,7 @@ class Telegram(NotificationEngine):
             )
         except ClientConnectionError:
             logger.error(
-                "Unable to sending message for chat_id:{chat_id} and bot_token:{bot_token}".format(
-                    chat_id=self._telegram.chat_id,
-                    bot_token=self._telegram.bot_token,
-                )
+                f"Unable to sending message for chat_id:{self._telegram.chat_id} and bot_token:{self._telegram.bot_token}"
             )
         except Exception as e:
             logger.error(e)
