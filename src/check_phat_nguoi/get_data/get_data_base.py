@@ -9,5 +9,4 @@ class GetDataBase:
         self._plate_infos: tuple[PlateInfoDTO, ...] = plate_infos
 
     @abstractmethod
-    async def get_data(self) -> tuple[PlateInfoModel, ...]:
-        pass
+    async def get_data(self) -> tuple[PlateInfoModel, ...]: ...

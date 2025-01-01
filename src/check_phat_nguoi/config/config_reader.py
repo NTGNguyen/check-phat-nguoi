@@ -3,7 +3,7 @@ from os.path import exists as path_exists
 from typing import Final
 
 from check_phat_nguoi.config.exceptions.no_config_found import NoConfigFoundException
-from check_phat_nguoi.modules.constants.config import CONFIG_PATHS
+from check_phat_nguoi.constants.config import CONFIG_PATHS
 
 from .dto import ConfigDTO
 

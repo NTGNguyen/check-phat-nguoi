@@ -103,12 +103,12 @@
       "title": "Data",
       "type": "array"
     },
-    "notify": {
+    "notifications": {
       "description": "Danh sách các thiết lập để thông báo",
       "items": {
         "$ref": "#/$defs/TelegramNotifyDTO"
       },
-      "title": "Notify",
+      "title": "Notifications",
       "type": "array"
     },
     "unpaid_only": {

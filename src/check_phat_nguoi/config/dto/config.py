@@ -11,7 +11,7 @@ class ConfigDTO(BaseModel):
     data: tuple[PlateInfoDTO, ...] = Field(
         description="Danh sách các biển xe", default_factory=tuple
     )
-    notify: tuple[TelegramNotifyDTO, ...] = Field(
+    notifications: tuple[TelegramNotifyDTO, ...] = Field(
         description="Danh sách các thiết lập để thông báo", default_factory=tuple
     )
     unpaid_only: bool = Field(
