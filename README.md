@@ -228,6 +228,33 @@ curl --data '{"bienso": "59XB00000"}' -X POST -H "Content-Type: application/json
 
 - List bien so: https://voz.vn/t/trang-check-phat-nguoi-tu-phat-trien.1048134/
 - https://github.com/thaoanhhaa1/phat-nguoi-bot
+### DISCLAMER
+<details>
+  <summary>
+  </summary>
+Repo này được cung cấp **"nguyên trạng"** (**as is**) và chỉ nhằm mục đích **học tập và tham khảo**. Bằng cách sử dụng bất kỳ mã nguồn, tài nguyên hoặc thông tin nào trong repo này, bạn đồng ý và chấp nhận các điều khoản sau:
+
+## Không có bảo đảm
+- Mã nguồn và tài nguyên trong repo này được cung cấp mà **không có bất kỳ bảo đảm nào**, dù rõ ràng hay ngụ ý.
+- Không có đảm bảo rằng mã sẽ hoạt động chính xác, đáng tin cậy, hoặc phù hợp với bất kỳ mục đích cụ thể nào. Việc sử dụng là **hoàn toàn tự chịu rủi ro**.
+
+## Không phải sản phẩm chính thức
+- Repo này không đại diện cho bất kỳ sản phẩm, dịch vụ chính thức nào của tổ chức, công ty, hoặc cá nhân nào khác ngoài tác giả.
+
+## Rủi ro bảo mật
+- Mã nguồn trong repo này không được bảo đảm về mặt bảo mật. Nếu bạn sử dụng mã này trong môi trường sản xuất, bạn chịu trách nhiệm kiểm tra và thực hiện các biện pháp bảo mật cần thiết.
+
+## Quyền sở hữu trí tuệ
+- Trừ khi được chỉ định khác, toàn bộ nội dung trong repo này được cấp phép theo các điều khoản trong tệp `LICENSE`. Bạn cần tuân thủ giấy phép này khi sử dụng mã nguồn hoặc tài nguyên.
+
+## Không hỗ trợ
+- Tác giả của repo này **không cam kết** cung cấp hỗ trợ kỹ thuật, cập nhật hoặc sửa lỗi. Các vấn đề hoặc pull request có thể không được xử lý.
+
+---
+
+**Bằng việc sử dụng repo này, bạn đồng ý với các điều khoản nêu trên. Nếu không đồng ý, vui lòng không sử dụng mã nguồn hoặc tài nguyên từ repo này.**
+  
+</details>
 
 ## Star History
 
