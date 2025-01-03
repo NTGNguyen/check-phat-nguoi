@@ -1,3 +1,5 @@
+from pydantic import BaseModel, Field
+
 from check_phat_nguoi.config import config
 from check_phat_nguoi.context import PlateInfoModel, PlatesModel
 from check_phat_nguoi.context.plate_context.models.resolution_office import (
@@ -8,6 +10,13 @@ from ..constants.notify import (
     MESSAGE_MARKDOWN_PATTERN,
     RESOLUTION_LOCATION_MARKDOWN_PATTERN,
 )
+
+
+class MessagesModel(BaseModel):
+    plate: str = Field(description="Biển số")
+    messages: tuple[str, ...] = Field(
+        description="List chứa các string chứa các thông tin cụ thể về lỗi vi phạm sau"
+    )
 
 
 class Message:
@@ -58,11 +67,15 @@ class Message:
             ]
         )
 
-    # FIXME: complex object!!
-    def format_messages(self) -> dict[str, tuple[str, ...]]:
-        message_dict: dict[str, tuple[str, ...]] = {}
-        for plate_info_context in self._plates.plates:
-            message_dict[plate_info_context.plate] = Message._format_message(
-                plate_info_context, unpaid_only=config.unpaid_only
-            )
-        return message_dict
+    def format_messages(self) -> tuple[MessagesModel, ...]:
+        return tuple(
+            [
+                MessagesModel(
+                    plate=plate_info_context.plate,
+                    messages=Message._format_message(
+                        plate_info_context, unpaid_only=config.unpaid_only
+                    ),
+                )
+                for plate_info_context in self._plates.plates
+            ]
+        )
