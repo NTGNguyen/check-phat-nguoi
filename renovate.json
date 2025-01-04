@@ -1,5 +1,20 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", ":semanticCommits", ":enablePreCommit"],
-  "ignorePaths": ["assets/**"]
+  "ignorePaths": ["assets/**"],
+  "enabledManagers": ["pep621", "pre-commit", "github-actions"],
+  "automergeType": "branch",
+  "automerge": true,
+  "packageRules": [
+    {
+      "description": "Automerge non-major updates for deps",
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "Automerge non-major updates for dev deps",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"]
+    }
+  ]
 }
