@@ -37,7 +37,7 @@ repos:
         files: config.sample.json
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.5.12
+    rev: 0.5.14
     hooks:
       - id: uv-sync
       - id: uv-lock # update lock file
