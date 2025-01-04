@@ -1,3 +1,5 @@
+from typing import Any, override
+
 from pydantic import BaseModel, Field
 
 
@@ -14,10 +16,12 @@ class PlateInfoDTO(BaseModel):
         default=None,
     )
 
+    @override
     def __hash__(self):
         return hash(self.plate)
 
-    def __eq__(self, other):
+    @override
+    def __eq__(self, other: Any):
         if isinstance(other, PlateInfoDTO):
             return self.plate == other.plate
         return False

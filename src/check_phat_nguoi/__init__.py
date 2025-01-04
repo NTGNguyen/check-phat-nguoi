@@ -15,11 +15,10 @@ from .utils.setup_logger import setup_logger
 logger: Logger = getLogger(__name__)
 
 
-async def _main():
+async def async_main() -> None:
     setup_logger()
-    logger.debug(config)
     plates: PlatesModel = PlatesModel(
-        plates=await GetDataCheckPhatNguoi(config.data).get_data()
+        plates=await GetDataCheckPhatNguoi(plate_infos=config.data).get_data()
     )
     message_dict = Message(plates=plates).format_messages()
     notifications: filter[BaseNotifyDTO] = filter(
@@ -34,8 +33,8 @@ async def _main():
         await noti_engine.send_messages()
 
 
-def main():
-    asyncio.run(_main())
+def main() -> None:
+    asyncio.run(async_main())
 
 
 __all__ = ["main"]

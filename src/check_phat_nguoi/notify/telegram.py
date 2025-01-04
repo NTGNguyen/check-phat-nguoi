@@ -36,16 +36,16 @@ class Telegram(NotificationEngine):
                 url, json=payload, timeout=ClientTimeout(self.timeout)
             ) as response:
                 response.raise_for_status()
-            logger.debug(
-                f"Sending message completed for chat_id:{self._telegram.chat_id} and bot_token:{self._telegram.bot_token} with plate:{plate}"
+            logger.info(
+                f"Plate {plate}: Successfully sent to Telegram Chat ID: {self._telegram.chat_id}"
             )
         except asyncio.TimeoutError:
             logger.error(
-                f"Time out of {self.timeout} seconds for chat_id:{self._telegram.chat_id} and bot_token:{self._telegram.bot_token} with plate{plate}"
+                f"Plate {plate}: Timeout ({self.timeout}s) sending to Telegram Chat ID: {self._telegram.chat_id}"
             )
         except ClientConnectionError:
             logger.error(
-                f"Unable to sending message for chat_id:{self._telegram.chat_id} and bot_token:{self._telegram.bot_token} with plate{plate}"
+                f"Plate {plate}: Fail to sent to Telegram Chat ID: {self._telegram.chat_id}"
             )
         except Exception as e:
             logger.error(e)

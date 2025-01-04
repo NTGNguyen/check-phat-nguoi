@@ -50,14 +50,14 @@ class GetDataCheckPhatNguoi(GetDataBase):
                 response_data = await response.read()
                 response_data = json.loads(response_data)
                 self.data_dict[plate_info_object] = response_data
-            logger.debug(f"Successfully get data for plate: {plate_info_object.plate}")
+            logger.info(f"Plate {plate_info_object.plate}: Get data successfully")
         except asyncio.TimeoutError:
             logger.error(
-                f"Time out of {self.timeout} seconds from URL {API_URL} for plate: {plate_info_object.plate}"
+                f"Plate {plate_info_object.plate}: Time out ({self.timeout}s) getting data from API {API_URL}"
             )
         except ClientConnectionError:
             logger.error(
-                f"Error occurs while connecting to {API_URL} for plate: {plate_info_object.plate}"
+                f"Plate {plate_info_object.plate}: Error occurs while getting data from API {API_URL}"
             )
 
     async def _get_data(self) -> None:
