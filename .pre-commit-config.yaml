@@ -42,7 +42,7 @@ repos:
       - id: uv-sync
       - id: uv-lock # update lock file
       - id: uv-export # export lock file to requirements.txt
-        args: ['--no-dev']
+        args: ['--no-dev', '--frozen', '--output-file=requirements.txt']
 
   - repo: local
     hooks:
