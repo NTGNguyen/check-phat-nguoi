@@ -26,7 +26,6 @@ logger = getLogger(__name__)
 
 
 class GetDataCheckPhatNguoi(GetDataBase):
-    # TODO: Refactor timeout to constant
     def __init__(
         self, plate_infos: tuple[PlateInfoDTO, ...], timeout: int = 10
     ) -> None:

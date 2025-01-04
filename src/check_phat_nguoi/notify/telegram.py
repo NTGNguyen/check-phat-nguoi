@@ -15,19 +15,15 @@ logger = getLogger(__name__)
 class Telegram(NotificationEngine):
     # FIXME: The message_dict is so ... bruh
     def __init__(
-        self,
-        telegram: TelegramDTO,
-        messages: tuple[MessagesModel, ...],
+        self, telegram: TelegramDTO, messages: tuple[MessagesModel, ...], timeout=10
     ):
         self._telegram: TelegramDTO = telegram
         self._messages: tuple[MessagesModel, ...] = messages
         # FIXME: Heyyyyy refactor timeout hehe
-        self.timeout = 10
+        self.timeout = timeout
         self.session: ClientSession = ClientSession()
 
     async def _send_message(self, message: str, plate: str) -> None:
-        # FIXME: specify which plate is successfully send, or fail
-        # FIXME: use fstring instead of string format
         url = API_URL.format(bot_token=self._telegram.bot_token)
         payload = {
             "chat_id": self._telegram.chat_id,
