@@ -269,8 +269,6 @@ Repo này được cung cấp **"nguyên trạng"** (**as is**) và chỉ nhằm
 
 ## Star History
 
-## Star History
-
 <a href="https://star-history.com/#NTGNguyen/check-phat-nguoi&Date">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=NTGNguyen/check-phat-nguoi&type=Date&theme=dark" />
