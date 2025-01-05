@@ -1,6 +1,7 @@
 from typing import Any, override
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
+from pydantic.alias_generators import to_camel
 
 from check_phat_nguoi.enums import VehicleTypeEnum
 
@@ -8,6 +9,10 @@ from .api import ApiEnum
 
 
 class PlateInfoDTO(BaseModel):
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+    )
+
     plate: str = Field(
         description="Biển số",
         title="Biển số",
@@ -19,10 +24,9 @@ class PlateInfoDTO(BaseModel):
         examples=["@kevinnitro", "dad"],
         default=None,
     )
-    type: VehicleTypeEnum | None = Field(
-        description='Loại phương tiện. Khi sử dụng API "checkphatnguoi_vn" không cần trường này',
+    type: VehicleTypeEnum = Field(
+        description="Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
         title="Loại phương tiện",
-        default=None,
     )
     api: ApiEnum | None = Field(
         description="Sử dụng API từ trang web nào (để trống sẽ sử dụng API define ở scope ngoài)",

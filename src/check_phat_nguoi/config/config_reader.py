@@ -2,6 +2,8 @@ from json import load
 from os.path import exists as path_exists
 from typing import Final
 
+from pydantic import ValidationError
+
 from check_phat_nguoi.config.exceptions.no_config_found import NoConfigFoundException
 from check_phat_nguoi.constants.config import CONFIG_PATHS
 
@@ -11,13 +13,23 @@ from .dto import ConfigDTO
 def _config_reader() -> ConfigDTO:
     for config_path in CONFIG_PATHS:
         if path_exists(config_path):
-            with open(config_path, "r", encoding="utf8") as config:
-                data = load(config)
-                return ConfigDTO(**data)
+            try:
+                with open(config_path, "r", encoding="utf8") as config:
+                    data = load(config)
+                    return ConfigDTO(**data)
+            except ValidationError as e:
+                print(f"Failed to read the config!")
+                print(e)
+                exit(1)
+
     raise NoConfigFoundException()
 
 
-config: Final[ConfigDTO] = _config_reader()
-
+# NOTE: This is quite quick fix... Just leave it here. When changing dir of this file, please update the hard check below
+config: Final[ConfigDTO] = (
+    _config_reader()
+    if __name__ == "check_phat_nguoi.config.config_reader"
+    else ConfigDTO(plates=tuple(), notifications=tuple())
+)
 
 __all__ = ["config"]

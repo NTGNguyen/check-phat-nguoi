@@ -1,4 +1,4 @@
-from .plate_context import *
+from .plates import *
 
 __all__ = [
     "PlatesContext",
@@ -6,4 +6,5 @@ __all__ = [
     "PlatesModel",
     "PlateInfoModel",
     "ViolationModel",
+    "ResolutionOfficeModel",
 ]

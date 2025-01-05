@@ -2,25 +2,24 @@ import json
 import re
 from datetime import datetime
 from logging import getLogger
-from typing import Dict, override
+from typing import Dict, Final, override
 
 from aiohttp import (
-    ClientConnectionError,
+    ClientError,
     ClientTimeout,
     ServerTimeoutError,
 )
 
 from check_phat_nguoi.config import PlateInfoDTO
-from check_phat_nguoi.constants import (
-    DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT,
-)
+from check_phat_nguoi.constants import DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT
 from check_phat_nguoi.constants import (
     GET_DATA_API_URL_CHECKPHATNGUOI as API_URL,
 )
 from check_phat_nguoi.constants import OFFICE_NAME_PATTERN
-from check_phat_nguoi.context import PlateInfoModel, ViolationModel
-from check_phat_nguoi.context.plate_context.models.resolution_office import (
+from check_phat_nguoi.context import (
+    PlateInfoModel,
     ResolutionOfficeModel,
+    ViolationModel,
 )
 
 from .engine_base import GetDataEngineBase
@@ -29,8 +28,7 @@ logger = getLogger(__name__)
 
 
 class GetDataEngineCheckPhatNguoi(GetDataEngineBase):
-    headers: dict[str, str] = {"Content-Type": "application/json"}
-    timeout: int = 10
+    headers: Final[dict[str, str]] = {"Content-Type": "application/json"}
 
     async def _get_data_request(self, plate: PlateInfoDTO) -> Dict | None:
         payload: dict[str, str] = {"bienso": plate.plate}
@@ -45,13 +43,13 @@ class GetDataEngineCheckPhatNguoi(GetDataEngineBase):
                 logger.info(f"Plate {plate.plate}: Get data successfully")
                 response_data = await response.read()
                 return json.loads(response_data)
-        except ServerTimeoutError:
+        except ServerTimeoutError as e:
             logger.error(
-                f"Plate {plate.plate}: Time out ({self.timeout}s) getting data from API {API_URL}"
+                f"Plate {plate.plate}: Time out ({self.timeout}s) getting data from API {API_URL}\n{e}"
             )
-        except ClientConnectionError:
+        except ClientError as e:
             logger.error(
-                f"Plate {plate.plate}: Error occurs while getting data from API {API_URL}"
+                f"Plate {plate.plate}: Error occurs while getting data from API {API_URL}\n{e}"
             )
 
     @override
@@ -74,6 +72,8 @@ class GetDataEngineCheckPhatNguoi(GetDataEngineBase):
             return ()
         if plate_violation_dict["data"] is None:
             return ()
+
+        # FIXME: please unwrap us @NTGNguyen huhu
 
         def _create_resolution_office_mode(
             resolution_offices: list[str],

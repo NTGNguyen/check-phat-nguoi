@@ -1,8 +1,7 @@
-from check_phat_nguoi.context.plate_context.plates_context import (
+from .context import (
     PlatesContext,
     plates_context,
 )
-
 from .models import *
 
 __all__ = [
@@ -11,4 +10,5 @@ __all__ = [
     "PlatesModel",
     "PlateInfoModel",
     "ViolationModel",
+    "ResolutionOfficeModel",
 ]

@@ -1,9 +1,10 @@
 from pydantic import BaseModel, Field
 
 from check_phat_nguoi.config import config
-from check_phat_nguoi.context import PlateInfoModel, PlatesModel
-from check_phat_nguoi.context.plate_context.models.resolution_office import (
+from check_phat_nguoi.context import (
+    PlateInfoModel,
     ResolutionOfficeModel,
+    plates_context,
 )
 
 from ..constants.notify import (
@@ -19,10 +20,8 @@ class MessagesModel(BaseModel):
     )
 
 
+# FIXME: Nếu không cần instance member nào thì bỏ class, chỉ dùng function để lấy message
 class Message:
-    def __init__(self, plates: PlatesModel):
-        self._plates: PlatesModel = plates
-
     @staticmethod
     def _format_location(
         locations_info: tuple[ResolutionOfficeModel, ...] | None,
@@ -67,7 +66,8 @@ class Message:
             ]
         )
 
-    def format_messages(self) -> tuple[MessagesModel, ...]:
+    @staticmethod
+    def format_messages() -> tuple[MessagesModel, ...]:
         return tuple(
             [
                 MessagesModel(
@@ -76,6 +76,6 @@ class Message:
                         plate_info_context, unpaid_only=config.unpaid_only
                     ),
                 )
-                for plate_info_context in self._plates.plates
+                for plate_info_context in plates_context.plates
             ]
         )

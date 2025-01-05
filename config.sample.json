@@ -1,38 +1,43 @@
 {
   "$schema": "https://raw.githubusercontent.com/KevinNitroG/check-phat-nguoi/refs/heads/main/schemas/config.json",
-  "data": [
+  "plates": [
     {
       "plate": "59XA00000",
       "owner": "@kevinnitro",
-      "api": "csgt.vn"
+      "api": "csgt.vn",
+      "type": 2
     },
     {
       "plate": "60A64685",
       "owner": "dad",
-      "api": "checkphatnguoi.vn"
+      "api": "checkphatnguoi.vn",
+      "type": 1
     },
     {
-      "plate": "98A56604"
+      "plate": "98A56604",
+      "type": 1
     },
     {
-      "plate": "30F88251"
+      "plate": "30F88251",
+      "type": 1
     },
     {
-      "plate": "30F0000000"
+      "plate": "30F0000000",
+      "type": 1
     }
   ],
   "api": "checkphatnguoi.vn",
   "notify": [
     {
       "telegram": {
-        "bot_token": "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB",
-        "chat_id": "-1001790012349"
+        "botToken": "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB",
+        "chatId": "-1001790012349"
       },
       "enabled": true
     }
   ],
-  "havent_paid_only": true,
+  "haventPaidOnly": true,
   "verbose": true,
-  "detail_log": false,
-  "log_level": "INFO"
+  "detailLog": false,
+  "logLevel": "INFO"
 }

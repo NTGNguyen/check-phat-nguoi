@@ -1,16 +1,21 @@
 from re import match as re_match
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic.alias_generators import to_camel
 
 
 class TelegramDTO(BaseModel):
+    model_config = ConfigDict(alias_generator=to_camel)
+
     bot_token: str = Field(
         description="Bot token Telegram",
         examples=["2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB"],
+        frozen=True,
     )
     chat_id: str = Field(
         description="Chat ID Telegram",
         examples=["-1001790012349"],
+        frozen=True,
     )
 
     @field_validator("bot_token", mode="after")

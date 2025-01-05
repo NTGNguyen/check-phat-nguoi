@@ -2,22 +2,11 @@
   "$defs": {
     "ApiEnum": {
       "enum": [
+        "all",
         "checkphatnguoi.vn",
         "csgt.vn"
       ],
       "title": "ApiEnum",
-      "type": "string"
-    },
-    "LogLevelEnum": {
-      "enum": [
-        "NOTSET",
-        "DEBUG",
-        "INFO",
-        "WARNING",
-        "ERROR",
-        "CRITICAL"
-      ],
-      "title": "LogLevelEnum",
       "type": "string"
     },
     "PlateInfoDTO": {
@@ -51,16 +40,8 @@
           "title": "Ghi chú chủ sở hữu"
         },
         "type": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/VehicleTypeEnum"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Loại phương tiện. Khi sử dụng API \"checkphatnguoi_vn\" không cần trường này",
+          "$ref": "#/$defs/VehicleTypeEnum",
+          "description": "Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
           "title": "Loại phương tiện"
         },
         "api": {
@@ -78,33 +59,34 @@
         }
       },
       "required": [
-        "plate"
+        "plate",
+        "type"
       ],
       "title": "PlateInfoDTO",
       "type": "object"
     },
     "TelegramDTO": {
       "properties": {
-        "bot_token": {
+        "botToken": {
           "description": "Bot token Telegram",
           "examples": [
             "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB"
           ],
-          "title": "Bot Token",
+          "title": "Bottoken",
           "type": "string"
         },
-        "chat_id": {
+        "chatId": {
           "description": "Chat ID Telegram",
           "examples": [
             "-1001790012349"
           ],
-          "title": "Chat Id",
+          "title": "Chatid",
           "type": "string"
         }
       },
       "required": [
-        "bot_token",
-        "chat_id"
+        "botToken",
+        "chatId"
       ],
       "title": "TelegramDTO",
       "type": "object"
@@ -118,7 +100,8 @@
           "type": "boolean"
         },
         "telegram": {
-          "$ref": "#/$defs/TelegramDTO"
+          "$ref": "#/$defs/TelegramDTO",
+          "description": "Gửi thông báo đến telegram"
         }
       },
       "required": [
@@ -160,10 +143,10 @@
       "description": "Sử dụng API từ trang web nào (mặc định sử dụng API từ trang checkphatnguoi.vn)",
       "title": "API"
     },
-    "unpaid_only": {
+    "unpaidOnly": {
       "default": true,
       "description": "Chỉ hiển thị thông tin vi phạm chưa nộp phạt",
-      "title": "Unpaid Only",
+      "title": "Unpaidonly",
       "type": "boolean"
     },
     "verbose": {
@@ -172,16 +155,35 @@
       "title": "Verbose",
       "type": "boolean"
     },
-    "detail_log": {
+    "requestTimeout": {
+      "default": 10,
+      "description": "Thời gian (s) để gửi request đến server API và gửi message notify",
+      "title": "Requesttimeout",
+      "type": "integer"
+    },
+    "detailLog": {
       "default": true,
-      "title": "Detail Log",
+      "title": "Detaillog",
       "type": "boolean"
     },
-    "log_level": {
-      "$ref": "#/$defs/LogLevelEnum",
-      "default": "INFO"
+    "logLevel": {
+      "default": "WARNING",
+      "enum": [
+        "NOTSET",
+        "DEBUG",
+        "INFO",
+        "WARNING",
+        "ERROR",
+        "CRITICAL"
+      ],
+      "title": "Loglevel",
+      "type": "string"
     }
   },
+  "required": [
+    "plates",
+    "notifications"
+  ],
   "title": "ConfigDTO",
   "type": "object"
 }
