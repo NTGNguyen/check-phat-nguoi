@@ -3,11 +3,13 @@
   "data": [
     {
       "plate": "59XA00000",
-      "owner": "@kevinnitro"
+      "owner": "@kevinnitro",
+      "api": "csgt.vn"
     },
     {
       "plate": "60A64685",
-      "owner": "dad"
+      "owner": "dad",
+      "api": "checkphatnguoi.vn"
     },
     {
       "plate": "98A56604"
@@ -19,6 +21,7 @@
       "plate": "30F0000000"
     }
   ],
+  "api": "checkphatnguoi.vn",
   "notify": [
     {
       "telegram": {
@@ -29,5 +32,7 @@
     }
   ],
   "havent_paid_only": true,
+  "verbose": true,
+  "detail_log": false,
   "log_level": "INFO"
 }
