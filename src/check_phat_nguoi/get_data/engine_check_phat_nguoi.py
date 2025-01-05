@@ -1,11 +1,14 @@
-import asyncio
 import json
 import re
 from datetime import datetime
 from logging import getLogger
 from typing import Dict, override
 
-from aiohttp import ClientConnectionError, ClientSession, ClientTimeout
+from aiohttp import (
+    ClientConnectionError,
+    ClientTimeout,
+    ServerTimeoutError,
+)
 
 from check_phat_nguoi.config import PlateInfoDTO
 from check_phat_nguoi.constants import (
@@ -20,24 +23,17 @@ from check_phat_nguoi.context.plate_context.models.resolution_office import (
     ResolutionOfficeModel,
 )
 
-from .get_data_base import GetDataBase
+from .engine_base import GetDataEngineBase
 
 logger = getLogger(__name__)
 
 
-class GetDataCheckPhatNguoi(GetDataBase):
-    def __init__(
-        self, plate_infos: tuple[PlateInfoDTO, ...], timeout: int = 10
-    ) -> None:
-        super().__init__(plate_infos)
-        # NOTE: Can we specify the Dict???
-        self.data_dict: Dict[PlateInfoDTO, None | Dict] = {}
-        self.timeout = timeout
-        self.headers = {"Content-Type": "application/json"}
-        self.session: ClientSession = ClientSession()
+class GetDataEngineCheckPhatNguoi(GetDataEngineBase):
+    headers: dict[str, str] = {"Content-Type": "application/json"}
+    timeout: int = 10
 
-    async def _get_data_request(self, plate_info_object: PlateInfoDTO) -> None:
-        payload: dict[str, str] = {"bienso": plate_info_object.plate}
+    async def _get_data_request(self, plate: PlateInfoDTO) -> Dict | None:
+        payload: dict[str, str] = {"bienso": plate.plate}
         try:
             async with self.session.post(
                 API_URL,
@@ -46,24 +42,29 @@ class GetDataCheckPhatNguoi(GetDataBase):
                 timeout=ClientTimeout(self.timeout),
             ) as response:
                 response.raise_for_status()
-
+                logger.info(f"Plate {plate.plate}: Get data successfully")
                 response_data = await response.read()
-                response_data = json.loads(response_data)
-                self.data_dict[plate_info_object] = response_data
-            logger.info(f"Plate {plate_info_object.plate}: Get data successfully")
-        except asyncio.TimeoutError:
+                return json.loads(response_data)
+        except ServerTimeoutError:
             logger.error(
-                f"Plate {plate_info_object.plate}: Time out ({self.timeout}s) getting data from API {API_URL}"
+                f"Plate {plate.plate}: Time out ({self.timeout}s) getting data from API {API_URL}"
             )
         except ClientConnectionError:
             logger.error(
-                f"Plate {plate_info_object.plate}: Error occurs while getting data from API {API_URL}"
+                f"Plate {plate.plate}: Error occurs while getting data from API {API_URL}"
             )
 
-    async def _get_data(self) -> None:
-        tasks = (self._get_data_request(plate_info) for plate_info in self._plate_infos)
-        await asyncio.gather(*tasks)
-        await self.session.close()
+    @override
+    async def get_data(self, plate: PlateInfoDTO) -> PlateInfoModel | None:
+        plate_info: Dict | None = await self._get_data_request(plate)
+        if plate_info is None:
+            return
+        return PlateInfoModel(
+            plate=plate.plate,
+            owner=plate.owner,
+            type=plate.type,
+            violation=self.get_plate_violation(plate_violation_dict=plate_info),
+        )
 
     @staticmethod
     def get_plate_violation(
@@ -121,19 +122,3 @@ class GetDataCheckPhatNguoi(GetDataBase):
             _create_violation_model(violation_info_dict)
             for violation_info_dict in plate_violation_dict["data"]
         )
-
-    @override
-    async def get_data(self) -> tuple[PlateInfoModel, ...]:
-        await self._get_data()
-        plate_infos: tuple[PlateInfoModel, ...] = tuple(
-            PlateInfoModel(
-                plate=plate_info.plate,
-                owner=plate_info.owner,
-                violation=GetDataCheckPhatNguoi.get_plate_violation(
-                    plate_violation_dict=plate_violation_dict
-                ),
-            )
-            for plate_info, plate_violation_dict in self.data_dict.items()
-        )
-
-        return plate_infos

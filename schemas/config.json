@@ -1,6 +1,14 @@
 {
   "$defs": {
-    "LogLevelDTO": {
+    "ApiEnum": {
+      "enum": [
+        "checkphatnguoi.vn",
+        "csgt.vn"
+      ],
+      "title": "ApiEnum",
+      "type": "string"
+    },
+    "LogLevelEnum": {
       "enum": [
         "NOTSET",
         "DEBUG",
@@ -9,7 +17,7 @@
         "ERROR",
         "CRITICAL"
       ],
-      "title": "LogLevelDTO",
+      "title": "LogLevelEnum",
       "type": "string"
     },
     "PlateInfoDTO": {
@@ -41,6 +49,32 @@
             "dad"
           ],
           "title": "Ghi chú chủ sở hữu"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VehicleTypeEnum"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Loại phương tiện. Khi sử dụng API \"checkphatnguoi_vn\" không cần trường này",
+          "title": "Loại phương tiện"
+        },
+        "api": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApiEnum"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Sử dụng API từ trang web nào (để trống sẽ sử dụng API define ở scope ngoài)",
+          "title": "API"
         }
       },
       "required": [
@@ -92,15 +126,24 @@
       ],
       "title": "TelegramNotifyDTO",
       "type": "object"
+    },
+    "VehicleTypeEnum": {
+      "enum": [
+        1,
+        2,
+        3
+      ],
+      "title": "VehicleTypeEnum",
+      "type": "integer"
     }
   },
   "properties": {
-    "data": {
+    "plates": {
       "description": "Danh sách các biển xe",
       "items": {
         "$ref": "#/$defs/PlateInfoDTO"
       },
-      "title": "Data",
+      "title": "Plates",
       "type": "array"
     },
     "notifications": {
@@ -110,6 +153,12 @@
       },
       "title": "Notifications",
       "type": "array"
+    },
+    "api": {
+      "$ref": "#/$defs/ApiEnum",
+      "default": "checkphatnguoi.vn",
+      "description": "Sử dụng API từ trang web nào (mặc định sử dụng API từ trang checkphatnguoi.vn)",
+      "title": "API"
     },
     "unpaid_only": {
       "default": true,
@@ -129,7 +178,7 @@
       "type": "boolean"
     },
     "log_level": {
-      "$ref": "#/$defs/LogLevelDTO",
+      "$ref": "#/$defs/LogLevelEnum",
       "default": "INFO"
     }
   },

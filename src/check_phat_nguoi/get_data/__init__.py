@@ -1,3 +1,3 @@
-from .check_phat_nguoi import *
+from .get_data import GetData
 
-__all__ = ["GetDataCheckPhatNguoi"]
+__all__ = ["GetData"]

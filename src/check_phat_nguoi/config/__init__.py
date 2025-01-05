@@ -5,6 +5,5 @@ __all__ = [
     "config",
     "ConfigDTO",
     "PlateInfoDTO",
-    "LogLevelDTO",
     "TelegramNotifyDTO",
 ]
