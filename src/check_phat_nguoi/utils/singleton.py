@@ -1,7 +1,10 @@
-class Singleton:
-    _instance = None
+from typing import Self
 
-    def __new__(cls, *args, **kwargs):
+
+class Singleton:
+    _instance: Self | None = None
+
+    def __new__(cls, *args, **kwargs) -> Self:
         if not cls._instance:
             cls._instance = super(Singleton, cls).__new__(cls, *args, **kwargs)
         return cls._instance

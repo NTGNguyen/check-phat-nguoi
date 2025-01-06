@@ -4,10 +4,10 @@ from typing import Final
 
 from pydantic import ValidationError
 
-from check_phat_nguoi.config.exceptions.no_config_found import NoConfigFoundException
 from check_phat_nguoi.constants.config import CONFIG_PATHS
 
 from .dto import ConfigDTO
+from .exceptions import NoConfigFoundException
 
 
 def _config_reader() -> ConfigDTO:
@@ -25,11 +25,7 @@ def _config_reader() -> ConfigDTO:
     raise NoConfigFoundException()
 
 
-# NOTE: This is quite quick fix... Just leave it here. When changing dir of this file, please update the hard check below
-config: Final[ConfigDTO] = (
-    _config_reader()
-    if __name__ == "check_phat_nguoi.config.config_reader"
-    else ConfigDTO(plates=tuple(), notifications=tuple())
-)
+config: Final[ConfigDTO] = _config_reader()
+
 
 __all__ = ["config"]

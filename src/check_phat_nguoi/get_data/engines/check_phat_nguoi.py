@@ -1,5 +1,6 @@
 import json
 import re
+from asyncio import TimeoutError
 from datetime import datetime
 from logging import getLogger
 from typing import Dict, Final, override
@@ -7,22 +8,21 @@ from typing import Dict, Final, override
 from aiohttp import (
     ClientError,
     ClientTimeout,
-    ServerTimeoutError,
 )
 
-from check_phat_nguoi.config import PlateInfoDTO
 from check_phat_nguoi.constants import DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT
 from check_phat_nguoi.constants import (
     GET_DATA_API_URL_CHECKPHATNGUOI as API_URL,
 )
 from check_phat_nguoi.constants import OFFICE_NAME_PATTERN
 from check_phat_nguoi.context import (
+    PlateInfoDTO,
     PlateInfoModel,
     ResolutionOfficeModel,
     ViolationModel,
 )
 
-from .engine_base import GetDataEngineBase
+from .base import GetDataEngineBase
 
 logger = getLogger(__name__)
 
@@ -43,7 +43,7 @@ class GetDataEngineCheckPhatNguoi(GetDataEngineBase):
                 logger.info(f"Plate {plate.plate}: Get data successfully")
                 response_data = await response.read()
                 return json.loads(response_data)
-        except ServerTimeoutError as e:
+        except TimeoutError as e:
             logger.error(
                 f"Plate {plate.plate}: Time out ({self.timeout}s) getting data from API {API_URL}\n{e}"
             )

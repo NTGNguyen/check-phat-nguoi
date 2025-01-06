@@ -10,7 +10,6 @@ requires-python = ">=3.13"
 dependencies = [
     "aiohttp[speedups]>=3.11.11",
     "pydantic>=2.10.4",
-    "requests>=2.32.3",
 ]
 
 [project.scripts]
