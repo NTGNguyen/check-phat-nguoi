@@ -11,19 +11,42 @@
 
 ---
 
+### TABLE OF CONTENTS
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+  - [USE](#use)
+    - [From source](#from-source)
+  - [DEV](#dev)
+  - [DISCLAIMER](#disclaimer)
+  - [APIs](#apis)
+  - [REFS](#refs)
+- [Star History](#star-history)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+---
+
 ### USE
 
 #### From source
 
-1. Clone repo
-
-2. Run commands
+1. Cài đặt requirements
 
 ```sh
 python -m venv .venv
 .venv/Scripts/activate # or "source .venv/bin/active" on Linux
 pip install -e -r requirements.txt
-# Edit config.json
+```
+
+2. Tạo `config.json`
+
+- Dựa trên [`config.sample.json`](./config.sample.json)
+
+3. Chạy chương trình
+
+```sh
 check-phat-nguoi # or "python -m check_phat_nguoi"
 ```
 
@@ -47,225 +70,35 @@ uv run generate-schemas
 uv run generate-config-schema
 ```
 
+### DISCLAIMER
+
+1. Không bảo đảm
+
+- Mã nguồn và tài nguyên trong repo này được cung cấp mà không có bất kỳ bảo đảm nào, dù rõ ràng hay ngụ ý.
+- Không có sự đảm bảo rằng mã nguồn sẽ hoạt động chính xác, đáng tin cậy, hoặc phù hợp với bất kỳ mục đích cụ thể nào. Người sử dụng tự chịu toàn bộ rủi ro khi sử dụng các tài nguyên này.
+
+2. Không phải sản phẩm chính thức
+
+- Repo này không đại diện cho bất kỳ sản phẩm, dịch vụ chính thức nào của tổ chức, công ty, hoặc cá nhân nào khác ngoài tác giả.
+
+3. Quyền sở hữu trí tuệ
+
+- Trừ khi được chỉ định khác, toàn bộ nội dung trong repo này được cấp phép theo các điều khoản trong tệp [`LICENSE`](./LICENSE). Khi sử dụng mã nguồn hoặc tài nguyên, người dùng cần tuân thủ đầy đủ các quy định của giấy phép này.
+
+> [!IMPORTANT]
+>
+> Kho lưu trữ này được phát hành với mục đích học tập và tham khảo. Tác giả không chịu trách nhiệm đối với bất kỳ hành vi sử dụng nào có thể gây ảnh hưởng tiêu cực đến cá nhân, tổ chức khác hoặc vi phạm pháp luật Việt Nam.
+
+### APIs
+
 > [!NOTE]
 >
-> - \_\_main\_\_.py is for running as module (python -m)
-
-### API
-
-<details>
-  <summary>
-    Example
-  </summary>
-
-1. Example 1
-
-```sh
-curl --data '{"bienso": "60A64685"}' -X POST -H "Content-Type: application/json" https://api.checkphatnguoi.vn/phatnguoi | jq .
-```
-
-```json
-{
-  "status": 1,
-  "msg": "",
-  "data": [
-    {
-      "Biển kiểm soát": "60A64685",
-      "Màu biển": "Nền mầu trắng, chữ và số màu đen",
-      "Loại phương tiện": "Ô tô",
-      "Thời gian vi phạm": "13:57, 07/10/2023",
-      "Địa điểm vi phạm": "Km1716+005, Quốc lộ 1A - Bình Thuận",
-      "Hành vi vi phạm": "12321.5.3.a.01.Điều khiển xe chạy quá tốc độ quy định từ 05 km/h đến dưới 10 km/h",
-      "Trạng thái": "Chưa xử phạt",
-      "Đơn vị phát hiện vi phạm": "ĐỘI TT, ĐTGQTNGT VÀ XLVP - PHÒNG CSGT BÌNH THUẬN",
-      "Nơi giải quyết vụ việc": [
-        "1. ĐỘI TT, ĐTGQTNGT VÀ XLVP - PHÒNG CSGT BÌNH THUẬN",
-        "Địa chỉ: 115 Tôn Đức Thắng, TP. Phan Thiết",
-        "Số điện thoại liên hệ: 0693.428184",
-        "2. Đội Cảnh sát giao thông, Trật tự - Công an huyện Trảng Bom - Tỉnh Đồng Nai",
-        "Địa chỉ: Huyện Trảng Bom"
-      ]
-    }
-  ],
-  "data_info": {
-    "total": 1,
-    "chuaxuphat": 1,
-    "daxuphat": 0,
-    "latest": "12:41 22/12/2024"
-  }
-}
-```
-
-2. Example 2
-
-```sh
-curl --data '{"bienso": "98A56604"}' -X POST -H "Content-Type: application/json" https://api.checkphatnguoi.vn/phatnguoi | jq .
-```
-
-```json
-{
-  "status": 1,
-  "msg": "",
-  "data": [
-    {
-      "Biển kiểm soát": "98A-566.04",
-      "Màu biển": "Nền mầu trắng, chữ và số màu đen",
-      "Loại phương tiện": "Ô tô",
-      "Thời gian vi phạm": "11:09, 09/07/2023",
-      "Địa điểm vi phạm": "Ngã 4 Xương Giang - Vương Văn Trà - Quang Trung, Phường Trần Phú, Thành phố Bắc Giang, Tỉnh Bắc Giang",
-      "Hành vi vi phạm": "12321.5.5.a.01.Không chấp hành hiệu lệnh của đèn tín hiệu giao thông",
-      "Trạng thái": "Chưa xử phạt",
-      "Đơn vị phát hiện vi phạm": "Đội Cảnh sát giao thông, Trật tự - Công an thành phố Bắc Giang - Tỉnh Bắc Giang",
-      "Nơi giải quyết vụ việc": [
-        "1. Đội Cảnh sát giao thông, Trật tự - Công an thành phố Bắc Giang - Tỉnh Bắc Giang",
-        "Địa chỉ: số 384 đường Xương Giang, phường Ngô Quyền",
-        "Số điện thoại liên hệ: 0911595121"
-      ]
-    }
-  ],
-  "data_info": {
-    "total": 1,
-    "chuaxuphat": 1,
-    "daxuphat": 0,
-    "latest": "17:54 19/10/2024"
-  }
-}
-```
-
-3. Example 3
-
-```sh
-curl --data '{"bienso": "30F88251"}' -X POST -H "Content-Type: application/json" https://api.checkphatnguoi.vn/phatnguoi | jq .
-```
-
-```json
-{
-  "status": 1,
-  "msg": "",
-  "data": [
-    {
-      "Biển kiểm soát": "30F-882.51",
-      "Màu biển": "Nền mầu trắng, chữ và số màu đen",
-      "Loại phương tiện": "Ô tô",
-      "Thời gian vi phạm": "10:21, 09/07/2023",
-      "Địa điểm vi phạm": "Km 82+400, QL37, Xã Việt Tiến, Thị xã Việt Yên, Tỉnh Bắc Giang",
-      "Hành vi vi phạm": "12321.5.6.a.01.Điều khiển xe chạy quá tốc độ quy định trên 20 km/h đến 35 km/h",
-      "Trạng thái": "Chưa xử phạt",
-      "Đơn vị phát hiện vi phạm": "Đội Cảnh sát giao thông, Trật tự - Công an thị xã Việt Yên - Tỉnh Bắc Giang",
-      "Nơi giải quyết vụ việc": [
-        "1. Đội Cảnh sát giao thông, Trật tự - Công an thị xã Việt Yên - Tỉnh Bắc Giang",
-        "Địa chỉ: Thị xã Việt Yên",
-        "2. Đội Cảnh sát giao thông, Trật tự - Công an quận Hai Bà Trưng - Thành phố Hà Nội"
-      ]
-    },
-    {
-      "Biển kiểm soát": "30F-882.51",
-      "Màu biển": "Nền mầu trắng, chữ và số màu đen",
-      "Loại phương tiện": "Ô tô",
-      "Thời gian vi phạm": "11:32, 09/07/2023",
-      "Địa điểm vi phạm": "Ngã 4 Xương Giang - Vương Văn Trà - Quang Trung, phường Trần Phú, thành phố Bắc Giang",
-      "Hành vi vi phạm": "Điều khiển xe rẽ trái tại nơi có biển báo hiệu có nội dung cấm rẽ trái đối với loại phương tiện đang điều khiển",
-      "Trạng thái": "Chưa xử phạt",
-      "Đơn vị phát hiện vi phạm": "CA Thành phố Bắc Giang, Bắc Giang",
-      "Nơi giải quyết vụ việc": [
-        "1. CA Thành phố Bắc Giang, Bắc Giang",
-        "Địa chỉ: Số 384 đường Xương Giang, phường Ngô Quyền, TP. Bắc Giang",
-        "Số điện thoại liên hệ: 0911595121"
-      ]
-    },
-    {
-      "Biển kiểm soát": "30F-882.51",
-      "Màu biển": "Nền mầu trắng, chữ và số màu đen",
-      "Loại phương tiện": "Ô tô",
-      "Thời gian vi phạm": "08:44, 21/12/2021",
-      "Địa điểm vi phạm": "Km208+920",
-      "Hành vi vi phạm": "Điều khiển xe chạy quá tốc độ quy định từ 10km/h đến 20 km/h",
-      "Trạng thái": "Đã xử phạt",
-      "Đơn vị phát hiện vi phạm": "Đội TTKSGTĐB số 1, Phòng 8 - Cục Cảnh sát giao thông",
-      "Nơi giải quyết vụ việc": [
-        "1. Đội TTKSGTĐB số 1, Phòng 8 - Cục Cảnh sát giao thông",
-        "Địa chỉ: Đội TTKSGTĐB cao tốc số 1",
-        "Số điện thoại liên hệ: 02435816399"
-      ]
-    },
-    {
-      "Biển kiểm soát": "30F-882.51",
-      "Màu biển": "Nền mầu trắng, chữ và số màu đen",
-      "Loại phương tiện": "Ô tô",
-      "Thời gian vi phạm": "15:58, 23/04/2021",
-      "Địa điểm vi phạm": "Nội Bài - Lào Cai",
-      "Hành vi vi phạm": "Điều khiển xe chạy quá tốc độ quy định từ 10km/h đến 20 km/h",
-      "Trạng thái": "Đã xử phạt",
-      "Đơn vị phát hiện vi phạm": "Đội TTKSGTĐB số 1, Phòng 8 - Cục Cảnh sát giao thông",
-      "Nơi giải quyết vụ việc": [
-        "1. Đội TTKSGTĐB số 1, Phòng 8 - Cục Cảnh sát giao thông",
-        "Địa chỉ: Đội TTKSGTĐB cao tốc số 1",
-        "Số điện thoại liên hệ: 02435816399"
-      ]
-    }
-  ],
-  "data_info": {
-    "total": 4,
-    "chuaxuphat": 2,
-    "daxuphat": 2,
-    "latest": "19:53 01/06/2024"
-  }
-}
-```
-
-4. Example 4
-
-```sh
-curl --data '{"bienso": "59XB00000"}' -X POST -H "Content-Type: application/json" https://api.checkphatnguoi.vn/phatnguoi | jq .
-```
-
-```json
-{
-  "status": 2,
-  "data": null
-}
-```
-
-</details>
+> Read [docs](/docs)
 
 ### REFS
 
 - List bien so: https://voz.vn/t/trang-check-phat-nguoi-tu-phat-trien.1048134/
 - https://github.com/thaoanhhaa1/phat-nguoi-bot
-
-### DISCLAMER
-
-<details>
-  <summary>
-  </summary>
-Repo này được cung cấp <strong>"nguyên trạng"</strong> (<strong>as is</strong>) và chỉ nhằm mục đích <strong>học tập và tham khảo</strong>. Bằng cách sử dụng bất kỳ mã nguồn, tài nguyên hoặc thông tin nào trong repo này, bạn đồng ý và chấp nhận các điều khoản sau:
-
-## Không có bảo đảm
-
-- Mã nguồn và tài nguyên trong repo này được cung cấp mà **không có bất kỳ bảo đảm nào**, dù rõ ràng hay ngụ ý.
-- Không có đảm bảo rằng mã sẽ hoạt động chính xác, đáng tin cậy, hoặc phù hợp với bất kỳ mục đích cụ thể nào. Việc sử dụng là **hoàn toàn tự chịu rủi ro**.
-
-## Không phải sản phẩm chính thức
-
-- Repo này không đại diện cho bất kỳ sản phẩm, dịch vụ chính thức nào của tổ chức, công ty, hoặc cá nhân nào khác ngoài tác giả.
-
-## Rủi ro bảo mật
-
-- Mã nguồn trong repo này không được bảo đảm về mặt bảo mật. Nếu bạn sử dụng mã này trong môi trường sản xuất, bạn chịu trách nhiệm kiểm tra và thực hiện các biện pháp bảo mật cần thiết.
-
-## Quyền sở hữu trí tuệ
-
-- Trừ khi được chỉ định khác, toàn bộ nội dung trong repo này được cấp phép theo các điều khoản trong tệp `LICENSE`. Bạn cần tuân thủ giấy phép này khi sử dụng mã nguồn hoặc tài nguyên.
-
-## Không hỗ trợ
-
-- Tác giả của repo này **không cam kết** cung cấp hỗ trợ kỹ thuật, cập nhật hoặc sửa lỗi. Các vấn đề hoặc pull request có thể không được xử lý.
-
----
-
-**Bằng việc sử dụng repo này, bạn đồng ý với các điều khoản nêu trên. Nếu không đồng ý, vui lòng không sử dụng mã nguồn hoặc tài nguyên từ repo này.**
-
-</details>
 
 ## Star History
 
