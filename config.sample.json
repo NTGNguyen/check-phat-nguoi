@@ -8,6 +8,11 @@
       "type": 2
     },
     {
+      "plate": "59XA00001",
+      "owner": "@ntgnguyen",
+      "type": "motorbike"
+    },
+    {
       "plate": "60A64685",
       "owner": "dad",
       "api": "checkphatnguoi.vn",
@@ -20,14 +25,10 @@
     {
       "plate": "30F88251",
       "type": 1
-    },
-    {
-      "plate": "30F0000000",
-      "type": 1
     }
   ],
   "api": "checkphatnguoi.vn",
-  "notify": [
+  "notifications": [
     {
       "telegram": {
         "botToken": "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB",
