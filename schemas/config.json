@@ -40,7 +40,19 @@
           "title": "Ghi chú chủ sở hữu"
         },
         "type": {
-          "$ref": "#/$defs/VehicleTypeEnum",
+          "anyOf": [
+            {
+              "enum": [
+                "car",
+                "motorbike",
+                "electric_motorbike"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/VehicleTypeEnum"
+            }
+          ],
           "description": "Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
           "title": "Loại phương tiện"
         },
@@ -65,7 +77,26 @@
       "title": "PlateInfoDTO",
       "type": "object"
     },
-    "TelegramDTO": {
+    "TelegramNotificationDTO": {
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "Kích hoạt",
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "telegram": {
+          "$ref": "#/$defs/TelegramNotificationEngineDTO",
+          "description": "Gửi thông báo đến telegram"
+        }
+      },
+      "required": [
+        "telegram"
+      ],
+      "title": "TelegramNotificationDTO",
+      "type": "object"
+    },
+    "TelegramNotificationEngineDTO": {
       "properties": {
         "botToken": {
           "description": "Bot token Telegram",
@@ -88,26 +119,7 @@
         "botToken",
         "chatId"
       ],
-      "title": "TelegramDTO",
-      "type": "object"
-    },
-    "TelegramNotifyDTO": {
-      "properties": {
-        "enabled": {
-          "default": true,
-          "description": "Kích hoạt",
-          "title": "Enabled",
-          "type": "boolean"
-        },
-        "telegram": {
-          "$ref": "#/$defs/TelegramDTO",
-          "description": "Gửi thông báo đến telegram"
-        }
-      },
-      "required": [
-        "telegram"
-      ],
-      "title": "TelegramNotifyDTO",
+      "title": "TelegramNotificationEngineDTO",
       "type": "object"
     },
     "VehicleTypeEnum": {
@@ -132,7 +144,7 @@
     "notifications": {
       "description": "Danh sách các thiết lập để thông báo",
       "items": {
-        "$ref": "#/$defs/TelegramNotifyDTO"
+        "$ref": "#/$defs/TelegramNotificationDTO"
       },
       "title": "Notifications",
       "type": "array"

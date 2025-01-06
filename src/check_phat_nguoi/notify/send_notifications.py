@@ -1,8 +1,10 @@
-from check_phat_nguoi.context import BaseNotifyDTO, TelegramNotifyDTO, plates_context
-from check_phat_nguoi.context.config.config_reader import config
+from asyncio import gather
 
-from .engines.base import NotifyEngineBase
-from .engines.telegram import NotifyEngineTelegram
+from check_phat_nguoi.config import BaseNotificationDTO, TelegramNotificationDTO
+from check_phat_nguoi.config.config_reader import config
+from check_phat_nguoi.context import plates_context
+
+from .engines.telegram import TelegramNotificationEngine
 from .markdown_msg import MdMsg, MessagesModel
 
 
@@ -11,18 +13,20 @@ class SendNotifications:
         self._message_dict: tuple[MessagesModel, ...] = tuple(
             MdMsg(plate_info).generate_msg() for plate_info in plates_context.plates
         )
+        self._tele: TelegramNotificationEngine
+
+    async def _send_msgs(self, notification: BaseNotificationDTO) -> None:
+        if isinstance(notification, TelegramNotificationDTO):
+            await self._tele.send(notification.telegram, self._message_dict)
 
     async def send(self) -> None:
-        # FIXME: use with async to auto create / close session
-        notifications: filter[BaseNotifyDTO] = filter(
+        enabled_notifications: filter[BaseNotificationDTO] = filter(
             lambda notify: notify.enabled, config.notifications
         )
-        for notification in notifications:
-            noti_engine: NotifyEngineBase
-            if isinstance(notification, TelegramNotifyDTO):
-                noti_engine = NotifyEngineTelegram(
-                    notification.telegram, self._message_dict
+        async with TelegramNotificationEngine() as self._tele:
+            await gather(
+                *(
+                    self._send_msgs(notification)
+                    for notification in enabled_notifications
                 )
-            else:
-                continue  # Unknown notification engine
-            await noti_engine.send()
+            )

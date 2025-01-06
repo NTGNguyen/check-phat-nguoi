@@ -1,3 +1,4 @@
+from check_phat_nguoi.config.config_reader import config
 from check_phat_nguoi.constants import (
     MESSAGE_MARKDOWN_PATTERN,
     RESOLUTION_LOCATION_MARKDOWN_PATTERN,
@@ -6,7 +7,6 @@ from check_phat_nguoi.context import (
     PlateInfoModel,
     ResolutionOfficeModel,
 )
-from check_phat_nguoi.context.config.config_reader import config
 
 from .models import MessagesModel
 
@@ -57,5 +57,5 @@ class MdMsg:
     def generate_msg(self) -> MessagesModel:
         return MessagesModel(
             plate=self.plate_info.plate,
-            messages=self._format_message(),
+            vio_msgs=self._format_message(),
         )

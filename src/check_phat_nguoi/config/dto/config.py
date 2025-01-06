@@ -1,10 +1,10 @@
-from typing import Literal
-
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
+from check_phat_nguoi.types import LogLevelType
+
 from .api import ApiEnum
-from .notify.telegram_notify import TelegramNotifyDTO
+from .notifications import TelegramNotificationDTO
 from .plate_info import PlateInfoDTO
 
 
@@ -18,7 +18,7 @@ class ConfigDTO(BaseModel):
         description="Danh sách các biển xe",
         frozen=True,
     )
-    notifications: tuple[TelegramNotifyDTO, ...] = Field(
+    notifications: tuple[TelegramNotificationDTO, ...] = Field(
         description="Danh sách các thiết lập để thông báo",
         frozen=True,
     )
@@ -44,14 +44,7 @@ class ConfigDTO(BaseModel):
         frozen=True,
     )
     detail_log: bool = True
-    log_level: Literal[
-        "NOTSET",
-        "DEBUG",
-        "INFO",
-        "WARNING",
-        "ERROR",
-        "CRITICAL",
-    ] = "WARNING"
+    log_level: LogLevelType = "WARNING"
 
 
 __all__ = ["ConfigDTO"]

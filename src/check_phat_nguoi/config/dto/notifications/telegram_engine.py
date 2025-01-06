@@ -1,10 +1,12 @@
 from re import match as re_match
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import ConfigDict, Field, field_validator
 from pydantic.alias_generators import to_camel
 
+from .base_engine import BaseNotificationEngineDTO
 
-class TelegramDTO(BaseModel):
+
+class TelegramNotificationEngineDTO(BaseNotificationEngineDTO):
     model_config = ConfigDict(alias_generator=to_camel)
 
     bot_token: str = Field(
@@ -33,4 +35,4 @@ class TelegramDTO(BaseModel):
         return _chat_id
 
 
-__all__ = ["TelegramDTO"]
+__all__ = ["TelegramNotificationEngineDTO"]

@@ -1,15 +1,14 @@
 from asyncio import gather
 from logging import getLogger
 
+from check_phat_nguoi.config import ApiEnum, PlateInfoDTO
+from check_phat_nguoi.config.config_reader import config
 from check_phat_nguoi.context import (
-    ApiEnum,
-    PlateInfoDTO,
     PlateInfoModel,
     plates_context,
 )
-from check_phat_nguoi.context.config.config_reader import config
 
-from .engines import GetDataEngineBase, GetDataEngineCheckPhatNguoi
+from .engines import BaseGetDataEngine, GetDataEngineCheckPhatNguoi
 
 logger = getLogger(__name__)
 
@@ -29,7 +28,7 @@ class GetData:
             # if plate_info is None:
             #     plate_info = await self.csgt.get_data(plate)
         else:
-            get_data_engine: GetDataEngineBase
+            get_data_engine: BaseGetDataEngine
             match api := (plate.api or config.api):
                 case ApiEnum.checkphatnguoi_vn:
                     get_data_engine = self._engine_cpn

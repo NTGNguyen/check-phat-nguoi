@@ -4,7 +4,7 @@ from .get_data import (
     GET_DATA_API_URL_CHECKPHATNGUOI,
     OFFICE_NAME_PATTERN,
 )
-from .notify import (
+from .notifications import (
     MESSAGE_MARKDOWN_PATTERN,
     RESOLUTION_LOCATION_MARKDOWN_PATTERN,
     SEND_MESSAGE_API_URL_TELEGRAM,

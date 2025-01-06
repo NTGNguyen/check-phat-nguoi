@@ -3,7 +3,10 @@ from typing import Any, override
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
-from check_phat_nguoi.enums import VehicleTypeEnum
+from check_phat_nguoi.types import (
+    VehicleStrType,
+)
+from check_phat_nguoi.types.vehicle_type import VehicleTypeEnum
 
 from .api import ApiEnum
 
@@ -24,7 +27,7 @@ class PlateInfoDTO(BaseModel):
         examples=["@kevinnitro", "dad"],
         default=None,
     )
-    type: VehicleTypeEnum = Field(
+    type: VehicleStrType | VehicleTypeEnum = Field(
         description="Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
         title="Loại phương tiện",
     )

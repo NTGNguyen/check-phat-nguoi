@@ -10,24 +10,25 @@ from aiohttp import (
     ClientTimeout,
 )
 
+from check_phat_nguoi.config import PlateInfoDTO
 from check_phat_nguoi.constants import DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT
 from check_phat_nguoi.constants import (
     GET_DATA_API_URL_CHECKPHATNGUOI as API_URL,
 )
 from check_phat_nguoi.constants import OFFICE_NAME_PATTERN
 from check_phat_nguoi.context import (
-    PlateInfoDTO,
     PlateInfoModel,
     ResolutionOfficeModel,
     ViolationModel,
 )
+from check_phat_nguoi.types import get_vehicle_enum
 
-from .base import GetDataEngineBase
+from .base import BaseGetDataEngine
 
 logger = getLogger(__name__)
 
 
-class GetDataEngineCheckPhatNguoi(GetDataEngineBase):
+class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
     headers: Final[dict[str, str]] = {"Content-Type": "application/json"}
 
     async def _get_data_request(self, plate: PlateInfoDTO) -> Dict | None:
@@ -60,7 +61,7 @@ class GetDataEngineCheckPhatNguoi(GetDataEngineBase):
         return PlateInfoModel(
             plate=plate.plate,
             owner=plate.owner,
-            type=plate.type,
+            type=get_vehicle_enum(plate.type),
             violation=self.get_plate_violation(plate_violation_dict=plate_info),
         )
 
