@@ -238,7 +238,7 @@ curl --data '{"bienso": "59XB00000"}' -X POST -H "Content-Type: application/json
 <details>
   <summary>
   </summary>
-Repo này được cung cấp **"nguyên trạng"** (**as is**) và chỉ nhằm mục đích **học tập và tham khảo**. Bằng cách sử dụng bất kỳ mã nguồn, tài nguyên hoặc thông tin nào trong repo này, bạn đồng ý và chấp nhận các điều khoản sau:
+Repo này được cung cấp <strong>"nguyên trạng"</strong> (<strong>as is</strong>) và chỉ nhằm mục đích <strong>học tập và tham khảo</strong>. Bằng cách sử dụng bất kỳ mã nguồn, tài nguyên hoặc thông tin nào trong repo này, bạn đồng ý và chấp nhận các điều khoản sau:
 
 ## Không có bảo đảm
 
