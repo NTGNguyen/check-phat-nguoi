@@ -18,12 +18,12 @@ class SendNotifications:
             await self._tele.send(notification.telegram, self._md_messages)
 
     async def send(self) -> None:
-        enabled_notifications: tuple[TelegramNotificationDTO, ...] = tuple(
+        enabled_notifications: tuple[BaseNotificationDTO, ...] = tuple(
             notification
             for notification in config.notifications
             if notification.enabled
         )
-        if len(enabled_notifications) == 0:
+        if not enabled_notifications:
             return
         self._md_messages = tuple(
             MarkdownMessage(plate_info).generate_message()
