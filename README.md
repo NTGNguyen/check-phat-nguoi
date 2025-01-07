@@ -22,7 +22,7 @@
   - [DISCLAIMER](#disclaimer)
   - [APIs](#apis)
   - [REFS](#refs)
-- [Star History](#star-history)
+- [STAR HISTORY](#star-history)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -79,6 +79,8 @@ uv pip install -e . -r ./requirements.txt
 uv run check-phat-nguoi
 ```
 
+---
+
 ### DISCLAIMER
 
 > [!IMPORTANT]
@@ -98,18 +100,24 @@ uv run check-phat-nguoi
 
 - Trừ khi được chỉ định khác, toàn bộ nội dung trong repo này được cấp phép theo các điều khoản trong tệp [`LICENSE`](./LICENSE). Khi sử dụng mã nguồn hoặc tài nguyên, người dùng cần tuân thủ đầy đủ các quy định của giấy phép này.
 
+---
+
 ### APIs
 
 > [!NOTE]
 >
 > Read [docs](/docs)
 
+---
+
 ### REFS
 
 - List bien so: https://voz.vn/t/trang-check-phat-nguoi-tu-phat-trien.1048134/
 - https://github.com/thaoanhhaa1/phat-nguoi-bot
 
-## Star History
+---
+
+## STAR HISTORY
 
 <a href="https://star-history.com/#NTGNguyen/check-phat-nguoi&Date">
  <picture>
