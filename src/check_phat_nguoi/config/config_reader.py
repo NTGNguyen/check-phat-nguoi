@@ -14,7 +14,7 @@ def _config_reader() -> ConfigDTO:
     for config_path in CONFIG_PATHS:
         if path_exists(config_path):
             try:
-                with open(config_path, "r", encoding="utf8") as config:
+                with open(config_path, encoding="utf8") as config:
                     data = load(config)
                     return ConfigDTO(**data)
             except ValidationError as e:

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Self
 
 
@@ -6,7 +8,7 @@ class Singleton:
 
     def __new__(cls, *args, **kwargs) -> Self:
         if not cls._instance:
-            cls._instance = super(Singleton, cls).__new__(cls, *args, **kwargs)
+            cls._instance = super().__new__(cls, *args, **kwargs)
         return cls._instance
 
 

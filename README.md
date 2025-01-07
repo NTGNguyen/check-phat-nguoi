@@ -7,7 +7,7 @@
 
 > [!NOTE]
 >
-> Project được viết bằng python 3.13
+> Project được viết bằng python 3.13 nhưng có thể chạy với python 3.10 trở lên (không đảm bảo)
 
 ---
 
@@ -70,11 +70,24 @@ uv run generate-schemas
 uv run generate-config-schema
 ```
 
+- Test on production with python 3.10
+
+```
+uv python install 3.10
+uv venv .venv-3.10 -p 3.10
+uv pip install -e . -r ./requirements.txt
+uv run check-phat-nguoi
+```
+
 ### DISCLAIMER
 
-1. Không bảo đảm
+> [!IMPORTANT]
+>
+> Repo được phát hành với mục đích học tập và tham khảo. Tác giả không chịu trách nhiệm đối với bất kỳ hành vi sử dụng nào có thể gây ảnh hưởng tiêu cực đến cá nhân, tổ chức khác hoặc vi phạm pháp luật Việt Nam.
 
-- Mã nguồn và tài nguyên trong repo này được cung cấp mà không có bất kỳ bảo đảm nào, dù rõ ràng hay ngụ ý.
+1. Không đảm bảo
+
+- Mã nguồn và tài nguyên trong repo này được cung cấp mà không có bất kỳ đảm bảo nào, dù rõ ràng hay ngụ ý.
 - Không có sự đảm bảo rằng mã nguồn sẽ hoạt động chính xác, đáng tin cậy, hoặc phù hợp với bất kỳ mục đích cụ thể nào. Người sử dụng tự chịu toàn bộ rủi ro khi sử dụng các tài nguyên này.
 
 2. Không phải sản phẩm chính thức
@@ -84,10 +97,6 @@ uv run generate-config-schema
 3. Quyền sở hữu trí tuệ
 
 - Trừ khi được chỉ định khác, toàn bộ nội dung trong repo này được cấp phép theo các điều khoản trong tệp [`LICENSE`](./LICENSE). Khi sử dụng mã nguồn hoặc tài nguyên, người dùng cần tuân thủ đầy đủ các quy định của giấy phép này.
-
-> [!IMPORTANT]
->
-> Kho lưu trữ này được phát hành với mục đích học tập và tham khảo. Tác giả không chịu trách nhiệm đối với bất kỳ hành vi sử dụng nào có thể gây ảnh hưởng tiêu cực đến cá nhân, tổ chức khác hoặc vi phạm pháp luật Việt Nam.
 
 ### APIs
 

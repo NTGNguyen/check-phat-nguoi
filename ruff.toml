@@ -1,5 +1,7 @@
 [lint]
 select = [
-  "I",    # Isort
-  "F401", # Unused imports
+  "I",     # Isort
+  "F401",  # Unused imports
+  "FA100", # future-rewritable-type-annotation
+  "FA102", # future-required-type-annotation
 ]

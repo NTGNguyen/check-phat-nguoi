@@ -6,11 +6,8 @@ authors = [
 description = "Check phạt nguội"
 name = "check-phat-nguoi"
 version = "0.1.0-dev.1"
-requires-python = ">=3.13"
-dependencies = [
-    "aiohttp[speedups]>=3.11.11",
-    "pydantic>=2.10.4",
-]
+requires-python = ">=3.10"
+dependencies = ["aiohttp[speedups]>=3.11.11", "pydantic>=2.10.4"]
 
 [project.scripts]
 check-phat-nguoi = "check_phat_nguoi:main"
@@ -22,4 +19,6 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = ["pre-commit>=4.0.1"]
+dev = [
+    "pre-commit>=4.0.1",
+]

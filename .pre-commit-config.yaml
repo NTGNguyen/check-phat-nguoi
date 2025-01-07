@@ -17,11 +17,17 @@ repos:
       - id: check-added-large-files
       - id: detect-private-key
 
+  # For upgrading python syntax
+  # - repo: https://github.com/asottile/pyupgrade
+  #   rev: v3.19.1
+  #   hooks:
+  #     - id: pyupgrade
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.6
     hooks:
       - id: ruff
-        args: [--fix]
+        args: ['--fix', '--unsafe-fixes']
       - id: ruff-format
 
   - repo: https://github.com/commitizen-tools/commitizen
@@ -42,7 +48,8 @@ repos:
       - id: uv-sync
       - id: uv-lock # update lock file
       - id: uv-export # export lock file to requirements.txt
-        args: ['--no-dev', '--frozen', '--output-file=requirements.txt']
+        args:
+          ['--no-dev', '--frozen', '--output-file=requirements.txt', '--quiet']
 
   - repo: local
     hooks:
