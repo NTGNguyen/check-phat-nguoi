@@ -24,7 +24,7 @@ class PlateInfoDTO(BaseModel):
         examples=["60A64685", "98-A-56604", "30-F88251", "59XB-00000"],
     )
     owner: str | None = Field(
-        description="Ghi chú chủ sở hữu (phù hợp khi dùng notify ai đó)",
+        description="Ghi chú chủ sở hữu (phù hợp khi dùng nhắc ai đó với lựa chọn notifications)",
         title="Ghi chú chủ sở hữu",
         examples=["@kevinnitro", "dad"],
         default=None,

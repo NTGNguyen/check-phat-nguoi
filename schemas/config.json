@@ -32,7 +32,7 @@
             }
           ],
           "default": null,
-          "description": "Ghi chú chủ sở hữu (phù hợp khi dùng notify ai đó)",
+          "description": "Ghi chú chủ sở hữu (phù hợp khi dùng nhắc ai đó với lựa chọn notifications)",
           "examples": [
             "@kevinnitro",
             "dad"
@@ -169,7 +169,7 @@
     },
     "requestTimeout": {
       "default": 10,
-      "description": "Thời gian (s) để gửi request đến server API và gửi message notify",
+      "description": "Thời gian (s) để gửi request đến server API và gửi notify message",
       "title": "Requesttimeout",
       "type": "integer"
     },

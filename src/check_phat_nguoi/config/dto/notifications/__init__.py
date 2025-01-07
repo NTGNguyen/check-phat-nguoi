@@ -1,7 +1,7 @@
 from .base_engine import BaseNotificationEngineDTO
-from .base_notify import BaseNotificationDTO
+from .base_notification import BaseNotificationDTO
 from .telegram_engine import TelegramNotificationEngineDTO
-from .telegram_notify import TelegramNotificationDTO
+from .telegram_notification import TelegramNotificationDTO
 
 __all__ = [
     "BaseNotificationEngineDTO",

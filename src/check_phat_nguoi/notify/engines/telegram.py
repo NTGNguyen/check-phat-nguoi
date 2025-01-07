@@ -10,7 +10,7 @@ from aiohttp import (
 from check_phat_nguoi.config import TelegramNotificationEngineDTO
 from check_phat_nguoi.constants import SEND_MESSAGE_API_URL_TELEGRAM as API_URL
 
-from ..markdown_msg import MessagesModel
+from ..markdown_message import MessagesModel
 from .base import BaseNotificationEngine
 
 logger = getLogger(__name__)
@@ -53,9 +53,10 @@ class TelegramNotificationEngine(BaseNotificationEngine):
             except Exception as e:
                 logger.error(e)
 
+        # TODO: the violation name conventno is not match with param message :v
         tasks = (
-            _send_message(vio_msg, message.plate)
+            _send_message(violation, message.plate)
             for message in messages
-            for vio_msg in message.vio_msgs
+            for violation in message.violations
         )
         await asyncio.gather(*tasks)

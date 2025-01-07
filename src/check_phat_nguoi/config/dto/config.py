@@ -39,7 +39,7 @@ class ConfigDTO(BaseModel):
         frozen=True,
     )
     request_timeout: int = Field(
-        description="Thời gian (s) để gửi request đến server API và gửi message notify",
+        description="Thời gian (s) để gửi request đến server API và gửi notify message",
         default=10,
         frozen=True,
     )

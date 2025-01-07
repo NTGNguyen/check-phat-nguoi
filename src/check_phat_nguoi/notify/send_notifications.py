@@ -5,28 +5,34 @@ from check_phat_nguoi.config.config_reader import config
 from check_phat_nguoi.context import plates_context
 
 from .engines.telegram import TelegramNotificationEngine
-from .markdown_msg import MdMsg, MessagesModel
+from .markdown_message import MarkdownMessage, MessagesModel
 
 
 class SendNotifications:
     def __init__(self) -> None:
-        self._message_dict: tuple[MessagesModel, ...] = tuple(
-            MdMsg(plate_info).generate_msg() for plate_info in plates_context.plates
-        )
+        self._md_messages: tuple[MessagesModel, ...]
         self._tele: TelegramNotificationEngine
 
-    async def _send_msgs(self, notification: BaseNotificationDTO) -> None:
+    async def _send_messages(self, notification: BaseNotificationDTO) -> None:
         if isinstance(notification, TelegramNotificationDTO):
-            await self._tele.send(notification.telegram, self._message_dict)
+            await self._tele.send(notification.telegram, self._md_messages)
 
     async def send(self) -> None:
-        enabled_notifications: filter[BaseNotificationDTO] = filter(
-            lambda notify: notify.enabled, config.notifications
+        enabled_notifications: tuple[TelegramNotificationDTO, ...] = tuple(
+            notification
+            for notification in config.notifications
+            if notification.enabled
+        )
+        if len(enabled_notifications) == 0:
+            return
+        self._md_messages = tuple(
+            MarkdownMessage(plate_info).generate_message()
+            for plate_info in plates_context.plates
         )
         async with TelegramNotificationEngine() as self._tele:
             await gather(
                 *(
-                    self._send_msgs(notification)
+                    self._send_messages(notification)
                     for notification in enabled_notifications
                 )
             )

@@ -1,6 +1,6 @@
 from pydantic import Field
 
-from .base_notify import BaseNotificationDTO
+from .base_notification import BaseNotificationDTO
 from .telegram_engine import TelegramNotificationEngineDTO
 
 

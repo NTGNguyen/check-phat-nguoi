@@ -13,7 +13,7 @@ from check_phat_nguoi.context import (
 from .models import MessagesModel
 
 
-class MdMsg:
+class MarkdownMessage:
     def __init__(self, plate_info: PlateInfoModel) -> None:
         self.plate_info: PlateInfoModel = plate_info
 
@@ -56,8 +56,8 @@ class MdMsg:
             ]
         )
 
-    def generate_msg(self) -> MessagesModel:
+    def generate_message(self) -> MessagesModel:
         return MessagesModel(
             plate=self.plate_info.plate,
-            vio_msgs=self._format_message(),
+            violations=self._format_message(),
         )
