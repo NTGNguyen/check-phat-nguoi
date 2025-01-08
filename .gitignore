@@ -186,5 +186,6 @@ poetry.toml
 [Ss]cripts
 pyvenv.cfg
 pip-selfcheck.json
-
+#Folder contains website
+sites/
 # End of https://www.toptal.com/developers/gitignore/api/python,venv
