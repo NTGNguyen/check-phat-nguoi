@@ -1,10 +1,10 @@
 from string import Template
-from typing import LiteralString
+from typing import Final, LiteralString
 
 SEND_MESSAGE_API_URL_TELEGRAM: LiteralString = (
     "https://api.telegram.org/bot{bot_token}/sendMessage"
 )
-MESSAGE_MARKDOWN_PATTERN = Template("""
+MESSAGE_MARKDOWN_PATTERN: Final[Template] = Template("""
 *🚗 **Thông tin phương tiện**:*
 - **Biển kiểm soát:** `${plate}`
 - **Chủ sở hữu:** `${owner}`
@@ -22,7 +22,7 @@ MESSAGE_MARKDOWN_PATTERN = Template("""
 ${resolution_locations}
 """)
 
-RESOLUTION_LOCATION_MARKDOWN_PATTERN = Template("""
+RESOLUTION_LOCATION_MARKDOWN_PATTERN: Final[Template] = Template("""
 ${idx}. **${location_name}
 - **Địa chỉ:** `${address}`
 - **Số điện thoại liên lạc:** `${phone}`

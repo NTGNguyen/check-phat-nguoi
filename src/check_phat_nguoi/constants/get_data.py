@@ -6,4 +6,4 @@ GET_DATA_API_URL_CHECKPHATNGUOI: LiteralString = (
 )
 DATETIME_FORMAT_CHECKPHATNGUOI: LiteralString = "%H:%M, %d/%m/%Y"
 
-OFFICE_NAME_PATTERN = r"^\d+\."
+OFFICE_NAME_PATTERN: LiteralString = r"^\d+\."

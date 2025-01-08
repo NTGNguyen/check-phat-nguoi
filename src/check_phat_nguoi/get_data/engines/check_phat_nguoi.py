@@ -7,10 +7,7 @@ from datetime import datetime
 from logging import getLogger
 from typing import Dict, Final, override
 
-from aiohttp import (
-    ClientError,
-    ClientTimeout,
-)
+from aiohttp import ClientError
 
 from check_phat_nguoi.config import PlateInfoDTO
 from check_phat_nguoi.constants import DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT
@@ -33,18 +30,19 @@ logger = getLogger(__name__)
 class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
     headers: Final[dict[str, str]] = {"Content-Type": "application/json"}
 
+    def __init__(self) -> None:
+        super().__init__(session_header=self.headers)
+
     async def _get_data_request(self, plate: PlateInfoDTO) -> Dict | None:
         payload: Final[dict[str, str]] = {"bienso": plate.plate}
         try:
             async with self.session.post(
                 API_URL,
-                headers=self.headers,
                 json=payload,
-                timeout=ClientTimeout(self.timeout),
             ) as response:
                 response.raise_for_status()
-                logger.info(f"Plate {plate.plate}: Get data successfully")
                 response_data = await response.read()
+                logger.info(f"Plate {plate.plate}: Get data successfully")
                 return json.loads(response_data)
         except TimeoutError as e:
             logger.error(
