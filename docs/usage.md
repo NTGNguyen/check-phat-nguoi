@@ -4,8 +4,10 @@
 
 - <https://www.python.org/downloads/>
 
+<!-- prettier-ignore-start -->
 ???+note
     Project được viết bằng python 3.13 nhưng có thể chạy với python 3.10 trở lên (không đảm bảo)
+<!-- prettier-ignore-end -->
 
 ---
 
@@ -43,14 +45,18 @@ source .venv/bin/active
 pip install -e -r requirements.txt
 ```
 
+<!-- prettier-ignore-start -->
 ???+note
     Tắt môi trường ảo chạy `deactivate`
+<!-- prettier-ignore-end -->
 
 ---
 
 ## Sử dụng chương trình
 
 ### Thiết lập file config
+
+<!-- prettier-ignore-start -->
 
 ???+important annotate
     Thiết lập file `config.json` (1)
@@ -60,6 +66,7 @@ pip install -e -r requirements.txt
 
     1.  Hoặc tại `~/check-phat-nguoi.config.json`
 
+<!-- prettier-ignore-end -->
 
 ```json
 {% include "../config.sample.json" %}
@@ -71,8 +78,8 @@ pip install -e -r requirements.txt
 check-phat-nguoi # (1)
 ```
 
+<!-- prettier-ignore-start -->
+
 1.   Hoặc python -m check-phat-nguoi
 
-
-
-
+<!-- prettier-ignore-end -->
