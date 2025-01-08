@@ -398,6 +398,7 @@ build-website = [
     { name = "mkdocs-material" },
 ]
 dev = [
+    { name = "json-schema-for-humans" },
     { name = "pre-commit" },
 ]
 
