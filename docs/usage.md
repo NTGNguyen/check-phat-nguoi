@@ -52,8 +52,14 @@ pip install -e -r requirements.txt
 
 ### Thiết lập file config
 
-???+important
-    Thiết lập file `config.json` hoặc `check-phat-nguoi.config.json` tại nơi đang đứng hoặc tại `~/check-phat-nguoi.config.json`
+???+important annotate
+    Thiết lập file `config.json` (1)
+
+1.  Hoặc `check-phat-nguoi.config.json` tại nơi đang đứng (1)
+    { .annotate }
+
+    1.  Hoặc tại `~/check-phat-nguoi.config.json`
+
 
 ```json
 {% include "../config.sample.json" %}
@@ -62,8 +68,11 @@ pip install -e -r requirements.txt
 ### Chạy chương trình
 
 ```sh
-check-phat-nguoi
-
-# Hoặc
-python -m check_phat_nguoi
+check-phat-nguoi # (1)
 ```
+
+1.   Hoặc python -m check-phat-nguoi
+
+
+
+

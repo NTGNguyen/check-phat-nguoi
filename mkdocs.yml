@@ -4,6 +4,8 @@ site_name: Check Phạt Nguội
 site_url: 'https://ntgnguyen.github.io/check-phat-nguoi'
 theme:
   language: vi
+  icon:
+    annotation: material/arrow-right-circle
   features:
     - navigation.instant
     - navigation.instant.progress
@@ -48,6 +50,8 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.keys
   - pymdownx.mark
+  - attr_list
+  - md_in_html
 plugins:
   - search:
       lang: vi
