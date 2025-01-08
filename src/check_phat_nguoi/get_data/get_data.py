@@ -36,8 +36,9 @@ class GetData:
                     # TODO: @Nguyen thay get_data_engine
                     raise NotImplementedError("csgt.vn has't been implemented yet")
                 case _:  # Never reach
-                    logger.error(f"{api}: Not defined!")
+                    logger.error(f"Plate {plate.plate} - {api}: Not defined!")
                     return
+            logger.info(f"Plate {plate.plate}: Getting data...")
             plate_info = await get_data_engine.get_data(plate)
         if plate_info is None:
             return

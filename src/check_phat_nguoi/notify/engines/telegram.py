@@ -46,17 +46,15 @@ class TelegramNotificationEngine(BaseNotificationEngine):
                 logger.error(
                     f"Plate {plate}: Timeout ({self.timeout}s) sending to Telegram Chat ID: {telegram.chat_id}\n{e}"
                 )
-            except ClientError as e:
+            except (ClientError, Exception) as e:
                 logger.error(
                     f"Plate {plate}: Fail to sent to Telegram Chat ID: {telegram.chat_id}\n{e}"
                 )
-            except Exception as e:
-                logger.error(e)
 
-        # TODO: the violation name conventno is not match with param message :v
-        tasks = (
-            _send_message(violation, message.plate)
-            for message in messages
-            for violation in message.violations
+        await asyncio.gather(
+            *(
+                _send_message(violation, message.plate)
+                for message in messages
+                for violation in message.violations
+            )
         )
-        await asyncio.gather(*tasks)

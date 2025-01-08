@@ -34,7 +34,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
     headers: Final[dict[str, str]] = {"Content-Type": "application/json"}
 
     async def _get_data_request(self, plate: PlateInfoDTO) -> Dict | None:
-        payload: dict[str, str] = {"bienso": plate.plate}
+        payload: Final[dict[str, str]] = {"bienso": plate.plate}
         try:
             async with self.session.post(
                 API_URL,
@@ -50,7 +50,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
             logger.error(
                 f"Plate {plate.plate}: Time out ({self.timeout}s) getting data from API {API_URL}\n{e}"
             )
-        except ClientError as e:
+        except (ClientError, Exception) as e:
             logger.error(
                 f"Plate {plate.plate}: Error occurs while getting data from API {API_URL}\n{e}"
             )
