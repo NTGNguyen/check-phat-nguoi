@@ -5,6 +5,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
@@ -20,9 +24,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version-file: '.python-version'
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements.txt
+            uv.lock
 
-      - name: Install deps
-        run: uv sync --all-extras
+      - name: Install deps including dev
+        run: uv sync
 
       - name: Pre-commit check
         env:
