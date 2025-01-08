@@ -20,12 +20,34 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: 'uv.lock'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: '.python-version'
+          cache: 'pip'
+          cache-dependency-path: 'uv.lock'
+
+      - name: Install build deps
+        run: uv sync --only-group build-website
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
+
       # TODO: @NTNguyen add build command to this
-      # - name: Build website
-      #   run:
+      - name: Build mkdocs website
+        run: uv run mkdocs build
+
+      # TODO: @NTNguyen add build command to build inside mkdocs folder
+      - name: Build json schemas website
+        run: uv run generate-schema-doc docs/schemas/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
