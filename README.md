@@ -5,15 +5,7 @@
 >
 > Work in progress!
 
-<!--TODO: @NTGNguyen do it-->
-
-Go to website [...](...) for documentation
-
----
-
-### DISCLAIMER
-
-[disclaimer](./docs/other/disclaimer.md)
+Go to website <https://ntgnguyen.github.io/check-phat-nguoi/> for documentation
 
 ---
 
