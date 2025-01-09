@@ -2,7 +2,12 @@ from .context import (
     PlatesContext,
     plates_context,
 )
-from .models import *
+from .models import (
+    PlateInfoModel,
+    PlatesModel,
+    ResolutionOfficeModel,
+    ViolationModel,
+)
 
 __all__ = [
     "PlatesContext",

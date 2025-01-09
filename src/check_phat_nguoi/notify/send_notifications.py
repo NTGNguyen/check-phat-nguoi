@@ -27,7 +27,7 @@ class SendNotifications:
             if notification.enabled
         )
         if not enabled_notifications:
-            logger.debug(f"Skip notification")
+            logger.debug("Skip notification")
             return
         logger.debug(f"Enabled notification: {enabled_notifications}")
 

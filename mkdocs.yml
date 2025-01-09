@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
+site_name: Check Phạt Nguội
+site_url: 'https://ntgnguyen.github.io/check-phat-nguoi'
+theme:
+  language: vi
+  icon:
+    annotation: material/arrow-right-circle
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - content.code.copy
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+  name: material
+  font:
+    text: Merriweather Sans
+  palette:
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Dark mode
+      primary: green
+      accent: deep purple
+
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Light mode
+      primary: blue
+      accent: deep orange
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: true
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - md_in_html
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - pymdownx.emoji
+plugins:
+  - search:
+      lang: vi
+      pipeline:
+        - stemmer
+        - stopWordFilter
+        - trimmer
+  - include-markdown
+
+nav:
+  - 'Trang chủ':
+      - index.md
+  - 'Sử dụng':
+      - usage/usage.md
+      - usage/schedule-run.md
+  - 'Config schema': 'https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html'
+  - 'Development':
+      - dev/setup.md
+      - dev/csgt_vn.md
+      - dev/checkphatnguoi_vn.md
+  - 'Khác':
+      - other/references.md
+      - other/disclaimer.md
