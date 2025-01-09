@@ -399,6 +399,7 @@ source = { editable = "." }
 dependencies = [
     { name = "aiohttp", extra = ["speedups"] },
     { name = "pydantic" },
+    { name = "truststore" },
 ]
 
 [package.dev-dependencies]
@@ -415,6 +416,7 @@ dev = [
 requires-dist = [
     { name = "aiohttp", extras = ["speedups"], specifier = ">=3.11.11" },
     { name = "pydantic", specifier = ">=2.10.4" },
+    { name = "truststore", specifier = ">=0.10.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -1348,6 +1350,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81", size = 34031 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050 },
+]
+
+[[package]]
+name = "truststore"
+version = "0.10.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/01/a8/cdcf418e067b8ae539012a3f1a51f90b30b26f5e1952a8f60304396babbc/truststore-0.10.0.tar.gz", hash = "sha256:5da347c665714fdfbd46f738c823fe9f0d8775e41ac5fb94f325749091187896", size = 24810 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d1/c9/bab5a5dda14af36fe31e2215f0f87bf34408951972fa7220055926dab2e0/truststore-0.10.0-py3-none-any.whl", hash = "sha256:b3798548e421ffe2ca2a6217cca49e7a17baf40b72d86a5505dc7d701e77d15b", size = 18231 },
 ]
 
 [[package]]

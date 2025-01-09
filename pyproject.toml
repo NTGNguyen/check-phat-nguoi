@@ -7,7 +7,11 @@ description = "Check phạt nguội"
 name = "check-phat-nguoi"
 version = "0.1.0-dev.1"
 requires-python = ">=3.10"
-dependencies = ["aiohttp[speedups]>=3.11.11", "pydantic>=2.10.4"]
+dependencies = [
+    "aiohttp[speedups]>=3.11.11",
+    "pydantic>=2.10.4",
+    "truststore>=0.10.0",
+]
 
 [project.scripts]
 check-phat-nguoi = "check_phat_nguoi:main"

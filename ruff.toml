@@ -1,5 +1,7 @@
+unsafe-fixes = true
+
 [lint]
-select = [
+extend-select = [
   "I",     # Isort
   "F401",  # Unused imports
   "FA100", # future-rewritable-type-annotation
