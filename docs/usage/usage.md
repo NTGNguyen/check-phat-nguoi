@@ -33,19 +33,19 @@ python -m venv .venv
 === "Windows"
 
     ```powershell
-    .venv/Scripts/activate
+    .venv\Scripts\activate
     ```
 
-=== "Linux / MacOS"
+=== "Unix / MacOS"
 
     ```sh
-    source .venv/bin/active
+    source .venv/bin/activate
     ```
 
 #### Cài đặt dependencies
 
 ```sh
-pip install -e -r requirements.txt
+pip install -e . -r requirements.txt
 ```
 
 ???+note

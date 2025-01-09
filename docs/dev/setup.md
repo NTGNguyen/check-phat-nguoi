@@ -1,18 +1,22 @@
+# Setup
+
+## Run check-phat-nguoi
+
 ```sh
-uv sync # no need uv venv
-
-.venv/Scripts/activate # or "source .venv/bin/active" on Linux
-
-# uv can detect env with "uv run", not need active venv
-pre-commit install
-
-check-phat-nguoi
-generate-schemas
-generate-config-schema
+just
 ```
 
-???+note
-    if no activating venv, you must prepend `uv run` before commands
+## Export schemas
+
+```sh
+just s
+```
+
+## Build web
+
+```sh
+just w
+```
 
 # Test on production with python 3.10
 
@@ -25,4 +29,4 @@ check-phat-nguoi
 ```
 
 ???+note
-    Can export var env `VIRTUAL_ENV=.venv-3.10`
+Can export var env `VIRTUAL_ENV=.venv-3.10`
