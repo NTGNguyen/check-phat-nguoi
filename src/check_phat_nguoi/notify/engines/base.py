@@ -6,7 +6,7 @@ from typing import Final, Self
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.typedefs import LooseHeaders
 
-from check_phat_nguoi.config_reader import config
+from check_phat_nguoi.config.config_reader import config
 
 logger = getLogger(__name__)
 

@@ -2,7 +2,7 @@ from json import dumps
 
 from pydantic import TypeAdapter
 
-from check_phat_nguoi.config import ConfigDTO
+from check_phat_nguoi import ConfigDTO
 from generate_schemas.utils.constants import CONFIG_SCHEMA_PATH
 
 

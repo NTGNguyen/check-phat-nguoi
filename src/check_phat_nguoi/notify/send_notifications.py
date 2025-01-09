@@ -2,7 +2,7 @@ from asyncio import gather
 from logging import getLogger
 
 from check_phat_nguoi.config import BaseNotificationDTO, TelegramNotificationDTO
-from check_phat_nguoi.config_reader import config
+from check_phat_nguoi.config.config_reader import config
 from check_phat_nguoi.context import plates_context
 
 from .engines.telegram import TelegramNotificationEngine

@@ -8,7 +8,7 @@ from aiohttp import ClientSession, ClientTimeout
 from aiohttp.typedefs import LooseHeaders
 
 from check_phat_nguoi.config import PlateInfoDTO
-from check_phat_nguoi.config_reader import config
+from check_phat_nguoi.config.config_reader import config
 from check_phat_nguoi.context import PlateInfoModel
 
 logger = getLogger(__name__)

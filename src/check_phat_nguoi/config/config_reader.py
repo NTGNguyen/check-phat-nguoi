@@ -6,8 +6,8 @@ from pydantic import ValidationError
 
 from check_phat_nguoi.constants.config import CONFIG_PATHS
 
-from .config.dto import ConfigDTO
-from .config.exceptions import NoConfigFoundException
+from .dto import ConfigDTO
+from .exceptions import NoConfigFoundException
 
 
 def _config_reader() -> ConfigDTO:
