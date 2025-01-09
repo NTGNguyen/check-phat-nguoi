@@ -1,8 +1,9 @@
 default: run-check-phat-nguoi
 
 alias s := gen-schemas
-alias w := build-web
-alias wd := web-dev
+alias w := web-dev
+alias wb := build-web
+alias p := precommit-run-all
 
 restore-dependencies:
   [ -d '.venv' ] || uv sync --frozen --all-groups
@@ -32,4 +33,7 @@ build-web-schemas: restore-dependencies gen-schemas
 build-web: restore-dependencies build-web-mkdocs build-web-schemas
 
 clean: restore-dependencies
-  uvx cleanpy@0.5.1 . --include-envs --exclude-envs
+  uvx cleanpy@0.5.1 .
+
+precommit-run-all: restore-dependencies
+  uvx run pre-commit run -a
