@@ -2,7 +2,7 @@ default: run-check-phat-nguoi
 
 alias s := gen-schemas
 alias w := build-web
-alias wd:= web-dev
+alias wd := web-dev
 
 restore-dependencies:
   [ -d '.venv' ] || uv sync --frozen --all-groups
@@ -30,3 +30,6 @@ build-web-schemas: restore-dependencies gen-schemas
   uv run generate-schema-doc ./schemas/ ./site/schemas/
 
 build-web: restore-dependencies build-web-mkdocs build-web-schemas
+
+clean: restore-dependencies
+  uvx cleanpy@0.5.1 . --include-envs --exclude-envs
