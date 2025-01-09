@@ -11,11 +11,11 @@ gen-config-schema:
   uv run gen-config-schema --frozen
 
 web-mkdocs:
-  mkdocs build
+  uv run mkdocs build
 
 web-schemas:
   mkdir ./schemas_site
-  generate-schema-doc ./schemas/ ./schemas_site/
+  uv run generate-schema-doc ./schemas/ ./schemas_site/
 
 web:
   just web-mkdocs
