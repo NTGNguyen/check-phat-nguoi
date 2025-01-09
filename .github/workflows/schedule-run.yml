@@ -40,5 +40,5 @@ jobs:
         shell: bash
         run: curl -o config.json ${{ env.config }}
 
-      - name: Run
-        run: just run
+      - name: Run check phat nguoi
+        run: just
