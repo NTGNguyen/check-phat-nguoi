@@ -59,3 +59,5 @@ plugins:
         - stemmer
         - stopWordFilter
         - trimmer
+exclude_docs: |
+  /schemas/
