@@ -1,8 +1,11 @@
 name: Schedule Run
+
+# user-config start
 on:
   # schedule:
   #   - cron: 0 0 * * 0
   workflow_dispatch:
+# user-config end
 
 jobs:
   run:
@@ -26,6 +29,8 @@ jobs:
           cache: 'pip'
           cache-dependency-path: 'requirements.txt'
 
+      - uses: extractions/setup-just@v2
+
       - name: Install production deps
         run: uv sync --no-dev
 
@@ -35,4 +40,4 @@ jobs:
         run: curl -o config.json ${{ env.config }}
 
       - name: Run
-        run: uv run check-phat-nguoi
+        run: just run

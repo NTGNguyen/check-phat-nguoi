@@ -13,7 +13,7 @@ Go to website [...](...) for documentation
 
 ### DISCLAIMER
 
-[disclaimer](./docs/disclaimer.md)
+[disclaimer](./docs/other/disclaimer.md)
 
 ---
 

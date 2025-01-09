@@ -50,8 +50,11 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.keys
   - pymdownx.mark
-  - attr_list
   - md_in_html
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - pymdownx.emoji
 plugins:
   - search:
       lang: vi
@@ -59,5 +62,19 @@ plugins:
         - stemmer
         - stopWordFilter
         - trimmer
-exclude_docs: |
-  /schemas/
+  - include-markdown
+
+nav:
+  - 'Trang chủ':
+      - index.md
+  - 'Sử dụng':
+      - usage/usage.md
+      - usage/schedule-run.md
+  - 'Config schema': 'https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html'
+  - 'Development':
+      - dev/setup.md
+      - dev/csgt_vn.md
+      - dev/checkphatnguoi_vn.md
+  - 'Khác':
+      - other/references.md
+      - other/disclaimer.md
