@@ -7,3 +7,6 @@ extend-select = [
   "FA100", # future-rewritable-type-annotation
   "FA102", # future-required-type-annotation
 ]
+extend-ignore = [
+  "F403", # import *
+]
