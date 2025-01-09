@@ -26,8 +26,7 @@ jobs:
           python-version-file: '.python-version'
           cache: 'pip'
           cache-dependency-path: |
-            requirements.txt
-            uv.lock
+            requirements/requirements-dev.txt
 
       - name: Install deps including dev
         run: uv sync

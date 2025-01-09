@@ -60,7 +60,28 @@ repos:
       - id: uv-lock # update lock file
       - id: uv-export # export lock file to requirements.txt
         args:
-          ['--no-dev', '--frozen', '--output-file=requirements.txt', '--quiet']
+          [
+            '--no-dev',
+            '--frozen',
+            '--output-file=requirements/requirements.txt',
+            '--quiet',
+          ]
+      - id: uv-export # export lock file to requirements.txt for dev deps
+        args:
+          [
+            '--frozen',
+            '--output-file=requirements/requirements-dev.txt',
+            '--quiet',
+          ]
+      - id: uv-export # export lock file to requirements.txt for "build-website" group deps
+        args:
+          [
+            '--only-group',
+            'build-website',
+            '--frozen',
+            '--output-file=requirements/requirements-build-website.txt',
+            '--quiet',
+          ]
 
   - repo: local
     hooks:

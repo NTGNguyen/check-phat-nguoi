@@ -45,7 +45,7 @@ python -m venv .venv
 #### Cài đặt dependencies
 
 ```sh
-pip install -e . -r requirements.txt
+pip install -e . -r requirements/requirements.txt
 ```
 
 ???+note
