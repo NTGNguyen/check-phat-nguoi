@@ -27,7 +27,7 @@ build-web-mkdocs: restore-dependencies
 build-web-schemas: restore-dependencies gen-schemas
   rm ./site/schemas/ -rf
   mkdir ./site/schemas/ -p
-  uv run generate-schema-doc ./schemas/ ./site/schemas/
+  uv run generate-schema-doc --config-file jsfh-conf.yaml ./schemas/ ./site/schemas/
 
 build-web: restore-dependencies build-web-mkdocs build-web-schemas
 
