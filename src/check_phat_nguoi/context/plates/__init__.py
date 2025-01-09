@@ -3,17 +3,15 @@ from .context import (
     plates_context,
 )
 from .models import (
-    PlateInfoModel,
-    PlatesModel,
-    ResolutionOfficeModel,
-    ViolationModel,
+    PlateDetail,
+    ResolutionOffice,
+    Violation,
 )
 
 __all__ = [
     "PlatesContext",
     "plates_context",
-    "PlatesModel",
-    "PlateInfoModel",
-    "ViolationModel",
-    "ResolutionOfficeModel",
+    "PlateDetail",
+    "Violation",
+    "ResolutionOffice",
 ]

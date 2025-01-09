@@ -5,10 +5,10 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from .resolution_office import ResolutionOfficeModel
+from .resolution_office import ResolutionOffice
 
 
-class ViolationModel(BaseModel):
+class Violation(BaseModel):
     type: Literal["Ô tô", "Xe máy", "Xe đạp điện"] | None = Field(
         description="Loại phương tiện giao thông", default=None
     )
@@ -21,6 +21,6 @@ class ViolationModel(BaseModel):
     enforcement_unit: str | None = Field(
         description="Đơn vị phát hiện vi phạm", default=None
     )
-    resolution_office: tuple[ResolutionOfficeModel, ...] | None = Field(
+    resolution_office: tuple[ResolutionOffice, ...] | None = Field(
         description="Nơi giải quyết vụ việc", default=None
     )

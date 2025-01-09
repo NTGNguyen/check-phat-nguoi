@@ -9,7 +9,7 @@
       "title": "ApiEnum",
       "type": "string"
     },
-    "PlateInfoDTO": {
+    "PlateInfo": {
       "properties": {
         "plate": {
           "description": "Biển số",
@@ -74,10 +74,10 @@
         "plate",
         "type"
       ],
-      "title": "PlateInfoDTO",
+      "title": "Thông tin thiết lập cho biển số",
       "type": "object"
     },
-    "TelegramNotificationDTO": {
+    "TelegramNotificationConfig": {
       "properties": {
         "enabled": {
           "default": true,
@@ -86,17 +86,17 @@
           "type": "boolean"
         },
         "telegram": {
-          "$ref": "#/$defs/TelegramNotificationEngineDTO",
-          "description": "Gửi thông báo đến telegram"
+          "$ref": "#/$defs/TelegramNotificationEngineConfig",
+          "description": "Telegram"
         }
       },
       "required": [
         "telegram"
       ],
-      "title": "TelegramNotificationDTO",
+      "title": "Telegram và kích hoạt",
       "type": "object"
     },
-    "TelegramNotificationEngineDTO": {
+    "TelegramNotificationEngineConfig": {
       "properties": {
         "botToken": {
           "description": "Bot token Telegram",
@@ -119,7 +119,7 @@
         "botToken",
         "chatId"
       ],
-      "title": "TelegramNotificationEngineDTO",
+      "title": "Telegram",
       "type": "object"
     },
     "VehicleTypeEnum": {
@@ -136,18 +136,26 @@
     "plates": {
       "description": "Danh sách các biển xe",
       "items": {
-        "$ref": "#/$defs/PlateInfoDTO"
+        "$ref": "#/$defs/PlateInfo"
       },
-      "title": "Plates",
+      "title": "Danh sách biển xe",
       "type": "array"
     },
     "notifications": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/TelegramNotificationConfig"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
       "description": "Danh sách các thiết lập để thông báo",
-      "items": {
-        "$ref": "#/$defs/TelegramNotificationDTO"
-      },
-      "title": "Notifications",
-      "type": "array"
+      "title": "Danh sách thông báo"
     },
     "api": {
       "$ref": "#/$defs/ApiEnum",
@@ -157,29 +165,38 @@
     },
     "unpaidOnly": {
       "default": true,
-      "description": "Chỉ hiển thị thông tin vi phạm chưa nộp phạt",
-      "title": "Unpaidonly",
+      "description": "Chỉ lọc các thông tin vi phạm chưa nộp phạt",
+      "title": "Lọc chưa nộp phạt",
       "type": "boolean"
     },
     "verbose": {
       "default": false,
       "description": "Hiển thị tất cả thông tin có thể hiển thị",
-      "title": "Verbose",
+      "title": "Hiển thị đầy đủ thông tin",
       "type": "boolean"
     },
     "requestTimeout": {
       "default": 10,
       "description": "Thời gian (s) để gửi request đến server API và gửi notify message",
-      "title": "Requesttimeout",
+      "title": "Thời gian request",
+      "type": "integer"
+    },
+    "requestPerTime": {
+      "default": 5,
+      "description": "Số lượng request tối chạy song song",
+      "exclusiveMinimum": 0,
+      "title": "Số lượng request",
       "type": "integer"
     },
     "detailLog": {
-      "default": true,
-      "title": "Detaillog",
+      "default": false,
+      "description": "Log chi tiết",
+      "title": "Log chi tiết",
       "type": "boolean"
     },
     "logLevel": {
       "default": "WARNING",
+      "description": "Mức độ log",
       "enum": [
         "NOTSET",
         "DEBUG",
@@ -188,14 +205,13 @@
         "ERROR",
         "CRITICAL"
       ],
-      "title": "Loglevel",
+      "title": "Mức độ log",
       "type": "string"
     }
   },
   "required": [
-    "plates",
-    "notifications"
+    "plates"
   ],
-  "title": "ConfigDTO",
+  "title": "Config",
   "type": "object"
 }

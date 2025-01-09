@@ -6,15 +6,15 @@ from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
 from check_phat_nguoi.types import (
+    ApiEnum,
     VehicleStrType,
 )
 from check_phat_nguoi.types.vehicle_type import VehicleTypeEnum
 
-from .api import ApiEnum
 
-
-class PlateInfoDTO(BaseModel):
+class PlateInfo(BaseModel):
     model_config = ConfigDict(
+        title="Thông tin thiết lập cho biển số",
         alias_generator=to_camel,
     )
 
@@ -45,9 +45,9 @@ class PlateInfoDTO(BaseModel):
 
     @override
     def __eq__(self, other: Any):
-        if isinstance(other, PlateInfoDTO):
+        if isinstance(other, PlateInfo):
             return self.plate == other.plate
         return False
 
 
-__all__ = ["PlateInfoDTO"]
+__all__ = ["PlateInfo"]

@@ -9,17 +9,17 @@ from typing import Dict, Final, override
 
 from aiohttp import ClientError
 
-from check_phat_nguoi.config import PlateInfoDTO
+from check_phat_nguoi.config import PlateInfo
 from check_phat_nguoi.constants import DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT
 from check_phat_nguoi.constants import (
     GET_DATA_API_URL_CHECKPHATNGUOI as API_URL,
 )
 from check_phat_nguoi.constants import OFFICE_NAME_PATTERN
 from check_phat_nguoi.context import (
-    PlateInfoModel,
-    ResolutionOfficeModel,
-    ViolationModel,
+    ResolutionOffice,
+    Violation,
 )
+from check_phat_nguoi.context.plates.models.plate_detail import PlateDetail
 from check_phat_nguoi.types import get_vehicle_enum
 
 from .base import BaseGetDataEngine
@@ -33,8 +33,8 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
     def __init__(self) -> None:
         super().__init__(session_header=self.headers)
 
-    async def _get_data_request(self, plate: PlateInfoDTO) -> Dict | None:
-        payload: Final[dict[str, str]] = {"bienso": plate.plate}
+    async def _get_data_request(self, plate_info: PlateInfo) -> Dict | None:
+        payload: Final[dict[str, str]] = {"bienso": plate_info.plate}
         try:
             async with self.session.post(
                 API_URL,
@@ -42,33 +42,33 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
             ) as response:
                 response.raise_for_status()
                 response_data = await response.read()
-                logger.info(f"Plate {plate.plate}: Get data successfully")
+                logger.info(f"Plate {plate_info.plate}: Get data successfully")
                 return json.loads(response_data)
         except TimeoutError as e:
             logger.error(
-                f"Plate {plate.plate}: Time out ({self.timeout}s) getting data from API {API_URL}\n{e}"
+                f"Plate {plate_info.plate}: Time out ({self.timeout}s) getting data from API {API_URL}\n{e}"
             )
         except (ClientError, Exception) as e:
             logger.error(
-                f"Plate {plate.plate}: Error occurs while getting data from API {API_URL}\n{e}"
+                f"Plate {plate_info.plate}: Error occurs while getting data from API {API_URL}\n{e}"
             )
 
     @override
-    async def get_data(self, plate: PlateInfoDTO) -> PlateInfoModel | None:
-        plate_info: Dict | None = await self._get_data_request(plate)
-        if plate_info is None:
+    async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None:
+        plate_data: Dict | None = await self._get_data_request(plate_info)
+        if plate_data is None:
             return
-        return PlateInfoModel(
-            plate=plate.plate,
-            owner=plate.owner,
-            type=get_vehicle_enum(plate.type),
-            violation=self.get_plate_violation(plate_violation_dict=plate_info),
+        return PlateDetail(
+            plate=plate_info.plate,
+            owner=plate_info.owner,
+            type=get_vehicle_enum(plate_info.type),
+            violation=self.get_plate_violation(plate_data),
         )
 
     @staticmethod
     def get_plate_violation(
         plate_violation_dict: Dict | None,
-    ) -> tuple[ViolationModel, ...]:
+    ) -> tuple[Violation, ...]:
         if plate_violation_dict is None:
             return ()
         if plate_violation_dict["data"] is None:
@@ -78,7 +78,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
 
         def _create_resolution_office_mode(
             resolution_offices: list[str],
-        ) -> tuple[ResolutionOfficeModel, ...]:
+        ) -> tuple[ResolutionOffice, ...]:
             parsed_office_dict: Dict[str, Dict] = {}
             current_name = None
             # FIXME: Declare Type for typesafety, use ResolutionOfficeModel
@@ -98,7 +98,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
                         )[1].strip()
 
             return tuple(
-                ResolutionOfficeModel(
+                ResolutionOffice(
                     location_name=location_name,
                     address=location_detail["Address"],
                     phone=location_detail["Phone"],
@@ -107,7 +107,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
             )
 
         def _create_violation_model(data: Dict):
-            return ViolationModel(
+            return Violation(
                 type=data["Loại phương tiện"],
                 date=datetime.strptime(data["Thời gian vi phạm"], DATETIME_FORMAT),
                 location=data["Địa điểm vi phạm"],

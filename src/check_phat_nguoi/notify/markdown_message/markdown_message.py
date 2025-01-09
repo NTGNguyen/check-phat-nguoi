@@ -6,20 +6,20 @@ from check_phat_nguoi.constants import (
     RESOLUTION_LOCATION_MARKDOWN_PATTERN,
 )
 from check_phat_nguoi.context import (
-    PlateInfoModel,
-    ResolutionOfficeModel,
+    PlateDetail,
+    ResolutionOffice,
 )
 
-from .models import MessagesModel
+from .models import MarkdownMessageDetail
 
 
 class MarkdownMessage:
-    def __init__(self, plate_info: PlateInfoModel) -> None:
-        self.plate_info: PlateInfoModel = plate_info
+    def __init__(self, plate_detail: PlateDetail) -> None:
+        self.plate_detail: PlateDetail = plate_detail
 
     @staticmethod
     def _format_location(
-        locations_info: tuple[ResolutionOfficeModel, ...] | None,
+        locations_info: tuple[ResolutionOffice, ...] | None,
     ) -> str:
         if locations_info is None:
             return ""
@@ -40,10 +40,10 @@ class MarkdownMessage:
         return tuple(
             [
                 MESSAGE_MARKDOWN_PATTERN.substitute(
-                    plate=self.plate_info.plate,
+                    plate=self.plate_detail.plate,
                     owner="Không"
-                    if not self.plate_info.owner
-                    else self.plate_info.owner,
+                    if not self.plate_detail.owner
+                    else self.plate_detail.owner,
                     action=vio.action,
                     status="Đã xử phạt" if vio.status else "Chưa xử phạt",
                     date=f"{vio.date}",
@@ -51,13 +51,13 @@ class MarkdownMessage:
                     enforcement_unit=vio.enforcement_unit,
                     resolution_locations=self._format_location(vio.resolution_office),
                 )
-                for vio in self.plate_info.violation
+                for vio in self.plate_detail.violation
                 if not vio.status or config.unpaid_only
             ]
         )
 
-    def generate_message(self) -> MessagesModel:
-        return MessagesModel(
-            plate=self.plate_info.plate,
+    def generate_message(self) -> MarkdownMessageDetail:
+        return MarkdownMessageDetail(
+            plate=self.plate_detail.plate,
             violations=self._format_message(),
         )

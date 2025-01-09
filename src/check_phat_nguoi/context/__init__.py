@@ -1,17 +1,15 @@
 from .plates import (
-    PlateInfoModel,
+    PlateDetail,
     PlatesContext,
-    PlatesModel,
-    ResolutionOfficeModel,
-    ViolationModel,
+    ResolutionOffice,
+    Violation,
     plates_context,
 )
 
 __all__ = [
     "PlatesContext",
     "plates_context",
-    "PlatesModel",
-    "PlateInfoModel",
-    "ViolationModel",
-    "ResolutionOfficeModel",
+    "PlateDetail",
+    "Violation",
+    "ResolutionOffice",
 ]

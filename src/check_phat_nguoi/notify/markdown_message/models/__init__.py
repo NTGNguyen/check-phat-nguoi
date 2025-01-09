@@ -1,3 +1,3 @@
-from .message import MessagesModel
+from .message_detail import MarkdownMessageDetail
 
-__all__ = ["MessagesModel"]
+__all__ = ["MarkdownMessageDetail"]

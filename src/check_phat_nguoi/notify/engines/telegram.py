@@ -7,10 +7,10 @@ from typing import Final
 
 from aiohttp import ClientError
 
-from check_phat_nguoi.config import TelegramNotificationEngineDTO
+from check_phat_nguoi.config import TelegramNotificationEngineConfig
 from check_phat_nguoi.constants import SEND_MESSAGE_API_URL_TELEGRAM as API_URL
 
-from ..markdown_message import MessagesModel
+from ..markdown_message import MarkdownMessageDetail
 from .base import BaseNotificationEngine
 
 logger = getLogger(__name__)
@@ -27,8 +27,8 @@ class TelegramNotificationEngine(BaseNotificationEngine):
 
     async def send(
         self,
-        telegram: TelegramNotificationEngineDTO,
-        messages: tuple[MessagesModel, ...],
+        telegram: TelegramNotificationEngineConfig,
+        messages: tuple[MarkdownMessageDetail, ...],
     ) -> None:
         async def _send_message(message: str, plate: str) -> None:
             logger.info(
