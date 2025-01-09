@@ -8,5 +8,5 @@ extend-select = [
   "FA102", # future-required-type-annotation
 ]
 extend-ignore = [
-  "F403", # import *
+  # "F403", # import *
 ]

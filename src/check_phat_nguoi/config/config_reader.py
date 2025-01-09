@@ -18,7 +18,7 @@ def _config_reader() -> ConfigDTO:
                     data = load(config)
                     return ConfigDTO(**data)
             except ValidationError as e:
-                print(f"Failed to read the config!")
+                print("Failed to read the config!")
                 print(e)
                 exit(1)
 

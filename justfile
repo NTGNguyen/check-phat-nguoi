@@ -22,3 +22,4 @@ web:
   just web-schemas
   mkdir ./site/schemas/
   mv ./schemas_site/* ./site/schemas/
+  rm ./schemas_site/
