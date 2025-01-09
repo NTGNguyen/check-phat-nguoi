@@ -1,27 +1,32 @@
-restore:
-  uv sync --frozen --all-groups
+default: run-check-phat-nguoi
 
-run:
+alias s := gen-schemas
+alias w := build-web
+alias wd:= web-dev
+
+restore-dependencies:
+  [ -d '.venv' ] || uv sync --frozen --all-groups
+
+run-check-phat-nguoi: restore-dependencies
   uv run check-phat-nguoi --frozen
 
-gen-schemas:
-  just gen-config-schema
+gen-schemas: restore-dependencies
+  uv run generate-schemas --frozen
 
-gen-config-schema:
+gen-config-schema: restore-dependencies
   uv run gen-config-schema --frozen
 
-web-mkdocs:
+web-dev: restore-dependencies
+  rm ./site/ -rf
+  uv run mkdocs serve
+
+build-web-mkdocs: restore-dependencies
   rm ./site/ -rf
   uv run mkdocs build
 
-web-schemas:
-  rm ./schemas_site/ -rf
-  mkdir ./schemas_site
-  uv run generate-schema-doc ./schemas/ ./schemas_site/
+build-web-schemas: restore-dependencies gen-schemas
+  rm ./site/schemas/ -rf
+  mkdir ./site/schemas/ -p
+  uv run generate-schema-doc ./schemas/ ./site/schemas/
 
-web:
-  just web-mkdocs
-  just web-schemas
-  mkdir ./site/schemas/
-  mv ./schemas_site/* ./site/schemas/
-  rm ./schemas_site/ -r
+build-web: restore-dependencies build-web-mkdocs build-web-schemas

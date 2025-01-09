@@ -48,7 +48,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build website
-        run: just web
+        run: just w
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
