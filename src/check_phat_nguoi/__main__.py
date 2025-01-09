@@ -3,8 +3,9 @@ from logging import getLogger
 
 from truststore import inject_into_ssl
 
-from check_phat_nguoi import GetData, SendNotifications
 from check_phat_nguoi.config.config_reader import config
+from check_phat_nguoi.get_data import GetData
+from check_phat_nguoi.notify import SendNotifications
 
 from .utils.setup_logger import setup_logger
 

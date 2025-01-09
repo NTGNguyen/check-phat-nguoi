@@ -3,7 +3,8 @@ from json import dumps
 from pydantic import TypeAdapter
 
 from check_phat_nguoi import Config
-from generate_schemas.utils.constants import CONFIG_SCHEMA_PATH
+
+from .constants import CONFIG_SCHEMA_PATH
 
 
 def generate_config_schema():
