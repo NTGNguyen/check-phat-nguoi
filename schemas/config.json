@@ -25,14 +25,19 @@
           "anyOf": [
             {
               "enum": [
+                1,
+                2,
+                3
+              ],
+              "type": "integer"
+            },
+            {
+              "enum": [
                 "car",
                 "motorbike",
                 "electric_motorbike"
               ],
               "type": "string"
-            },
-            {
-              "$ref": "#/$defs/VehicleTypeEnum"
             }
           ],
           "description": "Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
@@ -131,15 +136,6 @@
       ],
       "title": "Telegram",
       "type": "object"
-    },
-    "VehicleTypeEnum": {
-      "enum": [
-        1,
-        2,
-        3
-      ],
-      "title": "VehicleTypeEnum",
-      "type": "integer"
     }
   },
   "properties": {

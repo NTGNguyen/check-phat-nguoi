@@ -6,9 +6,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from check_phat_nguoi.types import (
     ApiEnum,
-    VehicleStrType,
+    VehicleType,
 )
-from check_phat_nguoi.types.vehicle_type import VehicleTypeEnum
 
 
 class PlateInfo(BaseModel):
@@ -22,7 +21,7 @@ class PlateInfo(BaseModel):
         title="Biển số",
         examples=["60A64685", "98-A-56604", "30-F88251", "59XB-00000"],
     )
-    type: VehicleStrType | VehicleTypeEnum = Field(
+    type: VehicleType = Field(
         description="Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
         title="Loại phương tiện",
     )
