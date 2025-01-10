@@ -88,7 +88,7 @@ repos:
       - id: generate-config-schemas
         name: Generate Config Schemas
         language: system
-        entry: uv run generate-config-schema # Require venv activated
+        entry: uv run generate-config-schema
         files: '^src/check_phat_nguoi/config/'
         types: [file, python]
         stages:

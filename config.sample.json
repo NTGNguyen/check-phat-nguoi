@@ -31,14 +31,14 @@
   "notifications": [
     {
       "telegram": {
-        "botToken": "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB",
-        "chatId": "-1001790012349"
+        "bot_token": "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB",
+        "chat_id": "-1001790012349"
       },
       "enabled": true
     }
   ],
-  "haventPaidOnly": true,
+  "havent_paid_only": true,
   "verbose": true,
-  "detailLog": false,
-  "logLevel": "INFO"
+  "detail_log": false,
+  "log_level": "INFO"
 }

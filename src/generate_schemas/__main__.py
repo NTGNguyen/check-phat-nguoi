@@ -1,4 +1,4 @@
-from generate_schemas.config import generate_config_schema
+from . import generate_config_schema
 
 
 def main() -> None:
@@ -7,5 +7,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-__all__ = []

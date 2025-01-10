@@ -98,26 +98,26 @@
     },
     "TelegramNotificationEngineConfig": {
       "properties": {
-        "botToken": {
+        "bot_token": {
           "description": "Bot token Telegram",
           "examples": [
             "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB"
           ],
-          "title": "Bottoken",
+          "title": "Bot Token",
           "type": "string"
         },
-        "chatId": {
+        "chat_id": {
           "description": "Chat ID Telegram",
           "examples": [
             "-1001790012349"
           ],
-          "title": "Chatid",
+          "title": "Chat Id",
           "type": "string"
         }
       },
       "required": [
-        "botToken",
-        "chatId"
+        "bot_token",
+        "chat_id"
       ],
       "title": "Telegram",
       "type": "object"
@@ -163,7 +163,7 @@
       "description": "Sử dụng API từ trang web nào (mặc định sử dụng API từ trang checkphatnguoi.vn)",
       "title": "API"
     },
-    "unpaidOnly": {
+    "unpaid_only": {
       "default": true,
       "description": "Chỉ lọc các thông tin vi phạm chưa nộp phạt",
       "title": "Lọc chưa nộp phạt",
@@ -175,26 +175,26 @@
       "title": "Hiển thị đầy đủ thông tin",
       "type": "boolean"
     },
-    "requestTimeout": {
+    "request_timeout": {
       "default": 10,
       "description": "Thời gian (s) để gửi request đến server API và gửi notify message",
       "title": "Thời gian request",
       "type": "integer"
     },
-    "requestPerTime": {
+    "request_per_time": {
       "default": 5,
       "description": "Số lượng request tối chạy song song",
-      "exclusiveMinimum": 0,
+      "minimum": 0,
       "title": "Số lượng request",
       "type": "integer"
     },
-    "detailLog": {
+    "detail_log": {
       "default": false,
       "description": "Log chi tiết",
       "title": "Log chi tiết",
       "type": "boolean"
     },
-    "logLevel": {
+    "log_level": {
       "default": "WARNING",
       "description": "Mức độ log",
       "enum": [

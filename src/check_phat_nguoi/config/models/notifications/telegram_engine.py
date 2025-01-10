@@ -1,7 +1,6 @@
 from re import match as re_match
 
 from pydantic import ConfigDict, Field, field_validator
-from pydantic.alias_generators import to_camel
 
 from .base_engine import BaseNotificationEngineConfig
 
@@ -9,18 +8,16 @@ from .base_engine import BaseNotificationEngineConfig
 class TelegramNotificationEngineConfig(BaseNotificationEngineConfig):
     model_config = ConfigDict(
         title="Telegram",
-        alias_generator=to_camel,
+        frozen=True,
     )
 
     bot_token: str = Field(
         description="Bot token Telegram",
         examples=["2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB"],
-        frozen=True,
     )
     chat_id: str = Field(
         description="Chat ID Telegram",
         examples=["-1001790012349"],
-        frozen=True,
     )
 
     @field_validator("bot_token", mode="after")

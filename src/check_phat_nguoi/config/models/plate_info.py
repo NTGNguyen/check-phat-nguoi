@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Any, override
 
 from pydantic import BaseModel, ConfigDict, Field
-from pydantic.alias_generators import to_camel
 
 from check_phat_nguoi.types import (
     ApiEnum,
@@ -15,7 +14,7 @@ from check_phat_nguoi.types.vehicle_type import VehicleTypeEnum
 class PlateInfo(BaseModel):
     model_config = ConfigDict(
         title="Thông tin thiết lập cho biển số",
-        alias_generator=to_camel,
+        frozen=True,
     )
 
     plate: str = Field(
