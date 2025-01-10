@@ -8,18 +8,6 @@
       "title": "ApiEnum",
       "type": "string"
     },
-    "BaseNotificationConfig": {
-      "properties": {
-        "enabled": {
-          "default": true,
-          "description": "Kích hoạt",
-          "title": "Enabled",
-          "type": "boolean"
-        }
-      },
-      "title": "Lớp cơ sở notification bao gồm trường enabled cho các lớp kế thừa",
-      "type": "object"
-    },
     "PlateInfo": {
       "properties": {
         "plate": {
@@ -99,6 +87,51 @@
       "title": "Thông tin thiết lập cho biển số",
       "type": "object"
     },
+    "TelegramNotificationConfig": {
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "Kích hoạt",
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "telegram": {
+          "$ref": "#/$defs/TelegramNotificationEngineConfig",
+          "description": "Telegram"
+        }
+      },
+      "required": [
+        "telegram"
+      ],
+      "title": "Telegram và kích hoạt",
+      "type": "object"
+    },
+    "TelegramNotificationEngineConfig": {
+      "properties": {
+        "bot_token": {
+          "description": "Bot token Telegram",
+          "examples": [
+            "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB"
+          ],
+          "title": "Bot Token",
+          "type": "string"
+        },
+        "chat_id": {
+          "description": "Chat ID Telegram",
+          "examples": [
+            "-1001790012349"
+          ],
+          "title": "Chat Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bot_token",
+        "chat_id"
+      ],
+      "title": "Telegram",
+      "type": "object"
+    },
     "VehicleTypeEnum": {
       "enum": [
         1,
@@ -122,7 +155,7 @@
     "notifications": {
       "description": "Danh sách các thiết lập để thông báo",
       "items": {
-        "$ref": "#/$defs/BaseNotificationConfig"
+        "$ref": "#/$defs/TelegramNotificationConfig"
       },
       "title": "Danh sách thông báo",
       "type": "array"
