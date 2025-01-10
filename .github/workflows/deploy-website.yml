@@ -8,6 +8,7 @@ on:
       - jsfh-conf.yaml
       - mkdocs.yml
       - schemas/**
+      - config.sample.json
   workflow_dispatch:
 
 permissions:
