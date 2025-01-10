@@ -4,7 +4,9 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from check_phat_nguoi.types import ApiEnum, LogLevelType
 
-from .notifications import TelegramNotificationConfig
+from .notifications.base_notification import (
+    BaseNotificationConfig,
+)
 from .plate_info import PlateInfo
 
 
@@ -15,19 +17,21 @@ class Config(BaseModel):
         frozen=True,
     )
 
-    plates: tuple[PlateInfo, ...] = Field(
+    plates_infos: tuple[PlateInfo, ...] = Field(
         title="Danh sách biển xe",
         description="Danh sách các biển xe",
+        min_length=1,
     )
-    notifications: tuple[TelegramNotificationConfig, ...] | None = Field(
+    notifications: tuple[BaseNotificationConfig, ...] = Field(
         title="Danh sách thông báo",
         description="Danh sách các thiết lập để thông báo",
-        default=None,
+        default_factory=tuple,
     )
-    api: ApiEnum = Field(
+    api: tuple[ApiEnum, ...] | ApiEnum = Field(
         title="API",
-        description="Sử dụng API từ trang web nào (mặc định sử dụng API từ trang checkphatnguoi.vn)",
-        default=ApiEnum.checkphatnguoi_vn,
+        description="Sử dụng API từ trang web nào. Mặc định sẽ là list các API và dừng khi 1 API lấy dữ liệu thành công. Có thể điền giá trị trùng để retry. Hoặc chỉ dùng 1 API.",
+        default=(ApiEnum.checkphatnguoi_vn, ApiEnum.csgt_vn),
+        min_length=1,
     )
     pending_fines_only: bool = Field(
         title="Lọc chưa nộp phạt",

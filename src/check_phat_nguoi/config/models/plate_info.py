@@ -26,15 +26,16 @@ class PlateInfo(BaseModel):
         description="Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
         title="Loại phương tiện",
     )
+    api: tuple[ApiEnum, ...] | ApiEnum | None = Field(
+        description='Sử dụng API từ trang web nào. Config giống "api" ở ngoài .Để trống sẽ sử dụng API define ở scope ngoài.',
+        title="API",
+        default=None,
+        min_length=1,
+    )
     owner: str | None = Field(
         description="Ghi chú chủ sở hữu (phù hợp khi dùng nhắc ai đó với lựa chọn notifications)",
         title="Ghi chú chủ sở hữu",
         examples=["@kevinnitro", "dad"],
-        default=None,
-    )
-    api: ApiEnum | None = Field(
-        description="Sử dụng API từ trang web nào (để trống sẽ sử dụng API define ở scope ngoài)",
-        title="API",
         default=None,
     )
 

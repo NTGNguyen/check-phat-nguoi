@@ -44,6 +44,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
                 response_data = await response.read()
                 logger.info(f"Plate {plate_info.plate}: Get data successfully")
                 return json.loads(response_data)
+        # TODO: Show API enum instead of URL
         except TimeoutError as e:
             logger.error(
                 f"Plate {plate_info.plate}: Time out ({self.timeout}s) getting data from API {API_URL}\n{e}"
