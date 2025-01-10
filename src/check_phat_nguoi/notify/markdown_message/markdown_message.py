@@ -52,7 +52,7 @@ class MarkdownMessage:
                     resolution_locations=self._format_location(vio.resolution_office),
                 )
                 for vio in self.plate_detail.violation
-                if not vio.status or config.unpaid_only
+                if not vio.status or config.pending_fines_only
             ]
         )
 

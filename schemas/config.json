@@ -163,13 +163,13 @@
       "description": "Sử dụng API từ trang web nào (mặc định sử dụng API từ trang checkphatnguoi.vn)",
       "title": "API"
     },
-    "unpaid_only": {
+    "pending_fines_only": {
       "default": true,
       "description": "Chỉ lọc các thông tin vi phạm chưa nộp phạt",
       "title": "Lọc chưa nộp phạt",
       "type": "boolean"
     },
-    "verbose": {
+    "detail": {
       "default": false,
       "description": "Hiển thị tất cả thông tin có thể hiển thị",
       "title": "Hiển thị đầy đủ thông tin",

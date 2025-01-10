@@ -29,12 +29,12 @@ class Config(BaseModel):
         description="Sử dụng API từ trang web nào (mặc định sử dụng API từ trang checkphatnguoi.vn)",
         default=ApiEnum.checkphatnguoi_vn,
     )
-    unpaid_only: bool = Field(
+    pending_fines_only: bool = Field(
         title="Lọc chưa nộp phạt",
         description="Chỉ lọc các thông tin vi phạm chưa nộp phạt",
         default=True,
     )
-    verbose: bool = Field(
+    detail: bool = Field(
         title="Hiển thị đầy đủ thông tin",
         description="Hiển thị tất cả thông tin có thể hiển thị",
         default=False,
