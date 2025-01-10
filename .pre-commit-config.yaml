@@ -93,3 +93,4 @@ repos:
         types: [file, python]
         stages:
           - pre-commit
+        require_serial: true
