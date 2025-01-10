@@ -50,8 +50,9 @@ repos:
     rev: 0.30.0
     hooks:
       - id: check-github-workflows
-      - id: check-metaschema
-        files: config.sample.json
+      - id: check-jsonschema
+        files: '^(check-phat-nguoi)?(\.)?config(\.)?(sample)?\.json$'
+        args: ['--schemafile', 'schemas/config.json']
 
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.5.14

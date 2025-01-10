@@ -37,8 +37,8 @@
       "enabled": true
     }
   ],
-  "havent_paid_only": true,
-  "verbose": true,
+  "pending_fines_only": true,
+  "detail": true,
   "detail_log": false,
   "log_level": "INFO"
 }

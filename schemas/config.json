@@ -22,23 +22,6 @@
           "title": "Biển số",
           "type": "string"
         },
-        "owner": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Ghi chú chủ sở hữu (phù hợp khi dùng nhắc ai đó với lựa chọn notifications)",
-          "examples": [
-            "@kevinnitro",
-            "dad"
-          ],
-          "title": "Ghi chú chủ sở hữu"
-        },
         "type": {
           "anyOf": [
             {
@@ -55,6 +38,23 @@
           ],
           "description": "Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
           "title": "Loại phương tiện"
+        },
+        "owner": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Ghi chú chủ sở hữu (phù hợp khi dùng nhắc ai đó với lựa chọn notifications)",
+          "examples": [
+            "@kevinnitro",
+            "dad"
+          ],
+          "title": "Ghi chú chủ sở hữu"
         },
         "api": {
           "anyOf": [
