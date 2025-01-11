@@ -17,11 +17,11 @@ repos:
       - id: check-added-large-files
       - id: detect-private-key
 
-  # For upgrading python syntax
-  # - repo: https://github.com/asottile/pyupgrade
-  #   rev: v3.19.1
-  #   hooks:
-  #     - id: pyupgrade
+  # This constraint the new syntax with current python version
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.19.1
+    hooks:
+      - id: pyupgrade
 
   - repo: https://github.com/ComPWA/taplo-pre-commit
     rev: v0.9.3
