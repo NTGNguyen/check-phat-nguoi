@@ -7,7 +7,6 @@ from check_phat_nguoi.constants import (
 )
 from check_phat_nguoi.context import (
     PlateDetail,
-    ResolutionOffice,
 )
 
 from .models import MarkdownMessageDetail
@@ -19,8 +18,9 @@ class MarkdownMessage:
 
     @staticmethod
     def _format_location(
-        locations_info: tuple[ResolutionOffice, ...] | None,
+        locations_info: tuple[str, ...] | None,
     ) -> str:
+        # TODO : Fix error after changing
         if locations_info is None:
             return ""
         resolution_markdown: str = ""

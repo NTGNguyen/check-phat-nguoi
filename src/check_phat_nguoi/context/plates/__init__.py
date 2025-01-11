@@ -4,7 +4,6 @@ from .context import (
 )
 from .models import (
     PlateDetail,
-    ResolutionOffice,
     Violation,
 )
 

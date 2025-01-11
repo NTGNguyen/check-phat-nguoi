@@ -1,7 +1,6 @@
 from .plates import (
     PlateDetail,
     PlatesContext,
-    ResolutionOffice,
     Violation,
     plates_context,
 )
