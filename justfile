@@ -6,7 +6,7 @@ alias wb := build-web
 alias p := precommit-run-all
 
 restore-dependencies:
-  [ -d '.venv' ] || uv sync --frozen --all-groups
+  [ -d '.venv' ] || uv sync --frozen --all-groups && uv run pre-commit install
 
 run-check-phat-nguoi: restore-dependencies
   uv run check-phat-nguoi --frozen
