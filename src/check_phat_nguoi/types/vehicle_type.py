@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import IntEnum
-from typing import Any, Literal, TypeAlias, Union
+from typing import Any, Literal, TypeAlias
 
 
 class VehicleTypeEnum(IntEnum):
@@ -14,7 +14,7 @@ VehicleStrType: TypeAlias = Literal["car", "motorbike", "electric_motorbike"]
 
 VehicleIntType: TypeAlias = Literal[1, 2, 3]
 
-VehicleType: TypeAlias = Union[VehicleIntType, VehicleStrType]
+VehicleType: TypeAlias = VehicleIntType | VehicleStrType
 
 
 def get_vehicle_enum(type: VehicleTypeEnum | VehicleType | Any) -> VehicleTypeEnum:
