@@ -1,5 +1,5 @@
 from .api import ApiEnum
-from .log_level import LogLevelType
+from .log_level import LogLevelEnum
 from .vehicle_type import (
     VehicleIntType,
     VehicleStrType,
@@ -10,10 +10,10 @@ from .vehicle_type import (
 
 __all__ = [
     "ApiEnum",
-    "LogLevelType",
     "VehicleIntType",
     "VehicleStrType",
     "VehicleType",
     "VehicleTypeEnum",
     "get_vehicle_enum",
+    "LogLevelEnum",
 ]

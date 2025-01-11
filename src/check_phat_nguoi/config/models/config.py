@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from check_phat_nguoi.types import ApiEnum, LogLevelType
+from check_phat_nguoi.types import ApiEnum
+from check_phat_nguoi.types.log_level import LogLevelEnum
 
 from .notifications.telegram_notification import (
     TelegramNotificationConfig,
@@ -13,7 +14,6 @@ from .plate_info import PlateInfo
 class Config(BaseModel):
     model_config = ConfigDict(
         title="Config",
-        use_enum_values=True,
         frozen=True,
     )
 
@@ -60,10 +60,10 @@ class Config(BaseModel):
         description="Log chi tiết",
         default=False,
     )
-    log_level: LogLevelType = Field(
+    log_level: LogLevelEnum = Field(
         title="Mức độ log",
         description="Mức độ log",
-        default="WARNING",
+        default=LogLevelEnum.warning,
     )
 
 
