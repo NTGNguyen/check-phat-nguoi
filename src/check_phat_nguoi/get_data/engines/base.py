@@ -7,9 +7,9 @@ from typing import Final, Self
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.typedefs import LooseHeaders
 
-from check_phat_nguoi.config import PlateInfoDTO
+from check_phat_nguoi.config import PlateInfo
 from check_phat_nguoi.config.config_reader import config
-from check_phat_nguoi.context import PlateInfoModel
+from check_phat_nguoi.context import PlateDetail
 
 logger = getLogger(__name__)
 
@@ -32,4 +32,4 @@ class BaseGetDataEngine:
         logger.debug(f"Closed data engine session: {type(self).__name__}")
 
     @abstractmethod
-    async def get_data(self, plate: PlateInfoDTO) -> PlateInfoModel | None: ...
+    async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None: ...

@@ -8,23 +8,26 @@ name = "check-phat-nguoi"
 version = "0.1.0-dev.1"
 requires-python = ">=3.10"
 dependencies = [
-    "aiohttp[speedups]>=3.11.11",
-    "beautifulsoup4>=4.12.3",
-    "pydantic>=2.10.4",
-    "pytesseract>=0.3.13",
-    "truststore>=0.10.0",
+  "aiohttp[speedups]>=3.11.11",
+  "beautifulsoup4>=4.12.3",
+  "pydantic>=2.10.4",
+  "pytesseract>=0.3.13",
+  "truststore>=0.10.0",
 ]
 
 [project.scripts]
-check-phat-nguoi = "check_phat_nguoi:main"
+check-phat-nguoi = "check_phat_nguoi:__main__.main"
+generate-schemas = "generate_schemas:__main__.main"
 generate-config-schema = "generate_schemas:generate_config_schema"
-generate-schemas = "generate_schemas:main"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = [
-    "pre-commit>=4.0.1",
+dev = ["pre-commit>=4.0.1"]
+build-website = [
+  "json-schema-for-humans>=1.3.4",
+  "mkdocs-include-markdown-plugin>=7.1.2",
+  "mkdocs-material>=9.5.49",
 ]

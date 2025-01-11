@@ -2,14 +2,13 @@
   "$defs": {
     "ApiEnum": {
       "enum": [
-        "all",
         "checkphatnguoi.vn",
         "csgt.vn"
       ],
       "title": "ApiEnum",
       "type": "string"
     },
-    "PlateInfoDTO": {
+    "PlateInfo": {
       "properties": {
         "plate": {
           "description": "Biển số",
@@ -21,6 +20,52 @@
           ],
           "title": "Biển số",
           "type": "string"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "enum": [
+                1,
+                2,
+                3
+              ],
+              "type": "integer"
+            },
+            {
+              "enum": [
+                "car",
+                "motorbike",
+                "electric_motorbike"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
+          "title": "Loại phương tiện"
+        },
+        "api": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/$defs/ApiEnum"
+                  },
+                  "type": "array"
+                },
+                {
+                  "$ref": "#/$defs/ApiEnum"
+                }
+              ],
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Sử dụng API từ trang web nào. Config giống \"api\" ở ngoài .Để trống sẽ sử dụng API define ở scope ngoài.",
+          "title": "API"
         },
         "owner": {
           "anyOf": [
@@ -38,46 +83,16 @@
             "dad"
           ],
           "title": "Ghi chú chủ sở hữu"
-        },
-        "type": {
-          "anyOf": [
-            {
-              "enum": [
-                "car",
-                "motorbike",
-                "electric_motorbike"
-              ],
-              "type": "string"
-            },
-            {
-              "$ref": "#/$defs/VehicleTypeEnum"
-            }
-          ],
-          "description": "Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
-          "title": "Loại phương tiện"
-        },
-        "api": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/ApiEnum"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Sử dụng API từ trang web nào (để trống sẽ sử dụng API define ở scope ngoài)",
-          "title": "API"
         }
       },
       "required": [
         "plate",
         "type"
       ],
-      "title": "PlateInfoDTO",
+      "title": "Thông tin thiết lập cho biển số",
       "type": "object"
     },
-    "TelegramNotificationDTO": {
+    "TelegramNotificationConfig": {
       "properties": {
         "enabled": {
           "default": true,
@@ -86,100 +101,115 @@
           "type": "boolean"
         },
         "telegram": {
-          "$ref": "#/$defs/TelegramNotificationEngineDTO",
-          "description": "Gửi thông báo đến telegram"
+          "$ref": "#/$defs/TelegramNotificationEngineConfig",
+          "description": "Telegram"
         }
       },
       "required": [
         "telegram"
       ],
-      "title": "TelegramNotificationDTO",
+      "title": "Telegram và kích hoạt",
       "type": "object"
     },
-    "TelegramNotificationEngineDTO": {
+    "TelegramNotificationEngineConfig": {
       "properties": {
-        "botToken": {
+        "bot_token": {
           "description": "Bot token Telegram",
           "examples": [
             "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB"
           ],
-          "title": "Bottoken",
+          "title": "Bot Token",
           "type": "string"
         },
-        "chatId": {
+        "chat_id": {
           "description": "Chat ID Telegram",
           "examples": [
             "-1001790012349"
           ],
-          "title": "Chatid",
+          "title": "Chat Id",
           "type": "string"
         }
       },
       "required": [
-        "botToken",
-        "chatId"
+        "bot_token",
+        "chat_id"
       ],
-      "title": "TelegramNotificationEngineDTO",
+      "title": "Telegram",
       "type": "object"
-    },
-    "VehicleTypeEnum": {
-      "enum": [
-        1,
-        2,
-        3
-      ],
-      "title": "VehicleTypeEnum",
-      "type": "integer"
     }
   },
   "properties": {
-    "plates": {
+    "plates_infos": {
       "description": "Danh sách các biển xe",
       "items": {
-        "$ref": "#/$defs/PlateInfoDTO"
+        "$ref": "#/$defs/PlateInfo"
       },
-      "title": "Plates",
+      "minItems": 1,
+      "title": "Danh sách biển xe",
       "type": "array"
     },
     "notifications": {
       "description": "Danh sách các thiết lập để thông báo",
       "items": {
-        "$ref": "#/$defs/TelegramNotificationDTO"
+        "$ref": "#/$defs/TelegramNotificationConfig"
       },
-      "title": "Notifications",
+      "title": "Danh sách thông báo",
       "type": "array"
     },
     "api": {
-      "$ref": "#/$defs/ApiEnum",
-      "default": "checkphatnguoi.vn",
-      "description": "Sử dụng API từ trang web nào (mặc định sử dụng API từ trang checkphatnguoi.vn)",
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/ApiEnum"
+          },
+          "type": "array"
+        },
+        {
+          "$ref": "#/$defs/ApiEnum"
+        }
+      ],
+      "default": [
+        "checkphatnguoi.vn",
+        "csgt.vn"
+      ],
+      "description": "Sử dụng API từ trang web nào. Mặc định sẽ là list các API và dừng khi 1 API lấy dữ liệu thành công. Có thể điền giá trị trùng để retry. Hoặc chỉ dùng 1 API.",
+      "minLength": 1,
       "title": "API"
     },
-    "unpaidOnly": {
+    "pending_fines_only": {
       "default": true,
-      "description": "Chỉ hiển thị thông tin vi phạm chưa nộp phạt",
-      "title": "Unpaidonly",
+      "description": "Chỉ lọc các thông tin vi phạm chưa nộp phạt",
+      "title": "Lọc chưa nộp phạt",
       "type": "boolean"
     },
-    "verbose": {
+    "detail": {
       "default": false,
       "description": "Hiển thị tất cả thông tin có thể hiển thị",
-      "title": "Verbose",
+      "title": "Hiển thị đầy đủ thông tin",
       "type": "boolean"
     },
-    "requestTimeout": {
+    "request_timeout": {
       "default": 10,
       "description": "Thời gian (s) để gửi request đến server API và gửi notify message",
-      "title": "Requesttimeout",
+      "title": "Thời gian request",
       "type": "integer"
     },
-    "detailLog": {
-      "default": true,
-      "title": "Detaillog",
+    "request_per_time": {
+      "default": 5,
+      "description": "Số lượng request tối chạy song song",
+      "minimum": 0,
+      "title": "Số lượng request",
+      "type": "integer"
+    },
+    "detail_log": {
+      "default": false,
+      "description": "Log chi tiết",
+      "title": "Log chi tiết",
       "type": "boolean"
     },
-    "logLevel": {
+    "log_level": {
       "default": "WARNING",
+      "description": "Mức độ log",
       "enum": [
         "NOTSET",
         "DEBUG",
@@ -188,14 +218,13 @@
         "ERROR",
         "CRITICAL"
       ],
-      "title": "Loglevel",
+      "title": "Mức độ log",
       "type": "string"
     }
   },
   "required": [
-    "plates",
-    "notifications"
+    "plates_infos"
   ],
-  "title": "ConfigDTO",
+  "title": "Config",
   "type": "object"
 }

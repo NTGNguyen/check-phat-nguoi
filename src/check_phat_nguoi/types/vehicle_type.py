@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from enum import IntEnum
-from typing import Any, Literal, TypeAlias
+from typing import Any, Literal, TypeAlias, Union
 
 
 class VehicleTypeEnum(IntEnum):
@@ -10,19 +12,29 @@ class VehicleTypeEnum(IntEnum):
 
 VehicleStrType: TypeAlias = Literal["car", "motorbike", "electric_motorbike"]
 
+VehicleIntType: TypeAlias = Literal[1, 2, 3]
 
-def get_vehicle_enum(type: Any) -> VehicleTypeEnum:
+VehicleType: TypeAlias = Union[VehicleIntType, VehicleStrType]
+
+
+def get_vehicle_enum(type: VehicleTypeEnum | VehicleType | Any) -> VehicleTypeEnum:
     if isinstance(type, VehicleTypeEnum):
         return type
     match type:
-        case "car":
+        case "car" | 1:
             return VehicleTypeEnum.car
-        case "motorbike":
+        case "motorbike" | 2:
             return VehicleTypeEnum.motorbike
-        case "electric_motorbike":
+        case "electric_motorbike" | 3:
             return VehicleTypeEnum.electric_motorbike
         case _:
             raise ValueError("Unknown vehicle type")
 
 
-__all__ = ["VehicleTypeEnum", "VehicleStrType", "get_vehicle_enum"]
+__all__ = [
+    "VehicleIntType",
+    "VehicleStrType",
+    "VehicleType",
+    "VehicleTypeEnum",
+    "get_vehicle_enum",
+]

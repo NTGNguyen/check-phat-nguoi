@@ -23,6 +23,17 @@ repos:
   #   hooks:
   #     - id: pyupgrade
 
+  - repo: https://github.com/ComPWA/taplo-pre-commit
+    rev: v0.9.3
+    hooks:
+      - id: taplo-format
+      - id: taplo-lint
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.6
+    hooks:
+      - id: actionlint
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.6
     hooks:
@@ -39,8 +50,9 @@ repos:
     rev: 0.30.0
     hooks:
       - id: check-github-workflows
-      - id: check-metaschema
-        files: config.sample.json
+      - id: check-jsonschema
+        files: '^(check-phat-nguoi)?(\.)?config(\.)?(sample)?\.json$'
+        args: ['--schemafile', 'schemas/config.json']
 
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.5.14
@@ -49,15 +61,37 @@ repos:
       - id: uv-lock # update lock file
       - id: uv-export # export lock file to requirements.txt
         args:
-          ['--no-dev', '--frozen', '--output-file=requirements.txt', '--quiet']
+          [
+            '--no-dev',
+            '--frozen',
+            '--output-file=requirements/requirements.txt',
+            '--quiet',
+          ]
+      - id: uv-export # export lock file to requirements.txt for dev deps
+        args:
+          [
+            '--frozen',
+            '--output-file=requirements/requirements-dev.txt',
+            '--quiet',
+          ]
+      - id: uv-export # export lock file to requirements.txt for "build-website" group deps
+        args:
+          [
+            '--only-group',
+            'build-website',
+            '--frozen',
+            '--output-file=requirements/requirements-build-website.txt',
+            '--quiet',
+          ]
 
   - repo: local
     hooks:
       - id: generate-config-schemas
         name: Generate Config Schemas
         language: system
-        entry: uv run generate-config-schema # Require venv activated
+        entry: uv run generate-config-schema
         files: '^src/check_phat_nguoi/config/'
         types: [file, python]
         stages:
           - pre-commit
+        require_serial: true

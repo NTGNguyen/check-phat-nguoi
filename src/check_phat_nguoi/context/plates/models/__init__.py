@@ -1,6 +1,5 @@
-from .plate import PlatesModel
-from .plate_info import PlateInfoModel
-from .resolution_office import ResolutionOfficeModel
-from .violation import ViolationModel
+from .plate_detail import PlateDetail
+from .resolution_office import ResolutionOffice
+from .violation import Violation
 
-__all__ = ["PlatesModel", "PlateInfoModel", "ViolationModel", "ResolutionOfficeModel"]
+__all__ = ["PlateDetail", "Violation", "ResolutionOffice"]

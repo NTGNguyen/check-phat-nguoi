@@ -1,20 +1,23 @@
 from re import match as re_match
 
-from pydantic import Field, field_validator
+from pydantic import ConfigDict, Field, field_validator
 
-from .base_engine import BaseNotificationEngineDTO
+from .base_engine import BaseNotificationEngineConfig
 
 
-class TelegramNotificationEngineDTO(BaseNotificationEngineDTO):
+class TelegramNotificationEngineConfig(BaseNotificationEngineConfig):
+    model_config = ConfigDict(
+        title="Telegram",
+        frozen=True,
+    )
+
     bot_token: str = Field(
         description="Bot token Telegram",
         examples=["2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB"],
-        frozen=True,
     )
     chat_id: str = Field(
         description="Chat ID Telegram",
         examples=["-1001790012349"],
-        frozen=True,
     )
 
     @field_validator("bot_token", mode="after")
@@ -32,4 +35,4 @@ class TelegramNotificationEngineDTO(BaseNotificationEngineDTO):
         return _chat_id
 
 
-__all__ = ["TelegramNotificationEngineDTO"]
+__all__ = ["TelegramNotificationEngineConfig"]

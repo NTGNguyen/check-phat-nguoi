@@ -6,14 +6,14 @@ from pydantic import BaseModel, Field
 
 from check_phat_nguoi.types import VehicleTypeEnum
 
-from .violation import ViolationModel
+from .violation import Violation
 
 
-class PlateInfoModel(BaseModel):
+class PlateDetail(BaseModel):
     plate: str
     owner: str | None
     type: VehicleTypeEnum
-    violation: tuple[ViolationModel, ...] = Field(
+    violation: tuple[Violation, ...] = Field(
         description="Danh sách các vi phạm của 1 biển xe",
     )
 
@@ -23,9 +23,9 @@ class PlateInfoModel(BaseModel):
 
     @override
     def __eq__(self, other: Any):
-        if isinstance(other, PlateInfoModel):
+        if isinstance(other, PlateDetail):
             return self.plate == other.plate
         return False
 
 
-__all__ = ["PlateInfoModel"]
+__all__ = ["PlateDetail"]
