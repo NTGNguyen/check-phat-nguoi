@@ -8,6 +8,18 @@
       "title": "ApiEnum",
       "type": "string"
     },
+    "LogLevelEnum": {
+      "enum": [
+        "NOTSET",
+        "DEBUG",
+        "INFO",
+        "WARNING",
+        "ERROR",
+        "CRITICAL"
+      ],
+      "title": "LogLevelEnum",
+      "type": "string"
+    },
     "PlateInfo": {
       "properties": {
         "plate": {
@@ -208,18 +220,10 @@
       "type": "boolean"
     },
     "log_level": {
+      "$ref": "#/$defs/LogLevelEnum",
       "default": "WARNING",
       "description": "Mức độ log",
-      "enum": [
-        "NOTSET",
-        "DEBUG",
-        "INFO",
-        "WARNING",
-        "ERROR",
-        "CRITICAL"
-      ],
-      "title": "Mức độ log",
-      "type": "string"
+      "title": "Mức độ log"
     }
   },
   "required": [

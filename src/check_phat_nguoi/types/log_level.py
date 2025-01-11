@@ -1,10 +1,10 @@
-from typing import Literal, TypeAlias
+from enum import Enum
 
-LogLevelType: TypeAlias = Literal[
-    "NOTSET",
-    "DEBUG",
-    "INFO",
-    "WARNING",
-    "ERROR",
-    "CRITICAL",
-]
+
+class LogLevelEnum(str, Enum):
+    notset = "NOTSET"
+    debug = "DEBUG"
+    info = "INFO"
+    warning = "WARNING"
+    error = "ERROR"
+    critical = "CRITICAL"

@@ -29,7 +29,7 @@ class BaseGetDataEngine:
 
     async def __aexit__(self, exc_type, exc_value, exc_traceback) -> None:
         await self.session.close()
-        logger.debug(f"Closed data engine session: {type(self).__name__}")
+        logger.debug(f"Closed get data engine session: {type(self).__name__}")
 
     @abstractmethod
     async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None: ...

@@ -9,7 +9,7 @@ from check_phat_nguoi.constants.config import (
 
 def setup_logger() -> None:
     basicConfig(
-        level=config.log_level,
+        level=config.log_level.value,
         format=DETAIL_LOG_MESSAGE if config.detail_log else SIMPLE_LOG_MESSAGE,
     )
 

@@ -14,11 +14,11 @@ logger = getLogger(__name__)
 class SendNotifications:
     def __init__(self) -> None:
         self._md_messages: tuple[MarkdownMessageDetail, ...]
-        self._tele: TelegramNotificationEngine
+        self._telegram_engine: TelegramNotificationEngine
 
     async def _send_messages(self, notification: BaseNotificationConfig) -> None:
         if isinstance(notification, TelegramNotificationConfig):
-            await self._tele.send(notification.telegram, self._md_messages)
+            await self._telegram_engine.send(notification.telegram, self._md_messages)
 
     async def send(self) -> None:
         if config.notifications is None:
@@ -38,7 +38,7 @@ class SendNotifications:
             MarkdownMessage(plate_detail).generate_message()
             for plate_detail in plates_context.plates
         )
-        async with TelegramNotificationEngine() as self._tele:
+        async with TelegramNotificationEngine() as self._telegram_engine:
             await gather(
                 *(
                     self._send_messages(notification)

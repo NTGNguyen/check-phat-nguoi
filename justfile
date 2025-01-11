@@ -5,35 +5,38 @@ alias w := web-dev
 alias wb := build-web
 alias p := precommit-run-all
 
-restore-dependencies:
-  [ -d '.venv' ] || uv sync --frozen --all-groups
+restore-env:
+  [ -d '.venv' ] || (uv sync --frozen --all-groups && uv run pre-commit install)
 
-run-check-phat-nguoi: restore-dependencies
+run-check-phat-nguoi: restore-env
   uv run check-phat-nguoi --frozen
 
-gen-schemas: restore-dependencies
+gen-schemas: restore-env
   uv run generate-schemas --frozen
 
-gen-config-schema: restore-dependencies
+gen-config-schema: restore-env
   uv run gen-config-schema --frozen
 
-web-dev: restore-dependencies
-  rm ./site/ -rf
+web-dev: restore-env
+  rm ./site/ -rf || true
   uv run mkdocs serve
 
-build-web-mkdocs: restore-dependencies
-  rm ./site/ -rf
+build-web-mkdocs: restore-env
+  rm ./site/ -rf || true
   uv run mkdocs build
 
-build-web-schemas: restore-dependencies gen-schemas
-  rm ./site/schemas/ -rf
+build-web-schemas: restore-env
+  rm ./site/schemas/ -rf || true
   mkdir ./site/schemas/ -p
+  just gen-schemas
   uv run generate-schema-doc --config-file jsfh-conf.yaml ./schemas/ ./site/schemas/
 
-build-web: restore-dependencies build-web-mkdocs build-web-schemas
+build-web: restore-env
+  just build-web-mkdocs
+  just build-web-schemas
 
-clean: restore-dependencies
+clean: restore-env
   uvx cleanpy@0.5.1 .
 
-precommit-run-all: restore-dependencies
+precommit-run-all: restore-env
   uvx run pre-commit run -a
