@@ -47,7 +47,7 @@ class Config(BaseModel):
     request_timeout: int = Field(
         title="Thời gian request",
         description="Thời gian (s) để gửi request đến server API và gửi notify message",
-        default=10,
+        default=20,
     )
     request_per_time: int = Field(
         title="Số lượng request",

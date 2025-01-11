@@ -4,13 +4,12 @@ from .context import (
 )
 from .models import (
     PlateDetail,
-    Violation,
+    ViolationDetail,
 )
 
 __all__ = [
     "PlatesContext",
     "plates_context",
     "PlateDetail",
-    "Violation",
-    "ResolutionOffice",
+    "ViolationDetail",
 ]

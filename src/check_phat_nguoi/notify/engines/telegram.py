@@ -3,9 +3,6 @@ from __future__ import annotations
 import asyncio
 from asyncio import TimeoutError
 from logging import getLogger
-from ssl import SSLContext
-from ssl import create_default_context as ssl_create_context
-from typing import Final
 
 from aiohttp import ClientError
 
@@ -18,11 +15,6 @@ from .base import BaseNotificationEngine
 logger = getLogger(__name__)
 
 
-SSL_CONTEXT: Final[SSLContext] = ssl_create_context()
-SSL_CONTEXT.set_ciphers("DEFAULT")
-
-
-# FIXME: The message_dict is so ... bruh
 class TelegramNotificationEngine(BaseNotificationEngine):
     def __init__(self):
         super().__init__()
@@ -32,7 +24,12 @@ class TelegramNotificationEngine(BaseNotificationEngine):
         telegram: TelegramNotificationEngineConfig,
         messages: tuple[MarkdownMessageDetail, ...],
     ) -> None:
+        self.create_session()
+
         async def _send_message(message: str, plate: str) -> None:
+            # NOTE: May never reach this condition because the session is created before this method is called
+            if not self._session:
+                return
             logger.info(
                 f"Plate {plate}: Sending to Telegram Chat ID: {telegram.chat_id}"
             )
@@ -43,10 +40,9 @@ class TelegramNotificationEngine(BaseNotificationEngine):
                 "parse_mode": "Markdown",
             }
             try:
-                async with self.session.post(
+                async with self._session.post(
                     url,
                     json=payload,
-                    ssl=SSL_CONTEXT,
                 ) as response:
                     response.raise_for_status()
                 logger.info(

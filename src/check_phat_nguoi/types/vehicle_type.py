@@ -10,23 +10,42 @@ class VehicleTypeEnum(IntEnum):
     electric_motorbike = 3
 
 
+VehicleStrVieType: TypeAlias = Literal["Ô tô", "Xe máy", "Xe máy điện"]
+
 VehicleStrType: TypeAlias = Literal["car", "motorbike", "electric_motorbike"]
 
 VehicleIntType: TypeAlias = Literal[1, 2, 3]
 
-VehicleType: TypeAlias = VehicleIntType | VehicleStrType
+VehicleType: TypeAlias = VehicleIntType | VehicleStrType | VehicleStrVieType
 
 
 def get_vehicle_enum(type: VehicleTypeEnum | VehicleType | Any) -> VehicleTypeEnum:
     if isinstance(type, VehicleTypeEnum):
         return type
     match type:
-        case "car" | 1:
+        case "car" | "Ô tô" | 1:
             return VehicleTypeEnum.car
-        case "motorbike" | 2:
+        case "motorbike" | "Xe máy" | 2:
             return VehicleTypeEnum.motorbike
-        case "electric_motorbike" | 3:
+        case "electric_motorbike" | "Xe máy điện" | 3:
             return VehicleTypeEnum.electric_motorbike
+        case _:
+            raise ValueError("Unknown vehicle type")
+
+
+def get_vehicle_str(type: VehicleTypeEnum | VehicleType | Any) -> VehicleStrType:
+    match type:
+        case "car" | "Ô tô" | 1 | VehicleTypeEnum.car:
+            return "car"
+        case "motorbike" | "Xe máy" | 2 | VehicleTypeEnum.motorbike:
+            return "motorbike"
+        case (
+            "electric_motorbike"
+            | "Xe máy điện"
+            | 3
+            | VehicleTypeEnum.electric_motorbike
+        ):
+            return "electric_motorbike"
         case _:
             raise ValueError("Unknown vehicle type")
 
@@ -34,7 +53,9 @@ def get_vehicle_enum(type: VehicleTypeEnum | VehicleType | Any) -> VehicleTypeEn
 __all__ = [
     "VehicleIntType",
     "VehicleStrType",
+    "VehicleStrVieType",
     "VehicleType",
     "VehicleTypeEnum",
     "get_vehicle_enum",
+    "get_vehicle_str",
 ]

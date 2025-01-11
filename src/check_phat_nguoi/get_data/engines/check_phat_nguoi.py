@@ -4,7 +4,7 @@ import json
 from asyncio import TimeoutError
 from datetime import datetime
 from logging import getLogger
-from typing import Dict, Final, override
+from typing import Final, override
 
 from aiohttp import ClientError
 
@@ -14,10 +14,15 @@ from check_phat_nguoi.constants import (
     GET_DATA_API_URL_CHECKPHATNGUOI as API_URL,
 )
 from check_phat_nguoi.context import (
-    Violation,
+    ViolationDetail,
 )
-from check_phat_nguoi.context.plates.models.plate_detail import PlateDetail
-from check_phat_nguoi.types import get_vehicle_enum
+from check_phat_nguoi.context.plates import PlateDetail
+from check_phat_nguoi.types import (
+    ApiEnum,
+    VehicleStrVieType,
+    VehicleTypeEnum,
+    get_vehicle_enum,
+)
 
 from .base import BaseGetDataEngine
 
@@ -25,15 +30,58 @@ logger = getLogger(__name__)
 
 
 class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
+    api: ApiEnum = ApiEnum.checkphatnguoi_vn
     headers: Final[dict[str, str]] = {"Content-Type": "application/json"}
 
     def __init__(self) -> None:
         super().__init__(session_header=self.headers)
 
-    async def _get_data_request(self, plate_info: PlateInfo) -> Dict | None:
+    @staticmethod
+    def get_violations(
+        plate_detail_dict: dict | None, filter_type: VehicleTypeEnum
+    ) -> tuple[ViolationDetail, ...] | None:
+        violations_details_set: set[ViolationDetail] = set()
+        if not plate_detail_dict or not plate_detail_dict["data"]:
+            return
+
+        def _get_violation_detail(violation_dict: dict) -> None:
+            type: VehicleStrVieType = violation_dict["Loại phương tiện"]
+            # NOTE: this is for filtering the vehicle that doesn't match the plate info type. Because checkphatnguoi.vn return all of the type of the plate
+            if get_vehicle_enum(type) != filter_type:
+                return
+            date: str = violation_dict["Thời gian vi phạm"]
+            color: str = violation_dict["Màu biển"]
+            location: str = violation_dict["Địa điểm vi phạm"]
+            violation: str = violation_dict["Hành vi vi phạm"]
+            status: bool = (
+                False if violation_dict["Trạng thái"] == "Chưa xử phạt" else True
+            )
+            enforcement_unit: str = violation_dict["Đơn vị phát hiện vi phạm"]
+            resolution_office: tuple[str, ...] = violation_dict[
+                "Nơi giải quyết vụ việc"
+            ]
+            violation_detail: ViolationDetail = ViolationDetail(
+                color=color,
+                date=datetime.strptime(date, DATETIME_FORMAT),
+                location=location,
+                violation=violation,
+                status=status,
+                enforcement_unit=enforcement_unit,
+                resolution_offices_details=resolution_office,
+            )
+            violations_details_set.add(violation_detail)
+
+        for violation_dict in plate_detail_dict["data"]:
+            _get_violation_detail(violation_dict)
+        return tuple(violations_details_set)
+
+    async def _request(self, plate_info: PlateInfo) -> dict | None:
+        # NOTE: May never reach this condition because the session is created before this method is called
+        if not self._session:
+            return
         payload: Final[dict[str, str]] = {"bienso": plate_info.plate}
         try:
-            async with self.session.post(
+            async with self._session.post(
                 API_URL,
                 json=payload,
             ) as response:
@@ -41,49 +89,25 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
                 response_data = await response.read()
                 logger.info(f"Plate {plate_info.plate}: Get data successfully")
                 return json.loads(response_data)
-        # TODO: Show API enum instead of URL
         except TimeoutError as e:
             logger.error(
-                f"Plate {plate_info.plate}: Time out ({self.timeout}s) getting data from API {API_URL}\n{e}"
+                f"Plate {plate_info.plate}: Time out ({self.timeout}s) getting data from API {self.api.value}\n{e}"
             )
         except (ClientError, Exception) as e:
             logger.error(
-                f"Plate {plate_info.plate}: Error occurs while getting data from API {API_URL}\n{e}"
+                f"Plate {plate_info.plate}: Error occurs while getting data from API {self.api.value}\n{e}"
             )
 
     @override
     async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None:
-        plate_data: Dict | None = await self._get_data_request(plate_info)
-        if plate_data is None:
+        self.create_session()
+        plate_detail_dict: dict | None = await self._request(plate_info)
+        if not plate_detail_dict:
             return
+        type: VehicleTypeEnum = get_vehicle_enum(plate_info.type)
         return PlateDetail(
             plate=plate_info.plate,
             owner=plate_info.owner,
-            type=get_vehicle_enum(plate_info.type),
-            violation=self.get_plate_violation(plate_data),
-        )
-
-    @staticmethod
-    def get_plate_violation(
-        plate_violation_dict: Dict | None,
-    ) -> tuple[Violation, ...]:
-        if plate_violation_dict is None:
-            return ()
-        if plate_violation_dict["data"] is None:
-            return ()
-
-        def _create_violation_model(data: Dict):
-            return Violation(
-                type=data["Loại phương tiện"],
-                date=datetime.strptime(data["Thời gian vi phạm"], DATETIME_FORMAT),
-                location=data["Địa điểm vi phạm"],
-                action=data["Hành vi vi phạm"],
-                status=False if data["Trạng thái"] == "Chưa xử phạt" else True,
-                enforcement_unit=data["Đơn vị phát hiện vi phạm"],
-                resolution_office=tuple(data["Nơi giải quyết vụ việc"]),
-            )
-
-        return tuple(
-            _create_violation_model(violation_info_dict)
-            for violation_info_dict in plate_violation_dict["data"]
+            type=type,
+            violations=self.get_violations(plate_detail_dict, type),
         )

@@ -1,4 +1,4 @@
 from .plate_detail import PlateDetail
-from .violation import Violation
+from .violation_detail import ViolationDetail
 
-__all__ = ["PlateDetail", "Violation", "ResolutionOffice"]
+__all__ = ["PlateDetail", "ViolationDetail"]

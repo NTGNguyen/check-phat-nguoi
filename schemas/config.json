@@ -50,6 +50,14 @@
                 "electric_motorbike"
               ],
               "type": "string"
+            },
+            {
+              "enum": [
+                "Ô tô",
+                "Xe máy",
+                "Xe máy điện"
+              ],
+              "type": "string"
             }
           ],
           "description": "Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
@@ -201,7 +209,7 @@
       "type": "boolean"
     },
     "request_timeout": {
-      "default": 10,
+      "default": 20,
       "description": "Thời gian (s) để gửi request đến server API và gửi notify message",
       "title": "Thời gian request",
       "type": "integer"

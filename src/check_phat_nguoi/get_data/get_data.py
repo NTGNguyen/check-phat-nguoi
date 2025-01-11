@@ -9,14 +9,15 @@ from check_phat_nguoi.context import (
 )
 from check_phat_nguoi.types import ApiEnum
 
-from .engines import BaseGetDataEngine, GetDataEngineCheckPhatNguoi
+from .engines import BaseGetDataEngine, GetDataEngineCheckPhatNguoi, GetDataEngineCsgt
 
 logger = getLogger(__name__)
 
 
 class GetData:
     def __init__(self) -> None:
-        self._engine_cpn: GetDataEngineCheckPhatNguoi
+        self._checkphatnguoi_engine: GetDataEngineCheckPhatNguoi
+        self._csgt_engine: GetDataEngineCsgt
         self._plates_details: set[PlateDetail] = set()
 
     async def _get_data_for_plate(self, plate_info: PlateInfo) -> None:
@@ -34,11 +35,9 @@ class GetData:
         for api in apis:
             match api:
                 case ApiEnum.checkphatnguoi_vn:
-                    get_data_engine = self._engine_cpn
+                    get_data_engine = self._checkphatnguoi_engine
                 case ApiEnum.csgt_vn:
-                    # TODO: @Nguyen thay get_data_engine
-                    logger.error("csgt.vn has't been implemented yet")
-                    return
+                    get_data_engine = self._csgt_engine
             logger.info(
                 f"Plate {plate_info.plate}: Getting data with API: {api.value}..."
             )
@@ -51,7 +50,10 @@ class GetData:
                 return
 
     async def get_data(self) -> None:
-        async with GetDataEngineCheckPhatNguoi() as self._engine_cpn:
+        async with (
+            GetDataEngineCheckPhatNguoi() as self._checkphatnguoi_engine,
+            GetDataEngineCsgt() as self._csgt_engine,
+        ):
             await gather(
                 *(
                     self._get_data_for_plate(plate_info)
