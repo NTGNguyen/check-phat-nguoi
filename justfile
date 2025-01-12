@@ -25,7 +25,7 @@ build-web: restore-env
   mkdir ./site/schemas/ -p
   uv run generate-schemas --frozen
   cp ./schemas/* ./site/schemas
-  uv run generate-schema-doc --config-file jsfh-conf.yaml ./site/schemas/
+  uv run generate-schema-doc --config-file jsfh-conf.yaml ./site/schemas/ ./site/schemas/
 
 clean: restore-env
   uvx cleanpy@0.5.1 .
