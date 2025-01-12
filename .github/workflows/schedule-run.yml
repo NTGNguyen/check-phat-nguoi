@@ -46,12 +46,6 @@ jobs:
           version: ${{ hashFiles('apt_pkgs.txt') }}
           execute_install_scripts: true
 
-      - name: Download tesseract dataset
-        run: |
-          sudo mkdir -p /usr/share/tessdata
-          cd /usr/share/tessdata
-          curl -O ${{ env.TESSERACT_DATASET_URL }}
-
       - name: Install production deps
         run: uv sync --no-dev
 
