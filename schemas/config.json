@@ -63,6 +63,12 @@
           "description": "Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
           "title": "Loại phương tiện"
         },
+        "enabled": {
+          "default": true,
+          "description": "Kích hoạt",
+          "title": "Enabled",
+          "type": "boolean"
+        },
         "api": {
           "anyOf": [
             {

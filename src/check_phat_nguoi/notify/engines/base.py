@@ -16,12 +16,7 @@ class BaseNotificationEngine:
 
     def __init__(self, *, session_header: LooseHeaders | None = None) -> None:
         self._session_header = session_header
-        self._session: ClientSession | None = None
-
-    def create_session(self) -> None:
-        if self._session:
-            return
-        self._session = ClientSession(
+        self._session: ClientSession = ClientSession(
             timeout=ClientTimeout(self.timeout),
             headers=self._session_header,
         )
@@ -31,7 +26,5 @@ class BaseNotificationEngine:
         return self
 
     async def __aexit__(self, exc_type, exc_value, exc_traceback) -> None:
-        if not self._session:
-            return
         await self._session.close()
         logger.debug(f"Closed notify engine session: {type(self).__name__}")

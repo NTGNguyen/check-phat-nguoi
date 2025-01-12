@@ -8,7 +8,7 @@ from ssl import SSLContext
 from ssl import create_default_context as ssl_create_context
 from typing import Final, override
 
-from aiohttp import ClientError, ClientSession
+from aiohttp import ClientError
 from bs4 import BeautifulSoup, NavigableString, ResultSet, Tag
 from PIL import Image
 from pytesseract import image_to_string
@@ -20,7 +20,8 @@ from check_phat_nguoi.constants import DATETIME_FORMAT_CHECKPHATNGUOI as DATETIM
 from check_phat_nguoi.context import PlateDetail, ViolationDetail
 from check_phat_nguoi.types import ApiEnum, VehicleTypeEnum, get_vehicle_enum
 
-from .base import BaseGetDataEngine
+from .base_engine import BaseGetDataEngine
+from .base_session import BaseGetDataSession
 
 logger = getLogger(__name__)
 
@@ -30,32 +31,31 @@ SSL_CONTEXT: Final[SSLContext] = ssl_create_context()
 SSL_CONTEXT.set_ciphers("DEFAULT@SECLEVEL=1")
 
 
-class _GetDataCsgt:
-    def __init__(self, plate_info: PlateInfo, *, session: ClientSession) -> None:
+class _GetDataLocalEngineCsgt(BaseGetDataSession):
+    api: ApiEnum = ApiEnum.csgt_vn
+
+    def __init__(self, plate_info: PlateInfo) -> None:
         self._plate_info: PlateInfo = plate_info
-        self._session: ClientSession = session
-        self._cookies: SimpleCookie
-        self._captcha_img: bytes
-        self._captcha: str
+        super().__init__()
 
     @staticmethod
     def _bypass_captcha(captcha_img: bytes) -> str:
         with Image.open(BytesIO(captcha_img)) as image:
             return image_to_string(image).strip()
 
-    async def _get_phpsessid_and_captcha(self) -> None:
+    async def _get_phpsessid_and_captcha(self) -> tuple[str, bytes]:
+        logger.debug(f"Plate {self._plate_info.plate}: Getting cookies and captcha...")
         async with self._session.get(
             API_CAPTCHA,
-            ssl=False,
+            ssl=SSL_CONTEXT,
         ) as response:
             response.raise_for_status()
-            self._cookies = response.cookies
-            self._captcha_img = await response.read()
-            logger.debug(f"Plate {self._plate_info.plate} cookies: {self._cookies}")
+            phpsessid: str = response.cookies["PHPSESSID"].value
+            captcha_img: bytes = await response.read()
+            logger.debug(f"Plate {self._plate_info.plate} PHPSESSID: {phpsessid}")
+            return phpsessid, captcha_img
 
-    async def _get_html_data(self) -> str:
-        await self._get_phpsessid_and_captcha()
-        captcha: str = self._bypass_captcha(self._captcha_img)
+    async def _get_html_data(self, captcha: str, phpsessid: str) -> str:
         vehicle_type: VehicleTypeEnum = get_vehicle_enum(self._plate_info.type)
         payload: dict[str, str | int] = {
             "BienKS": self._plate_info.plate,
@@ -67,10 +67,11 @@ class _GetDataCsgt:
         headers: dict[str, str] = {
             "Content-Type": "application/x-www-form-urlencoded",
         }
+        cookies: SimpleCookie = SimpleCookie(f"PHPSESSID={phpsessid}")
         async with self._session.post(
             url=API_QUERY,
             headers=headers,
-            cookies=self._cookies,
+            cookies=cookies,
             data=payload,
             ssl=SSL_CONTEXT,
         ) as response:
@@ -150,32 +151,37 @@ class _GetDataCsgt:
         )
 
     async def get_data(self) -> PlateDetail | None:
-        html_data: str = await self._get_html_data()
-        if html_data == "404":
-            logger.error(f"Plate {self._plate_info.plate}: Wrong captcha")
-            return
-        plate_detail: PlateDetail | None = self._parse_html(html_data)
-        return plate_detail
-
-
-class GetDataEngineCsgt(BaseGetDataEngine):
-    api: ApiEnum = ApiEnum.csgt_vn
-
-    @override
-    async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None:
-        self.create_session()
-        # NOTE: May never reach this condition because the session is created before this
-        if not self._session:
-            return
-        get_data: _GetDataCsgt = _GetDataCsgt(plate_info, session=self._session)
         try:
-            plate_detail: PlateDetail | None = await get_data.get_data()
+            phpsessid, captcha_img = await self._get_phpsessid_and_captcha()
+            captcha: str = self._bypass_captcha(captcha_img)
+            logger.debug(f"Plate {self._plate_info.plate} captcha resolved: {captcha}")
+            logger.debug(
+                f"Plate {self._plate_info.plate}: Sending request again to get data..."
+            )
+            html_data: str = await self._get_html_data(captcha, phpsessid)
+            logger.debug(f"Plate {self._plate_info.plate} HTML data: {html_data}")
+            if html_data.strip() == "404":
+                logger.error(f"Plate {self._plate_info.plate}: Wrong captcha")
+                return
+            plate_detail: PlateDetail | None = self._parse_html(html_data)
             return plate_detail
         except TimeoutError as e:
             logger.error(
-                f"Plate {plate_info.plate}: Time out ({self.timeout}s) getting data from API {self.api.value}\n{e}"
+                f"Plate {self._plate_info.plate}: Time out ({self.timeout}s) getting data from API {self.api.value}. {e}"
             )
-        except (ClientError, Exception) as e:
+        except ClientError as e:
             logger.error(
-                f"Plate {plate_info.plate}: Error occurs while getting data from API {self.api.value}\n{e}"
+                f"Plate {self._plate_info.plate}: Error occurs while getting data from API {self.api.value}. {e}"
             )
+        except Exception as e:
+            logger.error(
+                f"Plate {self._plate_info.plate}: Error occurs while getting data (internally) {self.api.value}. {e}"
+            )
+
+
+class GetDataEngineCsgt(BaseGetDataEngine):
+    @override
+    async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None:
+        async with _GetDataLocalEngineCsgt(plate_info) as local_engine:
+            plate_detail: PlateDetail | None = await local_engine.get_data()
+            return plate_detail

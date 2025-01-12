@@ -24,12 +24,7 @@ class TelegramNotificationEngine(BaseNotificationEngine):
         telegram: TelegramNotificationEngineConfig,
         messages: tuple[MarkdownMessageDetail, ...],
     ) -> None:
-        self.create_session()
-
         async def _send_message(message: str, plate: str) -> None:
-            # NOTE: May never reach this condition because the session is created before this method is called
-            if not self._session:
-                return
             logger.info(
                 f"Plate {plate}: Sending to Telegram Chat ID: {telegram.chat_id}"
             )
@@ -50,11 +45,15 @@ class TelegramNotificationEngine(BaseNotificationEngine):
                 )
             except TimeoutError as e:
                 logger.error(
-                    f"Plate {plate}: Timeout ({self.timeout}s) sending to Telegram Chat ID: {telegram.chat_id}\n{e}"
+                    f"Plate {plate}: Timeout ({self.timeout}s) sending to Telegram Chat ID: {telegram.chat_id}. {e}"
                 )
-            except (ClientError, Exception) as e:
+            except ClientError as e:
                 logger.error(
-                    f"Plate {plate}: Fail to sent to Telegram Chat ID: {telegram.chat_id}\n{e}"
+                    f"Plate {plate}: Fail to sent to Telegram Chat ID: {telegram.chat_id}. {e}"
+                )
+            except Exception as e:
+                logger.error(
+                    f"Plate {plate}: Fail to sent to Telegram Chat ID (internally): {telegram.chat_id}. {e}"
                 )
 
         await asyncio.gather(

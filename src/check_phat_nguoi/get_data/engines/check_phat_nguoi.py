@@ -24,12 +24,13 @@ from check_phat_nguoi.types import (
     get_vehicle_enum,
 )
 
-from .base import BaseGetDataEngine
+from .base_engine import BaseGetDataEngine
+from .base_session import BaseGetDataSession
 
 logger = getLogger(__name__)
 
 
-class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
+class GetDataEngineCheckPhatNguoi(BaseGetDataEngine, BaseGetDataSession):
     api: ApiEnum = ApiEnum.checkphatnguoi_vn
     headers: Final[dict[str, str]] = {"Content-Type": "application/json"}
 
@@ -76,9 +77,6 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
         return tuple(violations_details_set)
 
     async def _request(self, plate_info: PlateInfo) -> dict | None:
-        # NOTE: May never reach this condition because the session is created before this method is called
-        if not self._session:
-            return
         payload: Final[dict[str, str]] = {"bienso": plate_info.plate}
         try:
             async with self._session.post(
@@ -91,16 +89,19 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
                 return json.loads(response_data)
         except TimeoutError as e:
             logger.error(
-                f"Plate {plate_info.plate}: Time out ({self.timeout}s) getting data from API {self.api.value}\n{e}"
+                f"Plate {plate_info.plate}: Time out ({self.timeout}s) getting data from API {self.api.value}. {e}"
             )
-        except (ClientError, Exception) as e:
+        except ClientError as e:
             logger.error(
-                f"Plate {plate_info.plate}: Error occurs while getting data from API {self.api.value}\n{e}"
+                f"Plate {plate_info.plate}: Error occurs while getting data from API {self.api.value}. {e}"
+            )
+        except Exception as e:
+            logger.error(
+                f"Plate {plate_info.plate}: Error occurs while getting data (internally) {self.api.value}. {e}"
             )
 
     @override
     async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None:
-        self.create_session()
         plate_detail_dict: dict | None = await self._request(plate_info)
         if not plate_detail_dict:
             return
