@@ -70,8 +70,6 @@ plugins:
         - trimmer
   - include-markdown:
       cache_dir: ./mkdocs-include-markdown-cache
-  - optimize:
-      enabled: '!ENV [CI, false]'
 
 nav:
   - 'Trang chủ':
