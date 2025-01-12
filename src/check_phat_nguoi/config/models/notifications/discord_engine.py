@@ -6,17 +6,21 @@ from .base_engine import BaseNotificationEngineConfig
 
 
 class DiscordNotificationEngineConfig(BaseNotificationEngineConfig):
-    config_model: ConfigDict = ConfigDict(title="Discord", frozen=True)
+    config_model: ConfigDict = ConfigDict(
+        title="Discord",
+        frozen=True,
+    )
+
     bot_token: str = Field(
-        description="bot token in discord",
+        description="Bot token",
         examples=[
-            "MTMzNzg4Ujq0NDI0NDYgNTcyMA.GpITQg.beoF9OxJScbKJwEz5Udy6bzrQJ8zI4BvndbaBA"
+            "MTMzNzg4Ujq0NDI0NDYgNTcyMA.GpITQg.beoF9OxJScbKJwEz5Udy6bzrQJ8zI4BvndbaBA",
         ],
     )
     user_id: int = Field(
-        description="User id in discord",
+        description="User ID",
         examples=[
-            834242026182672436,
+            832930846182672436,
         ],
     )
 

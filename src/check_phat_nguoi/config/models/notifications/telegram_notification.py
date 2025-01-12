@@ -1,7 +1,7 @@
 from pydantic import ConfigDict, Field
 
-from ..engine import TelegramNotificationEngineConfig
 from .base_notification import BaseNotificationConfig
+from .telegram_engine import TelegramNotificationEngineConfig
 
 
 class TelegramNotificationConfig(BaseNotificationConfig):

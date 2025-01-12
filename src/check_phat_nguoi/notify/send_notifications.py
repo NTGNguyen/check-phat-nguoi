@@ -3,9 +3,10 @@ from logging import getLogger
 
 from check_phat_nguoi.config import BaseNotificationConfig, TelegramNotificationConfig
 from check_phat_nguoi.config.config_reader import config
+from check_phat_nguoi.config.models import DiscordNotificationConfig
 from check_phat_nguoi.context import plates_context
 
-from .engines.telegram import TelegramNotificationEngine
+from .engines import DiscordNotificationEngine, TelegramNotificationEngine
 from .markdown_message import MarkdownMessage, MarkdownMessageDetail
 
 logger = getLogger(__name__)
@@ -15,10 +16,15 @@ class SendNotifications:
     def __init__(self) -> None:
         self._md_messages: tuple[MarkdownMessageDetail, ...]
         self._telegram_engine: TelegramNotificationEngine
+        self._discord_engine: DiscordNotificationEngine
 
     async def _send_messages(self, notification: BaseNotificationConfig) -> None:
         if isinstance(notification, TelegramNotificationConfig):
             await self._telegram_engine.send(notification.telegram, self._md_messages)
+        if isinstance(notification, DiscordNotificationConfig):
+            await DiscordNotificationEngine(
+                notification.discord, self._md_messages
+            ).send()
 
     async def send(self) -> None:
         if config.notifications is None:

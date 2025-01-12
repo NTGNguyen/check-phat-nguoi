@@ -1,7 +1,7 @@
 from pydantic import ConfigDict, Field
 
-from ..engine import DiscordNotificationEngineConfig
 from .base_notification import BaseNotificationConfig
+from .discord_engine import DiscordNotificationEngineConfig
 
 
 class DiscordNotificationConfig(BaseNotificationConfig):
