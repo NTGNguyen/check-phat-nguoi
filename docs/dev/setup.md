@@ -1,5 +1,10 @@
 # Setup
 
+Requirements:
+
+- [uv](https://github.com/astral-sh/uv)
+- [just](https://github.com/casey/just)
+
 ## Run check-phat-nguoi
 
 ```sh
@@ -12,10 +17,16 @@ just
 just s
 ```
 
-## Build web
+## Dev web
 
 ```sh
 just w
+```
+
+## Build web
+
+```sh
+just wb
 ```
 
 # Test on production with python 3.10

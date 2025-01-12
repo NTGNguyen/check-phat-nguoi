@@ -1,12 +1,16 @@
 # Hướng dẫn sử dụng
 
-## Cài đặt python
+## Yêu cầu
 
-- <https://www.python.org/downloads/>
+- [Python](https://www.python.org/downloads/)
+- [Tesseact OCR CLI](https://tesseract-ocr.github.io/tessdoc/Installation.html) (Không bắt buộc)(1)
+  { .annotate }
+
+      1. Sử dụng để giải captcha đối với API csgt.vn
 
 ??? note
 
-    Project được viết bằng python 3.13 nhưng có thể chạy với python 3.10 trở lên (không đảm bảo)
+    Project được viết bằng python 3.13 nhưng có thể chạy với python 3.10 trở lên (không đảm bảo). Đối với discord notification yêu cầu phiên bản >= 3.13.
 
 ---
 
@@ -70,6 +74,14 @@ Thiết lập file `config.json` (1)
     ```json title="config.json"
     {% include "../../config.sample.json" %}
     ```
+
+???+ note
+
+    Xem [`Config Schema`](https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html) để biết chi tiết config
+
+???+ warning
+
+    Hiện tại API từ csgt.vn không đảm bảo hoạt động.
 
 ### Chạy chương trình
 
