@@ -7,9 +7,6 @@ on:
   workflow_dispatch:
 # user-config end
 
-env:
-  TESSERACT_DATASET_URL: 'https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/eng.traineddata'
-
 jobs:
   run:
     name: Run
