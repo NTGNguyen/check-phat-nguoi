@@ -28,7 +28,8 @@
     },
     {
       "plate": "30F88251",
-      "type": 1
+      "type": 1,
+      "enable": false
     }
   ],
   "api": ["checkphatnguoi.vn", "csgt.vn", "csgt.vn"],
