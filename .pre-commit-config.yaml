@@ -50,6 +50,8 @@ repos:
     hooks:
       - id: check-github-workflows
       - id: check-jsonschema
+        stages:
+          - manual
         files: '^(check-phat-nguoi)?(\.)?config(\.)?(sample)?\.json$'
         args: ['--schemafile', 'schemas/config.json']
 
@@ -83,14 +85,17 @@ repos:
             '--quiet',
           ]
 
-  - repo: local
-    hooks:
-      - id: generate-config-schemas
-        name: Generate Config Schemas
-        language: system
-        entry: uv run generate-config-schema
-        files: '^src/check_phat_nguoi/config/'
-        types: [file, python]
-        stages:
-          - pre-commit
-        require_serial: true
+  # NOTE: Create schemas on CI already
+
+  # - repo: local
+  #   hooks:
+  #     - id: generate-config-schemas
+  #       name: Generate Config Schemas
+  #       language: system
+  #       entry: uv run generate-config-schema
+  #       files: '^src/check_phat_nguoi/config/'
+  #       types: [file, python]
+  #       stages:
+  #         - pre-commit
+  #         - manual
+  #       require_serial: true

@@ -26,12 +26,16 @@ jobs:
           python-version-file: '.python-version'
           cache: 'pip'
           cache-dependency-path: |
-            requirements/requirements-dev.txt
+            requirements/requirements.txt
 
-      - name: Install deps including dev
-        run: uv sync
+      - uses: extractions/setup-just@v2
 
-      - name: Pre-commit check
-        env:
-          SKIP: generate-config-schemas
-        run: uv run pre-commit run -a
+      - name: Install deps
+        run: uv sync --frozen --no-dev
+
+      - name: Generate schemas
+        run: just gen-schemas
+
+      - uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: -a --hook-stage manual

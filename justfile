@@ -14,26 +14,18 @@ run-check-phat-nguoi: restore-env
 gen-schemas: restore-env
   uv run generate-schemas --frozen
 
-gen-config-schema: restore-env
-  uv run gen-config-schema --frozen
-
 web-dev: restore-env
   rm ./site/ -rf || true
   uv run mkdocs serve
 
-build-web-mkdocs: restore-env
+build-web: restore-env
   rm ./site/ -rf || true
   uv run mkdocs build
-
-build-web-schemas: restore-env
   rm ./site/schemas/ -rf || true
   mkdir ./site/schemas/ -p
-  just gen-schemas
-  uv run generate-schema-doc --config-file jsfh-conf.yaml ./schemas/ ./site/schemas/
-
-build-web: restore-env
-  just build-web-mkdocs
-  just build-web-schemas
+  uv run generate-schemas --frozen
+  cp ./schemas/* ./site/schemas
+  uv run generate-schema-doc --config-file jsfh-conf.yaml ./site/schemas/ ./site/schemas/
 
 clean: restore-env
   uvx cleanpy@0.5.1 .
