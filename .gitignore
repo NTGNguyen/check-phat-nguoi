@@ -1,4 +1,5 @@
 /config.json
+/schemas
 /schemas_site
 /mkdocs-include-markdown-cache
 /.cache
