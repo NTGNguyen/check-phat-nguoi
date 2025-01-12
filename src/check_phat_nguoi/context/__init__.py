@@ -1,8 +1,7 @@
 from .plates import (
     PlateDetail,
     PlatesContext,
-    ResolutionOffice,
-    Violation,
+    ViolationDetail,
     plates_context,
 )
 
@@ -10,6 +9,5 @@ __all__ = [
     "PlatesContext",
     "plates_context",
     "PlateDetail",
-    "Violation",
-    "ResolutionOffice",
+    "ViolationDetail",
 ]

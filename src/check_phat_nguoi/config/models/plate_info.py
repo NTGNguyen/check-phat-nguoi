@@ -25,6 +25,10 @@ class PlateInfo(BaseModel):
         description="Loại phương tiện để gửi request cũng như lọc loại phương tiện đối với các API không lọc loại phương tiện sẵn",
         title="Loại phương tiện",
     )
+    enabled: bool = Field(
+        description="Kích hoạt",
+        default=True,
+    )
     api: tuple[ApiEnum, ...] | ApiEnum | None = Field(
         description='Sử dụng API từ trang web nào. Config giống "api" ở ngoài .Để trống sẽ sử dụng API define ở scope ngoài.',
         title="API",

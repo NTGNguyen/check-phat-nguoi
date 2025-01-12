@@ -3,9 +3,6 @@ from __future__ import annotations
 import asyncio
 from asyncio import TimeoutError
 from logging import getLogger
-from ssl import SSLContext
-from ssl import create_default_context as ssl_create_context
-from typing import Final
 
 from aiohttp import ClientError
 
@@ -18,11 +15,6 @@ from .base import BaseNotificationEngine
 logger = getLogger(__name__)
 
 
-SSL_CONTEXT: Final[SSLContext] = ssl_create_context()
-SSL_CONTEXT.set_ciphers("DEFAULT")
-
-
-# FIXME: The message_dict is so ... bruh
 class TelegramNotificationEngine(BaseNotificationEngine):
     def __init__(self):
         super().__init__()
@@ -43,10 +35,9 @@ class TelegramNotificationEngine(BaseNotificationEngine):
                 "parse_mode": "Markdown",
             }
             try:
-                async with self.session.post(
+                async with self._session.post(
                     url,
                     json=payload,
-                    ssl=SSL_CONTEXT,
                 ) as response:
                     response.raise_for_status()
                 logger.info(
@@ -54,11 +45,15 @@ class TelegramNotificationEngine(BaseNotificationEngine):
                 )
             except TimeoutError as e:
                 logger.error(
-                    f"Plate {plate}: Timeout ({self.timeout}s) sending to Telegram Chat ID: {telegram.chat_id}\n{e}"
+                    f"Plate {plate}: Timeout ({self.timeout}s) sending to Telegram Chat ID: {telegram.chat_id}. {e}"
                 )
-            except (ClientError, Exception) as e:
+            except ClientError as e:
                 logger.error(
-                    f"Plate {plate}: Fail to sent to Telegram Chat ID: {telegram.chat_id}\n{e}"
+                    f"Plate {plate}: Fail to sent to Telegram Chat ID: {telegram.chat_id}. {e}"
+                )
+            except Exception as e:
+                logger.error(
+                    f"Plate {plate}: Fail to sent to Telegram Chat ID (internally): {telegram.chat_id}. {e}"
                 )
 
         await asyncio.gather(

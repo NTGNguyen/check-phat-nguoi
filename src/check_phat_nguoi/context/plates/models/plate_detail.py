@@ -6,14 +6,14 @@ from pydantic import BaseModel, Field
 
 from check_phat_nguoi.types import VehicleTypeEnum
 
-from .violation import Violation
+from .violation_detail import ViolationDetail
 
 
 class PlateDetail(BaseModel):
     plate: str
     owner: str | None
     type: VehicleTypeEnum
-    violation: tuple[Violation, ...] = Field(
+    violations: tuple[ViolationDetail, ...] | None = Field(
         description="Danh sách các vi phạm của 1 biển xe",
     )
 

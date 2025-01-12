@@ -1,5 +1,7 @@
 from .config import CONFIG_PATHS, DETAIL_LOG_MESSAGE, SIMPLE_LOG_MESSAGE
 from .get_data import (
+    API_URL_CSGT_CAPTCHA,
+    API_URL_CSGT_QUERY,
     DATETIME_FORMAT_CHECKPHATNGUOI,
     GET_DATA_API_URL_CHECKPHATNGUOI,
     OFFICE_NAME_PATTERN,
@@ -11,6 +13,8 @@ from .notifications import (
 )
 
 __all__ = [
+    "API_URL_CSGT_QUERY",
+    "API_URL_CSGT_CAPTCHA",
     "CONFIG_PATHS",
     "DETAIL_LOG_MESSAGE",
     "SIMPLE_LOG_MESSAGE",

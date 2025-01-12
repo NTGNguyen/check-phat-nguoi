@@ -9,7 +9,9 @@ version = "0.1.0-dev.1"
 requires-python = ">=3.10"
 dependencies = [
   "aiohttp[speedups]>=3.11.11",
+  "beautifulsoup4>=4.12.3",
   "pydantic>=2.10.4",
+  "pytesseract>=0.3.13",
   "truststore>=0.10.0",
 ]
 

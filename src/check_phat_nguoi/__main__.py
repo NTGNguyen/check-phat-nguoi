@@ -1,9 +1,8 @@
 import asyncio
 from logging import getLogger
 
-from truststore import inject_into_ssl
-
 from check_phat_nguoi.config.config_reader import config
+from check_phat_nguoi.context.plates.context import plates_context
 from check_phat_nguoi.get_data import GetData
 from check_phat_nguoi.notify import SendNotifications
 
@@ -13,10 +12,10 @@ logger = getLogger(__name__)
 
 
 async def async_main() -> None:
-    inject_into_ssl()
     setup_logger()
     logger.debug(f"Config read: {config}")
     await GetData().get_data()
+    logger.debug(f"Data got: {plates_context.plates}")
     await SendNotifications().send()
 
 
