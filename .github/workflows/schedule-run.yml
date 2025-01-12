@@ -33,8 +33,6 @@ jobs:
           cache-dependency-path: |
             requirements/requirements.txt
 
-      - uses: extractions/setup-just@v2
-
       - name: Get required apt packages
         id: get-pkgs
         shell: bash
@@ -55,4 +53,4 @@ jobs:
         run: curl -o config.json ${{ env.config }}
 
       - name: Run check phat nguoi
-        run: just
+        run: uv run check-phat-nguoi --frozen
