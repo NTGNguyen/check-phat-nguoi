@@ -2,6 +2,7 @@
 
 site_name: Check Phạt Nguội
 site_url: 'https://ntgnguyen.github.io/check-phat-nguoi'
+repo_url: 'https://github.com/ntgnguyen/check-phat-nguoi'
 theme:
   language: vi
   icon:
@@ -14,6 +15,8 @@ theme:
     - navigation.sections
     - navigation.expand
     - navigation.path
+    - navigation.indexes
+    - navigation.footer
     - content.code.copy
     - content.code.annotate
     - search.suggest
@@ -55,6 +58,9 @@ markdown_extensions:
       alternate_style: true
   - attr_list
   - pymdownx.emoji
+  - toc:
+      permalink: true
+
 plugins:
   - search:
       lang: vi
@@ -62,7 +68,10 @@ plugins:
         - stemmer
         - stopWordFilter
         - trimmer
-  - include-markdown
+  - include-markdown:
+      cache_dir: ./mkdocs-include-markdown-cache
+  - optimize:
+      enabled: '!ENV [CI, false]'
 
 nav:
   - 'Trang chủ':

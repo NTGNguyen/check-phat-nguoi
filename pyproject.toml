@@ -26,6 +26,6 @@ build-backend = "hatchling.build"
 dev = ["pre-commit>=4.0.1"]
 build-website = [
   "json-schema-for-humans>=1.3.4",
-  "mkdocs-include-markdown-plugin>=7.1.2",
   "mkdocs-material>=9.5.49",
+  "mkdocs-include-markdown-plugin[cache]>=7.1.2",
 ]
