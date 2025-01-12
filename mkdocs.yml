@@ -78,3 +78,8 @@ nav:
   - 'Khác':
       - other/references.md
       - other/disclaimer.md
+
+extra:
+  analytics:
+    provider: google
+    property: G-0GRV2FG8QZ
