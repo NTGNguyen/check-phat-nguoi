@@ -6,10 +6,12 @@ authors = [
 description = "Check phạt nguội"
 name = "check-phat-nguoi"
 version = "0.1.0-dev.1"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 dependencies = [
   "aiohttp[speedups]>=3.11.11",
+  "audioop-lts>=0.2.1",
   "beautifulsoup4>=4.12.3",
+  "discord-py>=2.4.0",
   "pydantic>=2.10.4",
   "pytesseract>=0.3.13",
   "truststore>=0.10.0",
