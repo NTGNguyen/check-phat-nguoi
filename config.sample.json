@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/KevinNitroG/check-phat-nguoi/refs/heads/main/site/schemas/config.json",
+  "$schema": "https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.json",
   "plates_infos": [
     {
       "plate": "59XA00000",
