@@ -5,7 +5,7 @@ import re
 from asyncio import TimeoutError
 from datetime import datetime
 from logging import getLogger
-from typing import Dict, Final, override
+from typing import Final, override
 
 from aiohttp import ClientError
 
@@ -33,7 +33,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
     def __init__(self) -> None:
         super().__init__(session_header=self.headers)
 
-    async def _get_data_request(self, plate_info: PlateInfo) -> Dict | None:
+    async def _get_data_request(self, plate_info: PlateInfo) -> dict | None:
         payload: Final[dict[str, str]] = {"bienso": plate_info.plate}
         try:
             async with self.session.post(
@@ -56,7 +56,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
 
     @override
     async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None:
-        plate_data: Dict | None = await self._get_data_request(plate_info)
+        plate_data: dict | None = await self._get_data_request(plate_info)
         if plate_data is None:
             return
         return PlateDetail(
@@ -68,7 +68,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
 
     @staticmethod
     def get_plate_violation(
-        plate_violation_dict: Dict | None,
+        plate_violation_dict: dict | None,
     ) -> tuple[Violation, ...]:
         if plate_violation_dict is None:
             return ()
@@ -80,7 +80,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
         def _create_resolution_office_mode(
             resolution_offices: list[str],
         ) -> tuple[ResolutionOffice, ...]:
-            parsed_office_dict: Dict[str, Dict] = {}
+            parsed_office_dict: dict[str, dict] = {}
             current_name = None
             # FIXME: Declare Type for typesafety, use ResolutionOfficeModel
             for office_info in resolution_offices:
@@ -107,7 +107,7 @@ class GetDataEngineCheckPhatNguoi(BaseGetDataEngine):
                 for location_name, location_detail in parsed_office_dict.items()
             )
 
-        def _create_violation_model(data: Dict):
+        def _create_violation_model(data: dict):
             return Violation(
                 type=data["Loại phương tiện"],
                 date=datetime.strptime(data["Thời gian vi phạm"], DATETIME_FORMAT),
