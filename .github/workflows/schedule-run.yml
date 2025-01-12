@@ -7,6 +7,9 @@ on:
   workflow_dispatch:
 # user-config end
 
+env:
+  TESSERACT_DATASET_URL: 'https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/eng.traineddata'
+
 jobs:
   run:
     name: Run
@@ -31,6 +34,23 @@ jobs:
             requirements/requirements.txt
 
       - uses: extractions/setup-just@v2
+
+      - name: Get required apt packages
+        id: get-pkgs
+        shell: bash
+        run: echo "pkgs=$( tr '\n' ' ' <'./apt_pkgs.txt' )" > "$GITHUB_OUTPUT"
+
+      - uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: ${{ steps.get-pkgs.outputs.pkgs }}
+          version: ${{ hashFiles('apt_pkgs.txt') }}
+          execute_install_scripts: true
+
+      - name: Download tesseract dataset
+        run: |
+          sudo mkdir -p /usr/share/tessdata
+          cd /usr/share/tessdata
+          curl -O ${{ env.TESSERACT_DATASET_URL }}
 
       - name: Install production deps
         run: uv sync --no-dev

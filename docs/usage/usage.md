@@ -3,7 +3,7 @@
 ## Yêu cầu
 
 - [Python](https://www.python.org/downloads/)
-- [Tesseact OCR CLI](https://tesseract-ocr.github.io/tessdoc/Installation.html) (Không bắt buộc)(1)
+- [Tesseact OCR CLI](https://tesseract-ocr.github.io/tessdoc/Installation.html) và [Tesseact data set](https://github.com/tesseract-ocr/tessdata) (Không bắt buộc)(1)
   { .annotate }
 
       1. Sử dụng để giải captcha đối với API csgt.vn
