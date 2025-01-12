@@ -54,11 +54,16 @@ class GetData:
             GetDataEngineCheckPhatNguoi() as self._checkphatnguoi_engine,
             GetDataEngineCsgt() as self._csgt_engine,
         ):
-            await gather(
-                *(
-                    self._get_data_for_plate(plate_info)
-                    for plate_info in config.plates_infos
-                    if plate_info.enabled
+            if config.asynchronous:
+                await gather(
+                    *(
+                        self._get_data_for_plate(plate_info)
+                        for plate_info in config.plates_infos
+                        if plate_info.enabled
+                    )
                 )
-            )
+            else:
+                for plate_info in config.plates_infos:
+                    if plate_info.enabled:
+                        await self._get_data_for_plate(plate_info)
             plates_context.set_plates(plates=tuple(self._plates_details))

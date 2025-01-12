@@ -24,24 +24,20 @@ class SendNotifications:
         if config.notifications is None:
             logger.debug("No notification was given. Skip notifying")
             return
-        enabled_notifications: tuple[BaseNotificationConfig, ...] = tuple(
-            notification
-            for notification in config.notifications
-            if notification.enabled
-        )
-        if not enabled_notifications:
-            logger.info("No notification is enabled. Skip notifying")
-            return
-        logger.debug(f"Enabled notification: {enabled_notifications}")
-
         self._md_messages = tuple(
             MarkdownMessage(plate_detail).generate_message()
             for plate_detail in plates_context.plates
         )
         async with TelegramNotificationEngine() as self._telegram_engine:
-            await gather(
-                *(
-                    self._send_messages(notification)
-                    for notification in enabled_notifications
+            if config.asynchronous:
+                await gather(
+                    *(
+                        self._send_messages(notification)
+                        for notification in config.notifications
+                        if notification.enabled
+                    )
                 )
-            )
+            else:
+                for notification in config.notifications:
+                    if notification.enabled:
+                        await self._send_messages(notification)

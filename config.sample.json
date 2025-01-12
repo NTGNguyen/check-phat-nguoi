@@ -48,6 +48,7 @@
     }
   ],
   "pending_fines_only": true,
+  "asynchronous": true,
   "detail": true,
   "detail_log": false,
   "log_level": "INFO"

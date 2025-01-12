@@ -30,8 +30,8 @@ class Config(BaseModel):
     )
     api: tuple[ApiEnum, ...] | ApiEnum = Field(
         title="API",
-        description="Sử dụng API từ trang web nào. Mặc định sẽ là list các API và dừng khi 1 API lấy dữ liệu thành công. Có thể điền giá trị trùng để retry. Hoặc chỉ dùng 1 API.",
-        default=(ApiEnum.checkphatnguoi_vn, ApiEnum.csgt_vn),
+        description="Sử dụng API từ trang web nào. Mặc định sẽ là list các API và dừng khi 1 API lấy dữ liệu thành công. Có thể điền giá trị trùng để retry. Hoặc chỉ dùng 1 API. Hiện tại API từ cgst.vn không đảm bảo có thể chạy.",
+        default=(ApiEnum.checkphatnguoi_vn),
         min_length=1,
     )
     pending_fines_only: bool = Field(
@@ -49,11 +49,10 @@ class Config(BaseModel):
         description="Thời gian (s) để gửi request đến server API và gửi notify message",
         default=20,
     )
-    request_per_time: int = Field(
-        title="Số lượng request",
-        description="Số lượng request tối chạy song song",
-        default=5,
-        ge=0,
+    asynchronous: bool = Field(
+        title="Gửi và chờ tất cả request",
+        description="Gửi và chờ tất cả request. Đối với API csgt.vn hãy tắt vì gửi request quá nhiều, trang lỗi. Nếu bật, các request sẽ không đảm bảo thứ tự input. Notify hiện không đảm bảo thứ tự input.",
+        default=True,
     )
     detail_log: bool = Field(
         title="Log chi tiết",
