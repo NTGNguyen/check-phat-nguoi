@@ -6,7 +6,7 @@ from .telegram_engine import TelegramNotificationEngineConfig
 
 class TelegramNotificationConfig(BaseNotificationConfig):
     model_config = ConfigDict(
-        title="Telegram và kích hoạt",
+        title="Telegram config",
         frozen=True,
     )
 

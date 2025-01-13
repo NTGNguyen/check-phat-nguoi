@@ -41,9 +41,9 @@
       }
     },
     {
-      "telegram": {
-        "bot_token": "2128973231:weasjdf2GUUx4oLOMoUhd0GiREXSZcCq-uA",
-        "chat_id": "-1001799817459"
+      "discord": {
+        "bot_token": "MTMzNzg4Ujq0NDI0NDYgNTcyMA.GpITQg.beoF9OxJScbKJwEz5Udy6bzrQJ8zI4BvndbaBA",
+        "user_id": 832930846182672436
       },
       "enabled": false
     }

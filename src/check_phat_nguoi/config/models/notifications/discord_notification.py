@@ -6,7 +6,7 @@ from .discord_engine import DiscordNotificationEngineConfig
 
 class DiscordNotificationConfig(BaseNotificationConfig):
     model_config = ConfigDict(
-        title="Discord và kích hoạt",
+        title="Discord config",
         frozen=True,
     )
 

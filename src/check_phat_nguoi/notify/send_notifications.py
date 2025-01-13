@@ -14,23 +14,27 @@ logger = getLogger(__name__)
 
 class SendNotifications:
     def __init__(self) -> None:
-        self._md_messages: tuple[MarkdownMessageDetail, ...]
+        self._plate_messages: tuple[MarkdownMessageDetail, ...]
         self._telegram_engine: TelegramNotificationEngine
-        self._discord_engine: DiscordNotificationEngine
 
     async def _send_messages(self, notification: BaseNotificationConfig) -> None:
         if isinstance(notification, TelegramNotificationConfig):
-            await self._telegram_engine.send(notification.telegram, self._md_messages)
+            await self._telegram_engine.send(
+                telegram=notification.telegram,
+                plates_messages=self._plate_messages,
+            )
         if isinstance(notification, DiscordNotificationConfig):
-            await DiscordNotificationEngine(
-                notification.discord, self._md_messages
-            ).send()
+            async with DiscordNotificationEngine(
+                discord=notification.discord,
+                plates_messages=self._plate_messages,
+            ) as discord_engine:
+                await discord_engine.send()
 
     async def send(self) -> None:
         if config.notifications is None:
             logger.debug("No notification was given. Skip notifying")
             return
-        self._md_messages = tuple(
+        self._plate_messages = tuple(
             MarkdownMessage(plate_detail).generate_message()
             for plate_detail in plates_context.plates
         )

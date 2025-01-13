@@ -18,10 +18,10 @@ class DiscordNotificationEngine(BaseNotificationEngine):
     def __init__(
         self,
         discord: DiscordNotificationEngineConfig,
-        messages: tuple[MarkdownMessageDetail, ...],
+        plates_messages: tuple[MarkdownMessageDetail, ...],
     ) -> None:
         self.discord: DiscordNotificationEngineConfig = discord
-        self.messages: tuple[MarkdownMessageDetail, ...] = messages
+        self.plates_messages: tuple[MarkdownMessageDetail, ...] = plates_messages
         self.bot = Bot(command_prefix="!", intents=Intents.default())
         self.user: User
 
@@ -36,9 +36,9 @@ class DiscordNotificationEngine(BaseNotificationEngine):
             self.user = await self.bot.fetch_user(self.discord.user_id)
             await asyncio.gather(
                 *(
-                    self._send_message(violation, message.plate)
-                    for message in self.messages
-                    for violation in message.violations
+                    self._send_message(message, messages.plate)
+                    for messages in self.plates_messages
+                    for message in messages.messages
                 )
             )
         # TODO: @NTGNguyen handle later
