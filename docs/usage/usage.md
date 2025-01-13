@@ -12,6 +12,11 @@
 
     Project được viết bằng python 3.13 nhưng có thể chạy với python 3.10 trở lên (không đảm bảo). Đối với discord notification yêu cầu phiên bản >= 3.13.
 
+???+ warning
+
+    - Hiện tại API từ csgt.vn không đảm bảo hoạt động.
+    - checkphatnguoi.vn không cho truy cập từ IP nước ngoài? (Ảnh hưởng github action)
+
 ---
 
 ## Clone repo
@@ -72,16 +77,12 @@ Thiết lập file `config.json` (1)
 ??? example
 
     ```json title="config.json"
-    {% include "../../config.sample.json" %}
+    --8<-- "config.sample.json"
     ```
 
 ???+ note
 
-    Xem [`Config Schema`](https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html) để biết chi tiết config
-
-???+ warning
-
-    Hiện tại API từ csgt.vn không đảm bảo hoạt động.
+    Xem [Config Schema](https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html) để biết chi tiết config
 
 ### Chạy chương trình
 

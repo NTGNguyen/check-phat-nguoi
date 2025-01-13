@@ -1,7 +1,5 @@
 # csgt.vn
 
 ```http
-{%
-  include "../../requests/csgt_vn.http"
-%}
+--8<-- "requests/csgt_vn.http"
 ```

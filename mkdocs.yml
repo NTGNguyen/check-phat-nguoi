@@ -68,8 +68,6 @@ plugins:
         - stemmer
         - stopWordFilter
         - trimmer
-  - include-markdown:
-      cache_dir: ./mkdocs-include-markdown-cache
 
 nav:
   - 'Trang chủ':

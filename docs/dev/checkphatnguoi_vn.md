@@ -1,9 +1,7 @@
 # checkphatnguoi.vn
 
 ```http
-{%
-  include "../../requests/checkphatnguoi_vn.http"
-%}
+--8<-- "requests/checkphatnguoi_vn.http"
 ```
 
 ## Curl
