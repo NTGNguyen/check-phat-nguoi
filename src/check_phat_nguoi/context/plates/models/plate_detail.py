@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from itertools import chain
 from typing import Any, override
 
 from pydantic import BaseModel, Field
@@ -26,6 +27,63 @@ class PlateDetail(BaseModel):
         if isinstance(other, PlateDetail):
             return self.plate == other.plate
         return False
+
+    def __str__(self):
+        def create_violation_str(violation: ViolationDetail, index: int) -> str:
+            resolution_offices = (
+                f"""
+                   Nơi giải quyết vụ việc:
+                   {
+                    "\n".join(
+                        resolution_office_detail
+                        for resolution_office_detail in violation.resolution_offices_details
+                    )
+                }
+                """
+                if violation.resolution_offices_details
+                else None
+            )
+            violation_str = "\n".join(
+                line
+                for line in f"""
+            Lỗi vi phạm thứ {index}:
+                Màu biển: {violation.color if violation.color else " "}
+                Thời điểm vi phạm: {violation.date if violation.date else " "}
+                Vị trí vi phạm: {violation.location if violation.location else " "}
+                Hành vi vi phạm: {violation.violation if violation.violation else " "}
+                                Trạng thái: {"Đã xử phạt" if violation.status else ("Chưa xử phạt" if not violation.status else " ")}
+                Đơn vị phát hiện vi phạm: {violation.enforcement_unit if violation.enforcement_unit else " "}
+            """.splitlines()
+                if line.strip()
+            )
+            return (
+                "\n".join([violation_str, resolution_offices])
+                if resolution_offices
+                else violation_str
+            )
+
+        plate_detail: str = "\n".join(
+            line
+            for line in f"""
+        Biển số: {self.plate}
+        Chủ sở hữu: {self.owner if self.owner else " "}
+        """.splitlines()
+            if line.strip()
+        )
+
+        return (
+            "\n".join(
+                chain(
+                    [plate_detail],
+                    (
+                        create_violation_str(violation, index)
+                        for index, violation in enumerate(self.violations, start=1)
+                    ),
+                )
+            )
+            if self.violations
+            else plate_detail
+        )
 
 
 __all__ = ["PlateDetail"]
