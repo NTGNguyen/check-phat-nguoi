@@ -22,7 +22,7 @@ class TelegramNotificationEngine(BaseNotificationEngine):
     async def send(
         self,
         telegram: TelegramNotificationEngineConfig,
-        messages: tuple[MarkdownMessageDetail, ...],
+        plates_messages: tuple[MarkdownMessageDetail, ...],
     ) -> None:
         async def _send_message(message: str, plate: str) -> None:
             logger.info(
@@ -58,8 +58,8 @@ class TelegramNotificationEngine(BaseNotificationEngine):
 
         await asyncio.gather(
             *(
-                _send_message(violation, message.plate)
-                for message in messages
-                for violation in message.violations
+                _send_message(message, messages.plate)
+                for messages in plates_messages
+                for message in messages.messages
             )
         )

@@ -7,9 +7,6 @@ on:
   workflow_dispatch:
 # user-config end
 
-env:
-  TESSERACT_DATASET_URL: 'https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/eng.traineddata'
-
 jobs:
   run:
     name: Run
@@ -33,8 +30,6 @@ jobs:
           cache-dependency-path: |
             requirements/requirements.txt
 
-      - uses: extractions/setup-just@v2
-
       - name: Get required apt packages
         id: get-pkgs
         shell: bash
@@ -55,4 +50,4 @@ jobs:
         run: curl -o config.json ${{ env.config }}
 
       - name: Run check phat nguoi
-        run: just
+        run: uv run check-phat-nguoi --frozen
