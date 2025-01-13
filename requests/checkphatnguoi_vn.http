@@ -1,0 +1,6 @@
+### Get for 6A64685
+POST /phatnguoi
+HOST: https://api.checkphatnguoi.vn
+Content-Type: application/json
+
+{"bienso": "60A64685"}

@@ -1,5 +1,13 @@
 # checkphatnguoi.vn
 
+```http
+{%
+  include "../../requests/checkphatnguoi_vn.http"
+%}
+```
+
+## Curl
+
 1. Example 1
 
 ```sh
