@@ -39,5 +39,5 @@ class MarkdownMessage:
     def generate_message(self) -> MarkdownMessageDetail:
         return MarkdownMessageDetail(
             plate=self._plate_detail.plate,
-            violations=self._format_message(),
+            messages=self._format_message(),
         )
