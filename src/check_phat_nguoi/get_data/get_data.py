@@ -9,15 +9,15 @@ from check_phat_nguoi.context import (
 )
 from check_phat_nguoi.types import ApiEnum
 
-from .engines import BaseGetDataEngine, GetDataEngineCheckPhatNguoi, GetDataEngineCsgt
+from .engines import BaseGetDataEngine, CheckPhatNguoiGetDataEngine, CsgtGetDataEngine
 
 logger = getLogger(__name__)
 
 
 class GetData:
     def __init__(self) -> None:
-        self._checkphatnguoi_engine: GetDataEngineCheckPhatNguoi
-        self._csgt_engine: GetDataEngineCsgt
+        self._checkphatnguoi_engine: CheckPhatNguoiGetDataEngine
+        self._csgt_engine: CsgtGetDataEngine
         self._plates_details: set[PlateDetail] = set()
 
     async def _get_data_for_plate(self, plate_info: PlateInfo) -> None:
@@ -26,33 +26,31 @@ class GetData:
             plate_info.api
             if isinstance(plate_info.api, tuple)
             else (plate_info.api,)
-            if plate_info.api is not None
+            if plate_info.api
             else config.api
             if isinstance(config.api, tuple)
             else (config.api,)
         )
-        get_data_engine: BaseGetDataEngine
+        engine: BaseGetDataEngine
         for api in apis:
             match api:
                 case ApiEnum.checkphatnguoi_vn:
-                    get_data_engine = self._checkphatnguoi_engine
+                    engine = self._checkphatnguoi_engine
                 case ApiEnum.csgt_vn:
-                    get_data_engine = self._csgt_engine
+                    engine = self._csgt_engine
             logger.info(
                 f"Plate {plate_info.plate}: Getting data with API: {api.value}..."
             )
 
-            plate_detail: PlateDetail | None = await get_data_engine.get_data(
-                plate_info
-            )
-            if plate_detail is not None:
+            plate_detail: PlateDetail | None = await engine.get_data(plate_info)
+            if plate_detail:
                 self._plates_details.add(plate_detail)
                 return
 
     async def get_data(self) -> None:
         async with (
-            GetDataEngineCheckPhatNguoi() as self._checkphatnguoi_engine,
-            GetDataEngineCsgt() as self._csgt_engine,
+            CheckPhatNguoiGetDataEngine() as self._checkphatnguoi_engine,
+            CsgtGetDataEngine() as self._csgt_engine,
         ):
             if config.asynchronous:
                 await gather(

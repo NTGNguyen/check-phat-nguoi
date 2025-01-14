@@ -1,6 +1,8 @@
-### Get for 6A64685
-POST /phatnguoi
-HOST: https://api.checkphatnguoi.vn
+# Config
+@plate = 30F88251
+
+### Get for {{plate}}
+POST https://api.checkphatnguoi.vn/phatnguoi
 Content-Type: application/json
 
-{"bienso": "60A64685"}
+{"bienso": "{{plate}}"}

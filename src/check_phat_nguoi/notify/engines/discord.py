@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from logging import getLogger
+from typing import override
 
 from discord import Intents, NotFound, User
 from discord.ext.commands import Bot
@@ -59,11 +60,7 @@ class _DiscordNotificationCoreEngine:
 
 
 class DiscordNotificationEngine(BaseNotificationEngine):
-    async def __aenter__(self):
-        return self
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb): ...
-
+    @override
     async def send(
         self,
         notification_config: BaseNotificationEngineConfig,
