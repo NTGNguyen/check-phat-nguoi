@@ -31,7 +31,7 @@ class PhatNguoiGetDataEngine(HttpaioSession, BaseGetDataEngine):
     def get_violations(html: str):
         soup = BeautifulSoup(html, "html.parser")
         violation_htmls: ResultSet[BeautifulSoup] = soup.find_all("tbody")
-        if violation_htmls == []:
+        if violation_htmls is None:
             return
         violation_detail_set: set[ViolationDetail] = set()
 
@@ -72,10 +72,8 @@ class PhatNguoiGetDataEngine(HttpaioSession, BaseGetDataEngine):
         return tuple(violation_detail_set)
 
     async def _request(self, plate_info: PlateInfo) -> str | None:
-        url = (
-            API_URL_PHATNGUOI
-            + plate_info.plate
-            + f"/{get_vehicle_enum(plate_info.type)}/"
+        url: str = (
+            f"{API_URL_PHATNGUOI}{plate_info.plate}/{get_vehicle_enum(plate_info.type)}"
         )
         try:
             async with self._session.get(url=url) as response:
