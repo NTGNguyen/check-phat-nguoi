@@ -42,10 +42,20 @@ class PlateDetail(BaseModel):
                 if violation.resolution_offices_details
                 else None
             )
-            # TODO: Keep going on
             violation_str: str = (
                 f"Lỗi vi phạm thứ {index}:" + f"\nMàu biển: {violation.color}"
                 if violation.color
+                else "" + f"\nThời điểm vi phạm: {violation.date}"
+                if violation.date
+                else "" + f"\nVị trí vi phạm: {violation.location}"
+                if violation.location
+                else "" + f"\nHành vi vi phạm: {violation.violation}"
+                if violation.violation
+                else ""
+                + f"\nTrạng thái: {'Chưa xử phạt' if not violation.status else 'Đã xử phạt'}"
+                if violation.status is not None
+                else "" + f"\nĐơn vị phát hiện vi phạm: {violation.enforcement_unit}"
+                if violation.enforcement_unit
                 else ""
             )
             # violation_str = "\n".join(
@@ -67,14 +77,10 @@ class PlateDetail(BaseModel):
                 else violation_str
             )
 
-        # TODO: Ye going on hehehe
-        plate_detail: str = "\n".join(
-            line
-            for line in f"""
-        Biển số: {self.plate}
-        Chủ sở hữu: {self.owner if self.owner else " "}
-        """.splitlines()
-            if line.strip()
+        plate_detail: str = (
+            f"Biển số: {self.plate}" + f"\nChủ sở hữu: {self.owner}"
+            if self.owner
+            else ""
         )
 
         if self.violations:
