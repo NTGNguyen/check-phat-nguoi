@@ -36,7 +36,7 @@ class PhatNguoiGetDataEngine(HttpaioSession, BaseGetDataEngine):
 
         def _get_violation(violation_html: Tag) -> None:
             # FIXME: Use CSS Selector
-            (
+            color: str | None = (
                 color_tag.text.strip()
                 if (
                     color_tag := violation_html.select_one(
@@ -45,7 +45,7 @@ class PhatNguoiGetDataEngine(HttpaioSession, BaseGetDataEngine):
                 )
                 else None
             )
-            (
+            location: str | None = (
                 location_tag.text.strip()
                 if (
                     location_tag := violation_html.select_one(
