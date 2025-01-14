@@ -30,33 +30,39 @@ class PlateDetail(BaseModel):
     def __str__(self):
         def create_violation_str(violation: ViolationDetail, index: int) -> str:
             resolution_offices: str | None = (
-                f"""
-                   Nơi giải quyết vụ việc:
-                   {
-                    "\n".join(
-                        resolution_office_detail
-                        for resolution_office_detail in violation.resolution_offices_details
-                    )
-                }
-                """
+                "Nơi giải quyết vụ việc:"
+                + "\n"
+                + "\n".join(
+                    resolution_office_detail.strip()
+                    for resolution_office_detail in violation.resolution_offices_details
+                )
                 if violation.resolution_offices_details
                 else None
             )
             violation_str: str = (
-                f"Lỗi vi phạm thứ {index}:" + f"\nMàu biển: {violation.color}"
-                if violation.color
-                else "" + f"\nThời điểm vi phạm: {violation.date}"
-                if violation.date
-                else "" + f"\nVị trí vi phạm: {violation.location}"
-                if violation.location
-                else "" + f"\nHành vi vi phạm: {violation.violation}"
-                if violation.violation
-                else ""
-                + f"\nTrạng thái: {'Chưa xử phạt' if not violation.status else 'Đã xử phạt'}"
-                if violation.status is not None
-                else "" + f"\nĐơn vị phát hiện vi phạm: {violation.enforcement_unit}"
-                if violation.enforcement_unit
-                else ""
+                f"Lỗi vi phạm thứ {index}:"
+                + (f"\nMàu biển: {violation.color}" if violation.color else "")
+                + (f"\nThời điểm vi phạm: {violation.date}" if violation.date else "")
+                + (
+                    f"\nVị trí vi phạm: {violation.location}"
+                    if violation.location
+                    else ""
+                )
+                + (
+                    f"\nHành vi vi phạm: {violation.violation}"
+                    if violation.violation
+                    else ""
+                )
+                + (
+                    f"\nTrạng thái: {'Chưa xử phạt' if not violation.status else 'Đã xử phạt'}"
+                    if violation.status is not None
+                    else ""
+                )
+                + (
+                    f"\nĐơn vị phát hiện vi phạm: {violation.enforcement_unit}"
+                    if violation.enforcement_unit
+                    else ""
+                )
             )
             # violation_str = "\n".join(
             #     line

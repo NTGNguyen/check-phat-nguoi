@@ -54,6 +54,11 @@ class Config(BaseModel):
         description="Gửi và chờ tất cả request. Đối với API csgt.vn hãy tắt vì gửi request quá nhiều, trang lỗi. Nếu bật, các request sẽ không đảm bảo thứ tự input. Notify hiện không đảm bảo thứ tự input.",
         default=True,
     )
+    print_console: bool = Field(
+        title="In thông tin ra console",
+        description="In thông tin của biển vi phạm ra console",
+        default=True,
+    )
     detail_log: bool = Field(
         title="Log chi tiết",
         description="Log chi tiết",

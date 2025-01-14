@@ -5,6 +5,7 @@ from check_phat_nguoi.config.config_reader import config
 from check_phat_nguoi.context.plates.context import plates_context
 from check_phat_nguoi.get_data import GetData
 from check_phat_nguoi.notify import SendNotifications
+from check_phat_nguoi.print_console import PrintConsole
 
 from .utils.setup_logger import setup_logger
 
@@ -16,6 +17,7 @@ async def async_main() -> None:
     logger.debug(f"Config read: {config}")
     await GetData().get_data()
     logger.debug(f"Data got: {plates_context.plates}")
+    await PrintConsole().print_console()
     await SendNotifications().send()
 
 
