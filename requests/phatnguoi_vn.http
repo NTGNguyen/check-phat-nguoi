@@ -1,3 +1,6 @@
-### phatnguoi.vn
-GET /web/tra-cuu/30F88251/1
-HOST: https://api.phatnguoi.vn
+# Config
+@plate = 30F88251
+@type = 1
+
+### Get data for {{plate}} with type {{type}}
+GET https://api.phatnguoi.vn/web/tra-cuu/{{plate}}/{{type}}

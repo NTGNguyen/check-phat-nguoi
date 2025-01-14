@@ -5,10 +5,10 @@ on:
     branches: [main]
     paths:
       - docs/**
+      - config.sample.json
       - jsfh-conf.yaml
       - mkdocs.yml
-      - schemas/**
-      - config.sample.json
+      - requests/**
   workflow_dispatch:
 
 permissions:

@@ -1,10 +1,15 @@
 from asyncio import gather
 from logging import getLogger
 
-from check_phat_nguoi.config import BaseNotificationConfig, TelegramNotificationConfig
+from check_phat_nguoi.config import (
+    BaseNotificationConfig,
+    BaseNotificationEngineConfig,
+    TelegramNotificationConfig,
+)
 from check_phat_nguoi.config.config_reader import config
 from check_phat_nguoi.context import plates_context
 
+from .engines.base import BaseNotificationEngine
 from .engines.telegram import TelegramNotificationEngine
 from .markdown_message import MarkdownMessage, MarkdownMessageDetail
 
@@ -17,8 +22,17 @@ class SendNotifications:
         self._telegram_engine: TelegramNotificationEngine
 
     async def _send_messages(self, notification: BaseNotificationConfig) -> None:
+        notification_engine: BaseNotificationEngine | None = None
+        notification_config: BaseNotificationEngineConfig | None = None
         if isinstance(notification, TelegramNotificationConfig):
-            await self._telegram_engine.send(notification.telegram, self._md_messages)
+            notification_engine = self._telegram_engine
+            notification_config = notification.telegram
+        if notification_config and notification_engine:
+            await notification_engine.send(notification_config, self._md_messages)
+        else:
+            logger.error(
+                "There's a undefined notification engine or notification config"
+            )  # May never reach this case
 
     async def send(self) -> None:
         if config.notifications is None:
