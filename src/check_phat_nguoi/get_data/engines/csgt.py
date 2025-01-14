@@ -19,9 +19,9 @@ from check_phat_nguoi.constants import API_URL_CSGT_QUERY as API_QUERY
 from check_phat_nguoi.constants import DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT
 from check_phat_nguoi.context import PlateDetail, ViolationDetail
 from check_phat_nguoi.types import ApiEnum, VehicleTypeEnum, get_vehicle_enum
+from check_phat_nguoi.utils import HttpaioSession
 
-from .base_engine import BaseGetDataEngine
-from .base_session import BaseGetDataSession
+from .base import BaseGetDataEngine
 
 logger = getLogger(__name__)
 
@@ -31,12 +31,12 @@ SSL_CONTEXT: Final[SSLContext] = ssl_create_context()
 SSL_CONTEXT.set_ciphers("DEFAULT@SECLEVEL=1")
 
 
-class _GetDataLocalEngineCsgt(BaseGetDataSession):
+class _GetDataCsgtCoreEngine(HttpaioSession):
     api: ApiEnum = ApiEnum.csgt_vn
 
     def __init__(self, plate_info: PlateInfo) -> None:
         self._plate_info: PlateInfo = plate_info
-        super().__init__()
+        HttpaioSession.__init__(self)
 
     @staticmethod
     def _bypass_captcha(captcha_img: bytes) -> str:
@@ -179,9 +179,9 @@ class _GetDataLocalEngineCsgt(BaseGetDataSession):
             )
 
 
-class GetDataEngineCsgt(BaseGetDataEngine):
+class CsgtGetDataEngine(BaseGetDataEngine):
     @override
     async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None:
-        async with _GetDataLocalEngineCsgt(plate_info) as local_engine:
+        async with _GetDataCsgtCoreEngine(plate_info) as local_engine:
             plate_detail: PlateDetail | None = await local_engine.get_data()
             return plate_detail

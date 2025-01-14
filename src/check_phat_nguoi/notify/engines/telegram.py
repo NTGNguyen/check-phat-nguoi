@@ -8,6 +8,7 @@ from aiohttp import ClientError
 
 from check_phat_nguoi.config import TelegramNotificationEngineConfig
 from check_phat_nguoi.constants import SEND_MESSAGE_API_URL_TELEGRAM as API_URL
+from check_phat_nguoi.utils import HttpaioSession
 
 from ..markdown_message import MarkdownMessageDetail
 from .base import BaseNotificationEngine
@@ -15,9 +16,9 @@ from .base import BaseNotificationEngine
 logger = getLogger(__name__)
 
 
-class TelegramNotificationEngine(BaseNotificationEngine):
-    def __init__(self):
-        super().__init__()
+class TelegramNotificationEngine(BaseNotificationEngine, HttpaioSession):
+    def __init__(self) -> None:
+        HttpaioSession.__init__(self)
 
     async def send(
         self,

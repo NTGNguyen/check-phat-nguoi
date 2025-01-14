@@ -23,19 +23,19 @@ from check_phat_nguoi.types import (
     VehicleTypeEnum,
     get_vehicle_enum,
 )
+from check_phat_nguoi.utils import HttpaioSession
 
-from .base_engine import BaseGetDataEngine
-from .base_session import BaseGetDataSession
+from .base import BaseGetDataEngine
 
 logger = getLogger(__name__)
 
 
-class GetDataEngineCheckPhatNguoi(BaseGetDataEngine, BaseGetDataSession):
+class CheckPhatNguoiGetDataEngine(BaseGetDataEngine, HttpaioSession):
     api: ApiEnum = ApiEnum.checkphatnguoi_vn
     headers: Final[dict[str, str]] = {"Content-Type": "application/json"}
 
     def __init__(self) -> None:
-        super().__init__(session_header=self.headers)
+        HttpaioSession.__init__(self, headers=self.headers)
 
     @staticmethod
     def get_violations(
