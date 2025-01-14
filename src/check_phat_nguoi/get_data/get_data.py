@@ -31,20 +31,18 @@ class GetData:
             if isinstance(config.api, tuple)
             else (config.api,)
         )
-        get_data_engine: BaseGetDataEngine
+        engine: BaseGetDataEngine
         for api in apis:
             match api:
                 case ApiEnum.checkphatnguoi_vn:
-                    get_data_engine = self._checkphatnguoi_engine
+                    engine = self._checkphatnguoi_engine
                 case ApiEnum.csgt_vn:
-                    get_data_engine = self._csgt_engine
+                    engine = self._csgt_engine
             logger.info(
                 f"Plate {plate_info.plate}: Getting data with API: {api.value}..."
             )
 
-            plate_detail: PlateDetail | None = await get_data_engine.get_data(
-                plate_info
-            )
+            plate_detail: PlateDetail | None = await engine.get_data(plate_info)
             if plate_detail:
                 self._plates_details.add(plate_detail)
                 return

@@ -112,3 +112,7 @@ class CheckPhatNguoiGetDataEngine(BaseGetDataEngine, HttpaioSession):
             type=type,
             violations=self.get_violations(plate_detail_dict, type),
         )
+
+    @override
+    async def __aexit__(self, exc_type, exc_value, exc_traceback) -> None:
+        return await HttpaioSession.__aexit__(self, exc_type, exc_value, exc_traceback)

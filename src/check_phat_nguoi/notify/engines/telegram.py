@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 from asyncio import TimeoutError
 from logging import getLogger
+from typing import override
 
 from aiohttp import ClientError
 
@@ -64,3 +65,7 @@ class TelegramNotificationEngine(BaseNotificationEngine, HttpaioSession):
                 for message in messages.messages
             )
         )
+
+    @override
+    async def __aexit__(self, exc_type, exc_value, exc_traceback) -> None:
+        return await HttpaioSession.__aexit__(self, exc_type, exc_value, exc_traceback)

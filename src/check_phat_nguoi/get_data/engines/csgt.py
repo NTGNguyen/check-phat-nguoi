@@ -178,6 +178,10 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
                 f"Plate {self._plate_info.plate}: Error occurs while getting data (internally) {self.api.value}. {e}"
             )
 
+    @override
+    async def __aexit__(self, exc_type, exc_value, exc_traceback) -> None:
+        return await HttpaioSession.__aexit__(self, exc_type, exc_value, exc_traceback)
+
 
 class CsgtGetDataEngine(BaseGetDataEngine):
     @override
