@@ -4,7 +4,7 @@ from typing import LiteralString
 GET_DATA_API_URL_CHECKPHATNGUOI: LiteralString = (
     "https://api.checkphatnguoi.vn/phatnguoi"
 )
-API_URL_PHATNGUOI: LiteralString = "https://api.phatnguoi.vn/web/tra-cuu/"
+API_URL_PHATNGUOI: LiteralString = "https://api.phatnguoi.vn/web/tra-cuu"
 API_URL_CSGT_CAPTCHA: LiteralString = (
     "https://www.csgt.vn/lib/captcha/captcha.class.php"
 )
