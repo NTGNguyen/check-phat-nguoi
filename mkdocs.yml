@@ -1,8 +1,27 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
-site_name: Check Phạt Nguội
+site_name: 'Check Phạt Nguội'
+site_author: 'NTGNguyen & Kevin Nitro'
+site_description: 'Tool kiểm tra phạt nguội'
 site_url: 'https://ntgnguyen.github.io/check-phat-nguoi'
 repo_url: 'https://github.com/ntgnguyen/check-phat-nguoi'
+strict: true
+
+nav:
+  - 'Trang chủ': index.md
+  - 'Sử dụng':
+      - usage/index.md
+      - usage/schedule-run.md
+  - 'Config schema': 'https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html'
+  - 'Development':
+      - dev/setup.md
+      - dev/csgt_vn.md
+      - dev/checkphatnguoi_vn.md
+      - dev/phatnguoi_vn.md
+  - 'Khác':
+      - other/references.md
+      - other/disclaimer.md
+
 theme:
   language: vi
   icon:
@@ -69,19 +88,11 @@ plugins:
         - stopWordFilter
         - trimmer
 
-nav:
-  - 'Trang chủ': index.md
-  - 'Sử dụng': usage/index.md
-      - usage/schedule-run.md
-  - 'Config schema': 'https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html'
-  - 'Development':
-      - dev/setup.md
-      - dev/csgt_vn.md
-      - dev/checkphatnguoi_vn.md
-      - dev/phatnguoi_vn.md
-  - 'Khác':
-      - other/references.md
-      - other/disclaimer.md
+validation:
+  nav:
+    not_found: warn
+    omitted_files: warn
+  unrecognized_links: warn
 
 extra:
   analytics:
