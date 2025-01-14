@@ -45,7 +45,7 @@ class GetData:
             plate_detail: PlateDetail | None = await engine.get_data(plate_info)
             if plate_detail:
                 self._plates_details.add(plate_detail)
-                return
+                break
 
     async def get_data(self) -> None:
         async with (
