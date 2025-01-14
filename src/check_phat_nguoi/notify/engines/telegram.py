@@ -7,9 +7,6 @@ from typing import override
 from aiohttp import ClientError
 
 from check_phat_nguoi.config import TelegramNotificationEngineConfig
-from check_phat_nguoi.config.models.notifications.base_engine import (
-    BaseNotificationEngineConfig,
-)
 from check_phat_nguoi.constants import SEND_MESSAGE_API_URL_TELEGRAM as API_URL
 from check_phat_nguoi.utils import HttpaioSession
 
@@ -19,7 +16,9 @@ from .base import BaseNotificationEngine
 logger = getLogger(__name__)
 
 
-class TelegramNotificationEngine(BaseNotificationEngine, HttpaioSession):
+class TelegramNotificationEngine[BaseNotificationEngineConfig](
+    BaseNotificationEngine, HttpaioSession
+):
     def __init__(self) -> None:
         HttpaioSession.__init__(self)
 
@@ -58,15 +57,13 @@ class TelegramNotificationEngine(BaseNotificationEngine, HttpaioSession):
     @override
     async def send(
         self,
-        notification_config: BaseNotificationEngineConfig,
+        engine_config: TelegramNotificationEngineConfig,
         plates_messages: tuple[MarkdownMessageDetail, ...],
     ) -> None:
-        if not isinstance(notification_config, TelegramNotificationEngineConfig):
-            return
         await asyncio.gather(
             *(
                 self._send_message(
-                    telegram=notification_config, message=message, plate=messages.plate
+                    telegram=engine_config, message=message, plate=messages.plate
                 )
                 for messages in plates_messages
                 for message in messages.messages

@@ -7,10 +7,7 @@ from typing import override
 from discord import Intents, NotFound, User
 from discord.ext.commands import Bot
 
-from check_phat_nguoi.config import (
-    BaseNotificationEngineConfig,
-    DiscordNotificationEngineConfig,
-)
+from check_phat_nguoi.config import DiscordNotificationEngineConfig
 
 from ..markdown_message import MarkdownMessageDetail
 from .base import BaseNotificationEngine
@@ -59,16 +56,14 @@ class _DiscordNotificationCoreEngine:
         await self.bot.close()
 
 
-class DiscordNotificationEngine(BaseNotificationEngine):
+class DiscordNotificationEngine[BaseNotificationEngineConfig](BaseNotificationEngine):
     @override
     async def send(
         self,
-        notification_config: BaseNotificationEngineConfig,
+        engine_config: DiscordNotificationEngineConfig,
         plates_messages: tuple[MarkdownMessageDetail, ...],
     ) -> None:
-        if not isinstance(notification_config, DiscordNotificationEngineConfig):
-            return
         async with _DiscordNotificationCoreEngine(
-            notification_config, plates_messages
+            engine_config, plates_messages
         ) as core_engine:
             await core_engine.send()

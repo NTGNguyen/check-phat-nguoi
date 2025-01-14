@@ -3,14 +3,12 @@ from logging import getLogger
 
 from check_phat_nguoi.config import (
     BaseNotificationConfig,
-    BaseNotificationEngineConfig,
     TelegramNotificationConfig,
 )
 from check_phat_nguoi.config.config_reader import config
 from check_phat_nguoi.config.models import DiscordNotificationConfig
 from check_phat_nguoi.context import plates_context
 
-from .engines.base import BaseNotificationEngine
 from .engines.discord import DiscordNotificationEngine
 from .engines.telegram import TelegramNotificationEngine
 from .markdown_message import MarkdownMessage, MarkdownMessageDetail
@@ -25,20 +23,14 @@ class SendNotifications:
         self._discord_engine: DiscordNotificationEngine
 
     async def _send_messages(self, notification_config: BaseNotificationConfig) -> None:
-        engine: BaseNotificationEngine | None = None
-        engine_config: BaseNotificationEngineConfig | None = None
         if isinstance(notification_config, TelegramNotificationConfig):
-            engine = self._telegram_engine
-            engine_config = notification_config.telegram
+            await self._telegram_engine.send(
+                notification_config.telegram, self._plate_messages
+            )
         if isinstance(notification_config, DiscordNotificationConfig):
-            engine = self._telegram_engine
-            engine_config = notification_config.discord
-        if engine and engine_config:
-            await engine.send(engine_config, self._plate_messages)
-        else:
-            logger.error(
-                "There's a undefined notification engine or notification config"
-            )  # May never reach this case
+            await self._discord_engine.send(
+                notification_config.discord, self._plate_messages
+            )
 
     async def send(self) -> None:
         if config.notifications is None:
