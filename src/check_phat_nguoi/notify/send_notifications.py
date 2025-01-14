@@ -16,19 +16,19 @@ class SendNotifications:
     def __init__(self) -> None:
         self._plate_messages: tuple[MarkdownMessageDetail, ...]
         self._telegram_engine: TelegramNotificationEngine
+        self._discord_engine: DiscordNotificationEngine
 
     async def _send_messages(self, notification: BaseNotificationConfig) -> None:
         if isinstance(notification, TelegramNotificationConfig):
             await self._telegram_engine.send(
-                telegram=notification.telegram,
-                plates_messages=self._plate_messages,
+                notification.telegram,
+                self._plate_messages,
             )
         if isinstance(notification, DiscordNotificationConfig):
-            async with DiscordNotificationEngine(
-                discord=notification.discord,
-                plates_messages=self._plate_messages,
-            ) as discord_engine:
-                await discord_engine.send()
+            await self._discord_engine.send(
+                notification.discord,
+                self._plate_messages,
+            )
 
     async def send(self) -> None:
         if config.notifications is None:
@@ -38,7 +38,10 @@ class SendNotifications:
             MarkdownMessage(plate_detail).generate_message()
             for plate_detail in plates_context.plates
         )
-        async with TelegramNotificationEngine() as self._telegram_engine:
+        async with (
+            TelegramNotificationEngine() as self._telegram_engine,
+            DiscordNotificationEngine() as self._discord_engine,
+        ):
             if config.asynchronous:
                 await gather(
                     *(

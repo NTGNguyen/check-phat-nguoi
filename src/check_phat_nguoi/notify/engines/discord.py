@@ -6,7 +6,10 @@ from logging import getLogger
 from discord import Intents, NotFound, User
 from discord.ext.commands import Bot
 
-from check_phat_nguoi.config import DiscordNotificationEngineConfig
+from check_phat_nguoi.config import (
+    BaseNotificationEngineConfig,
+    DiscordNotificationEngineConfig,
+)
 
 from ..markdown_message import MarkdownMessageDetail
 from .base import BaseNotificationEngine
@@ -14,7 +17,7 @@ from .base import BaseNotificationEngine
 logger = getLogger(__name__)
 
 
-class DiscordNotificationEngine(BaseNotificationEngine):
+class _DiscordNotificationCoreEngine:
     def __init__(
         self,
         discord: DiscordNotificationEngineConfig,
@@ -53,3 +56,22 @@ class DiscordNotificationEngine(BaseNotificationEngine):
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.bot.close()
+
+
+class DiscordNotificationEngine(BaseNotificationEngine):
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb): ...
+
+    async def send(
+        self,
+        notification_config: BaseNotificationEngineConfig,
+        plates_messages: tuple[MarkdownMessageDetail, ...],
+    ) -> None:
+        if not isinstance(notification_config, DiscordNotificationEngineConfig):
+            return
+        async with _DiscordNotificationCoreEngine(
+            notification_config, plates_messages
+        ) as core_engine:
+            await core_engine.send()
