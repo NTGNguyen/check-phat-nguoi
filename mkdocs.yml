@@ -70,10 +70,8 @@ plugins:
         - trimmer
 
 nav:
-  - 'Trang chủ':
-      - index.md
-  - 'Sử dụng':
-      - usage/usage.md
+  - 'Trang chủ': index.md
+  - 'Sử dụng': usage/index.md
       - usage/schedule-run.md
   - 'Config schema': 'https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html'
   - 'Development':
