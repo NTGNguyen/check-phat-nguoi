@@ -39,4 +39,4 @@ class ViolationDetail(BaseModel):
 
     @override
     def __hash__(self):
-        return hash(f"{self.date}{self.location}")
+        return hash(self.date) + hash(self.location)

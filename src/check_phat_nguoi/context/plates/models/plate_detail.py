@@ -4,7 +4,7 @@ from typing import Any, override
 
 from pydantic import BaseModel, Field
 
-from check_phat_nguoi.types import VehicleTypeEnum
+from check_phat_nguoi.types import VehicleTypeEnum, get_vehicle_enum
 
 from .violation_detail import ViolationDetail
 
@@ -19,12 +19,26 @@ class PlateDetail(BaseModel):
 
     @override
     def __hash__(self):
-        return hash(self.plate)
+        return (
+            hash(self.plate)
+            + hash(self.owner)
+            + hash(self.type)
+            + hash(self.violations)
+        )
 
     @override
     def __eq__(self, other: Any):
         if isinstance(other, PlateDetail):
-            return self.plate == other.plate
+            return (
+                self.plate == other.plate
+                and self.owner == other.owner
+                and get_vehicle_enum(self.type) == get_vehicle_enum(other.type)
+                and (
+                    all(x == y for x, y in zip(self.violations, other.violations))
+                    if self.violations and other.violations
+                    else (not self.violations and not other.violations)
+                )
+            )
         return False
 
     def __str__(self):
