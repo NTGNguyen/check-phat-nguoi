@@ -4,7 +4,7 @@ import json
 from asyncio import TimeoutError
 from datetime import datetime
 from logging import getLogger
-from typing import Final, override
+from typing import Final, Literal, TypeAlias, TypedDict, cast, override
 
 from aiohttp import ClientError
 
@@ -29,43 +29,74 @@ from .base import BaseGetDataEngine
 
 logger = getLogger(__name__)
 
+# HACK: Those type so bruh that's not really strict like Typescript. I love typescript btw
+
+_DataResponse = TypedDict(
+    "_DataResponse",
+    {
+        "Biển kiểm soát": str,
+        "Màu biển": str,
+        "Loại phương tiện": VehicleStrVieType,
+        "Thời gian vi phạm": str,
+        "Địa điểm vi phạm": str,
+        "Hành vi vi phạm": str,
+        "Trạng thái": str,
+        "Đơn vị phát hiện vi phạm": str,
+        "Nơi giải quyết vụ việc": tuple[str, ...],
+    },
+)
+
+_DataPlateInfoResponse = TypedDict(
+    "_DataPlateInfoResponse",
+    {
+        "total": int,
+        "chuaxuphat": Literal[0, 1],
+        "daxuphat": Literal[0, 1],
+        "latest": str,
+    },
+)
+
+_FoundResponse = TypedDict(
+    "_FoundResponse",
+    {
+        "status": Literal[1],
+        "msg": str,
+        "data": tuple[_DataResponse, ...],
+    },
+)
+
+
+_NotFoundResponse = TypedDict(
+    "_NotFoundResponse",
+    {
+        "status": Literal[2],
+        "data": None,
+    },
+)
+
+_Response: TypeAlias = _FoundResponse | _NotFoundResponse
+
 
 class _CheckPhatNguoiGetDataParseEngine:
-    def __init__(self, plate_info: PlateInfo, plate_detail_dict: dict) -> None:
+    def __init__(self, plate_info: PlateInfo, plate_detail_dict: _Response) -> None:
         self._plate_info: PlateInfo = plate_info
-        self._plate_detail_dict: dict = plate_detail_dict
+        self._plate_detail_typed: _Response = plate_detail_dict
         self._violations_details_set: set[ViolationDetail] = set()
 
-    def _parse_violation(self, violation_dict: dict) -> None:
-        type: VehicleStrVieType | None = violation_dict["Loại phương tiện"]
+    def _parse_violation(self, data: _DataResponse) -> None:
+        type: VehicleStrVieType | None = data["Loại phương tiện"]
         # NOTE: this is for filtering the vehicle that doesn't match the plate info type. Because checkphatnguoi.vn return all of the type of the plate
         parsed_type: VehicleTypeEnum = get_vehicle_enum(type)
         if parsed_type != self._plate_info.type:
             return
-        plate: str | None = violation_dict["Biển kiểm soát"]
-        date: str | None = violation_dict["Thời gian vi phạm"]
-        color: str | None = violation_dict["Màu biển"]
-        location: str | None = violation_dict["Địa điểm vi phạm"]
-        violation: str | None = violation_dict["Hành vi vi phạm"]
-        status: str | None = violation_dict["Trạng thái"]
-        enforcement_unit: str | None = violation_dict["Đơn vị phát hiện vi phạm"]
-        resolution_offices: tuple[str, ...] | None = violation_dict[
-            "Nơi giải quyết vụ việc"
-        ]
-        if any(
-            v is None
-            for v in (
-                plate,
-                color,
-                date,
-                location,
-                violation,
-                status,
-                enforcement_unit,
-                resolution_offices,
-            )
-        ):
-            logger.error(f"Plate {self._plate_info.plate}: Cannot parse the data")
+        plate: str = data["Biển kiểm soát"]
+        date: str = data["Thời gian vi phạm"]
+        color: str = data["Màu biển"]
+        location: str = data["Địa điểm vi phạm"]
+        violation: str = data["Hành vi vi phạm"]
+        status: str = data["Trạng thái"]
+        enforcement_unit: str = data["Đơn vị phát hiện vi phạm"]
+        resolution_offices: tuple[str, ...] = data["Nơi giải quyết vụ việc"]
         violation_detail: ViolationDetail = ViolationDetail(
             plate=plate,
             color=color,
@@ -81,10 +112,10 @@ class _CheckPhatNguoiGetDataParseEngine:
         self._violations_details_set.add(violation_detail)
 
     def parse(self) -> tuple[ViolationDetail, ...] | None:
-        if not self._plate_detail_dict or not self._plate_detail_dict["data"]:
+        if self._plate_detail_typed["status"] != 1:
             return
-        for violation_dict in self._plate_detail_dict["data"]:
-            self._parse_violation(violation_dict)
+        for data in self._plate_detail_typed["data"]:
+            self._parse_violation(data)
         return tuple(self._violations_details_set)
 
 
@@ -121,16 +152,17 @@ class CheckPhatNguoiGetDataEngine(BaseGetDataEngine, HttpaioSession):
 
     @override
     async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None:
-        plate_detail_dict: dict | None = await self._request(plate_info)
-        if not plate_detail_dict:
+        plate_detail_raw: dict | None = await self._request(plate_info)
+        if not plate_detail_raw:
             return
+        plate_detail_typed: _Response = cast(_Response, plate_detail_raw)
         type: VehicleTypeEnum = get_vehicle_enum(plate_info.type)
         return PlateDetail(
             plate=plate_info.plate,
             owner=plate_info.owner,
             type=type,
             violations=_CheckPhatNguoiGetDataParseEngine(
-                plate_info=plate_info, plate_detail_dict=plate_detail_dict
+                plate_info=plate_info, plate_detail_dict=plate_detail_typed
             ).parse(),
         )
 
