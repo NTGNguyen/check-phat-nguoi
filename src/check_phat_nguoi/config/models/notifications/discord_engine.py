@@ -35,7 +35,7 @@ class DiscordNotificationEngineConfig(BaseNotificationEngineConfig):
             raise ValueError("Bot token is not valid")
         return _bot_token
 
-    @field_validator("user_id", mode="after")
+    @field_validator("chat_id", mode="after")
     @classmethod
     def validate_user_id(cls, _user_id: int) -> int:
         if not re_match(r"^\d{18,19}$", f"{_user_id}"):
