@@ -5,7 +5,8 @@ from pydantic import BaseModel, ConfigDict, Field
 from check_phat_nguoi.types import ApiEnum
 from check_phat_nguoi.types.log_level import LogLevelEnum
 
-from .notifications.telegram_notification import (
+from .notifications import (
+    DiscordNotificationConfig,
     TelegramNotificationConfig,
 )
 from .plate_info import PlateInfo
@@ -23,7 +24,9 @@ class Config(BaseModel):
         min_length=1,
     )
     # NOTE: Do not put base class in here. Because it will be wrong in schema.
-    notifications: tuple[TelegramNotificationConfig, ...] = Field(
+    notifications: tuple[
+        TelegramNotificationConfig | DiscordNotificationConfig, ...
+    ] = Field(
         title="Danh sách thông báo",
         description="Danh sách các thiết lập để thông báo",
         default_factory=tuple,

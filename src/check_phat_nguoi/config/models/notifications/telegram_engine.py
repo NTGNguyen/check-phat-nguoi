@@ -13,11 +13,15 @@ class TelegramNotificationEngineConfig(BaseNotificationEngineConfig):
 
     bot_token: str = Field(
         description="Bot token Telegram",
-        examples=["2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB"],
+        examples=[
+            "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB",
+        ],
     )
     chat_id: str = Field(
         description="Chat ID Telegram",
-        examples=["-1001790012349"],
+        examples=[
+            "-1001790012349",
+        ],
     )
 
     @field_validator("bot_token", mode="after")

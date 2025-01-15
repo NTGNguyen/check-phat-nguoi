@@ -1,11 +1,7 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
-class BaseNotificationEngineConfig(BaseModel):
-    model_config = ConfigDict(
-        title="Lớp cơ sở notification engine",
-        frozen=True,
-    )
+class BaseNotificationEngineConfig(BaseModel): ...
 
 
 __all__ = ["BaseNotificationEngineConfig"]

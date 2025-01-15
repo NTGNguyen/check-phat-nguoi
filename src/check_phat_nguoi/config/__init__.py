@@ -3,6 +3,8 @@ from .models import (
     BaseNotificationConfig,
     BaseNotificationEngineConfig,
     Config,
+    DiscordNotificationConfig,
+    DiscordNotificationEngineConfig,
     PlateInfo,
     TelegramNotificationConfig,
     TelegramNotificationEngineConfig,
@@ -16,4 +18,6 @@ __all__ = [
     "PlateInfo",
     "TelegramNotificationEngineConfig",
     "TelegramNotificationConfig",
+    "DiscordNotificationEngineConfig",
+    "DiscordNotificationConfig",
 ]
