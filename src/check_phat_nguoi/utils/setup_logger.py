@@ -1,6 +1,6 @@
 from logging import basicConfig
 
-from check_phat_nguoi.config.config_reader import config
+from check_phat_nguoi.config_reader import config
 from check_phat_nguoi.constants import (
     DETAIL_LOG_MESSAGE,
     SIMPLE_LOG_MESSAGE,

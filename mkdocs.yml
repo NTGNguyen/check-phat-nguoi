@@ -11,7 +11,14 @@ nav:
   - 'Trang chủ': index.md
   - 'Sử dụng':
       - usage/index.md
-      - usage/schedule-run.md
+      - usage/setup-config.md
+      - 'From source':
+          - usage/from-source/index.md
+          - usage/from-source/pip.md
+          - usage/from-source/uv.md
+          - usage/from-source/uv-just.md
+      - 'Nâng cao':
+          - usage/advanced/schedule-run.md
   - 'Config schema': 'https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html'
   - 'Development':
       - dev/setup.md
@@ -24,8 +31,6 @@ nav:
 
 theme:
   language: vi
-  icon:
-    annotation: material/arrow-right-circle
   features:
     - navigation.instant
     - navigation.instant.progress

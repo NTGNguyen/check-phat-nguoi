@@ -5,7 +5,7 @@ from typing import Any, Final, Self
 
 from aiohttp import ClientSession, ClientTimeout
 
-from check_phat_nguoi.config.config_reader import config
+from check_phat_nguoi.config_reader import config
 
 logger = getLogger(__name__)
 

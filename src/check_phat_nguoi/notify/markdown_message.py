@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from check_phat_nguoi.config.config_reader import config
+from check_phat_nguoi.config_reader import config
 from check_phat_nguoi.constants import MESSAGE_MARKDOWN_PATTERN
 from check_phat_nguoi.context import PlateDetail
 
@@ -27,8 +27,8 @@ class MarkdownMessage:
                     location=vio.location,
                     enforcement_unit=vio.enforcement_unit,
                     # FIXME: The name of arg doesn't change when refactoring name. Maybe find another way, not format string like this. Maybe, if check string
-                    resolution_locations="\n".join(vio.resolution_offices_details)
-                    if vio.resolution_offices_details
+                    resolution_locations="\n".join(vio.resolution_offices)
+                    if vio.resolution_offices
                     else "",
                 )
                 for vio in self._plate_detail.violations

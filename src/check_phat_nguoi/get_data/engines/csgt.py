@@ -9,7 +9,7 @@ from ssl import create_default_context as ssl_create_context
 from typing import Final, override
 
 from aiohttp import ClientError
-from bs4 import BeautifulSoup, NavigableString, ResultSet, Tag
+from bs4 import BeautifulSoup, NavigableString, Tag
 from PIL import Image
 from pytesseract import image_to_string
 
@@ -37,6 +37,7 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
     def __init__(self, plate_info: PlateInfo) -> None:
         self._plate_info: PlateInfo = plate_info
         HttpaioSession.__init__(self)
+        self._violations_details_set: set[ViolationDetail] = set()
 
     @staticmethod
     def _bypass_captcha(captcha_img: bytes) -> str:
@@ -77,60 +78,125 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
         ) as response:
             return await response.text()
 
-    def _get_violations(
+    def _parse_violation(self, violation_data: str) -> None:
+        soup: BeautifulSoup = BeautifulSoup(violation_data, "html.parser")
+        if not soup.css:
+            return
+        plate: str | None = (
+            plate_tag.text.strip()
+            if (
+                plate_tag := soup.select_one(
+                    ".form-group:nth-child(1) > div > div:nth-child(2)"
+                )
+            )
+            else None
+        )
+        color: str | None = (
+            color_tag.text.strip()
+            if (
+                color_tag := soup.select_one(
+                    ".form-group:nth-child(2) > div > div:nth-child(2)"
+                )
+            )
+            else None
+        )
+        type: str | None = (
+            type_tag.text.strip()
+            if (
+                type_tag := soup.select_one(
+                    ".form-group:nth-child(2) > div > div:nth-child(2)"
+                )
+            )
+            else None
+        )
+        date: str | None = (
+            date_tag.text.strip()
+            if (
+                date_tag := soup.select_one(
+                    ".form-group:nth-child(4) > div > div:nth-child(2)"
+                )
+            )
+            else None
+        )
+        location: str | None = (
+            location_tag.text.strip()
+            if (
+                location_tag := soup.select_one(
+                    ".form-group:nth-child(5) > div > div:nth-child(2)"
+                )
+            )
+            else None
+        )
+        violation: str | None = (
+            action_tag.text.strip()
+            if (
+                action_tag := soup.select_one(
+                    ".form-group:nth-child(6) > div > div:nth-child(2)"
+                )
+            )
+            else None
+        )
+        status: str | None = (
+            status_tag.text.strip()
+            if (
+                status_tag := soup.select_one(
+                    ".form-group:nth-child(7) > div > div:nth-child(2)"
+                )
+            )
+            else None
+        )
+        enforcement_unit: str | None = (
+            enforcement_unit_tag.text.strip()
+            if (
+                enforcement_unit_tag := soup.select_one(
+                    ".form-group:nth-child(8) > div > div:nth-child(2)"
+                )
+            )
+            else None
+        )
+        resolution_offices: list[str] = [
+            resolution_offices_tag.text.strip()
+            for resolution_offices_tag in soup.select(".form-group:nth-child(n+9)")
+        ]
+
+        if (
+            any(
+                v is None
+                for v in (
+                    plate,
+                    color,
+                    date,
+                    location,
+                    violation,
+                    status,
+                    enforcement_unit,
+                )
+            )
+            or not resolution_offices
+        ):
+            logger.error(f"Plate {self._plate_info.plate}: Cannot parse the data")
+            return
+
+        violation_detail: ViolationDetail = ViolationDetail(
+            plate=plate,
+            color=color,
+            type=get_vehicle_enum(type),
+            # Have to cast to string because lsp's warning
+            date=datetime.strptime(str(date), DATETIME_FORMAT),
+            location=location,
+            violation=violation,
+            status=status == "Đã xử phạt",
+            enforcement_unit=enforcement_unit,
+            resolution_offices=tuple(resolution_offices),
+        )
+        self._violations_details_set.add(violation_detail)
+
+    def _parse_violations(
         self, violations_data: list[str]
     ) -> tuple[ViolationDetail, ...]:
-        violations_details_set: set[ViolationDetail] = set()
-
-        def _get_violation_detail(violation_data: str) -> None:
-            soup: BeautifulSoup = BeautifulSoup(violation_data, "html.parser")
-            if not soup.css:
-                return
-            forms: ResultSet[Tag] = soup.css.select(".form-group")
-            date: str | None = (
-                time_tag.text.strip()
-                if (time_tag := forms[3].select_one("div.col-md-9"))
-                else None
-            )
-            location: str | None = (
-                location_tag.text.strip()
-                if (location_tag := forms[4].select_one("div.col-md-9"))
-                else None
-            )
-            violation: str | None = (
-                action_tag.text.strip()
-                if (action_tag := forms[5].select_one("div.col-md-9"))
-                else None
-            )
-            status: str | None = (
-                status_tag.text.strip()
-                if (status_tag := forms[7].select_one("div.col-md-9"))
-                else None
-            )
-            enforcement_unit: str | None = (
-                status_tag.text.strip()
-                if (status_tag := forms[8].select_one("div.col-md-9"))
-                else None
-            )
-            resolution_offices_details: list[str] = [
-                detail.text.strip() for detail in forms[9:]
-            ]
-            violation_detail: ViolationDetail = ViolationDetail(
-                # Have to cast to string because lsp's warning
-                date=datetime.strptime(str(date), DATETIME_FORMAT)
-                if not date
-                else None,
-                location=location,
-                violation=violation,
-                status=False if status == "Chưa xử phạt" else True,
-                enforcement_unit=enforcement_unit,
-                resolution_offices_details=tuple(resolution_offices_details),
-            )
-            violations_details_set.add(violation_detail)
-
         for violation_data in violations_data:
-            _get_violation_detail(violation_data)
-        return tuple(violations_details_set)
+            self._parse_violation(violation_data)
+        return tuple(self._violations_details_set)
 
     def _parse_html(self, html_data: str) -> PlateDetail | None:
         soup: BeautifulSoup = BeautifulSoup(html_data, "html.parser")
@@ -140,6 +206,7 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
         if not violation_group_tag or isinstance(violation_group_tag, NavigableString):
             return
         violation_group: str = violation_group_tag.prettify(formatter=None)
+        # FIXME: This split is hard. Maybe change it to regex split later
         violations_data: list[str] = "".join(violation_group.splitlines()[1:-2]).split(
             '<hr style="margin-bottom: 25px;"/>'
         )
@@ -147,7 +214,7 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
             plate=self._plate_info.plate,
             owner=self._plate_info.owner,
             type=get_vehicle_enum(self._plate_info.type),
-            violations=self._get_violations(violations_data),
+            violations=self._parse_violations(violations_data),
         )
 
     async def get_data(self) -> PlateDetail | None:
@@ -159,7 +226,6 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
                 f"Plate {self._plate_info.plate}: Sending request again to get data..."
             )
             html_data: str = await self._get_html_data(captcha, phpsessid)
-            logger.debug(f"Plate {self._plate_info.plate} HTML data: {html_data}")
             if html_data.strip() == "404":
                 logger.error(f"Plate {self._plate_info.plate}: Wrong captcha")
                 return

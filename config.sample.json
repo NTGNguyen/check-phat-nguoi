@@ -52,5 +52,6 @@
   "asynchronous": true,
   "detail": true,
   "detail_log": false,
+  "print_console": true,
   "log_level": "INFO"
 }

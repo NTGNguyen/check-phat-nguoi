@@ -14,9 +14,9 @@ from check_phat_nguoi.constants import (
     GET_DATA_API_URL_CHECKPHATNGUOI as API_URL,
 )
 from check_phat_nguoi.context import (
+    PlateDetail,
     ViolationDetail,
 )
-from check_phat_nguoi.context.plates import PlateDetail
 from check_phat_nguoi.types import (
     ApiEnum,
     VehicleStrVieType,
@@ -30,51 +30,70 @@ from .base import BaseGetDataEngine
 logger = getLogger(__name__)
 
 
+class _CheckPhatNguoiGetDataParseEngine:
+    def __init__(self, plate_info: PlateInfo, plate_detail_dict: dict) -> None:
+        self._plate_info: PlateInfo = plate_info
+        self._plate_detail_dict: dict = plate_detail_dict
+        self._violations_details_set: set[ViolationDetail] = set()
+
+    def _parse_violation(self, violation_dict: dict) -> None:
+        type: VehicleStrVieType | None = violation_dict["Loại phương tiện"]
+        # NOTE: this is for filtering the vehicle that doesn't match the plate info type. Because checkphatnguoi.vn return all of the type of the plate
+        parsed_type: VehicleTypeEnum = get_vehicle_enum(type)
+        if parsed_type != self._plate_info.type:
+            return
+        plate: str | None = violation_dict["Biển kiểm soát"]
+        date: str | None = violation_dict["Thời gian vi phạm"]
+        color: str | None = violation_dict["Màu biển"]
+        location: str | None = violation_dict["Địa điểm vi phạm"]
+        violation: str | None = violation_dict["Hành vi vi phạm"]
+        status: str | None = violation_dict["Trạng thái"]
+        enforcement_unit: str | None = violation_dict["Đơn vị phát hiện vi phạm"]
+        resolution_offices: tuple[str, ...] | None = violation_dict[
+            "Nơi giải quyết vụ việc"
+        ]
+        if any(
+            v is None
+            for v in (
+                plate,
+                color,
+                date,
+                location,
+                violation,
+                status,
+                enforcement_unit,
+                resolution_offices,
+            )
+        ):
+            logger.error(f"Plate {self._plate_info.plate}: Cannot parse the data")
+        violation_detail: ViolationDetail = ViolationDetail(
+            plate=plate,
+            color=color,
+            type=parsed_type,
+            # Have to cast to string because lsp's warning
+            date=datetime.strptime(str(date), DATETIME_FORMAT),
+            location=location,
+            violation=violation,
+            status=status == "Đã xử phạt",
+            enforcement_unit=enforcement_unit,
+            resolution_offices=resolution_offices,
+        )
+        self._violations_details_set.add(violation_detail)
+
+    def parse(self) -> tuple[ViolationDetail, ...] | None:
+        if not self._plate_detail_dict or not self._plate_detail_dict["data"]:
+            return
+        for violation_dict in self._plate_detail_dict["data"]:
+            self._parse_violation(violation_dict)
+        return tuple(self._violations_details_set)
+
+
 class CheckPhatNguoiGetDataEngine(BaseGetDataEngine, HttpaioSession):
     api: ApiEnum = ApiEnum.checkphatnguoi_vn
     headers: Final[dict[str, str]] = {"Content-Type": "application/json"}
 
     def __init__(self) -> None:
         HttpaioSession.__init__(self, headers=self.headers)
-
-    @staticmethod
-    def get_violations(
-        plate_detail_dict: dict | None, filter_type: VehicleTypeEnum
-    ) -> tuple[ViolationDetail, ...] | None:
-        violations_details_set: set[ViolationDetail] = set()
-        if not plate_detail_dict or not plate_detail_dict["data"]:
-            return
-
-        def _get_violation_detail(violation_dict: dict) -> None:
-            type: VehicleStrVieType = violation_dict["Loại phương tiện"]
-            # NOTE: this is for filtering the vehicle that doesn't match the plate info type. Because checkphatnguoi.vn return all of the type of the plate
-            if get_vehicle_enum(type) != filter_type:
-                return
-            date: str = violation_dict["Thời gian vi phạm"]
-            color: str = violation_dict["Màu biển"]
-            location: str = violation_dict["Địa điểm vi phạm"]
-            violation: str = violation_dict["Hành vi vi phạm"]
-            status: bool = (
-                False if violation_dict["Trạng thái"] == "Chưa xử phạt" else True
-            )
-            enforcement_unit: str = violation_dict["Đơn vị phát hiện vi phạm"]
-            resolution_office: tuple[str, ...] = violation_dict[
-                "Nơi giải quyết vụ việc"
-            ]
-            violation_detail: ViolationDetail = ViolationDetail(
-                color=color,
-                date=datetime.strptime(date, DATETIME_FORMAT),
-                location=location,
-                violation=violation,
-                status=status,
-                enforcement_unit=enforcement_unit,
-                resolution_offices_details=resolution_office,
-            )
-            violations_details_set.add(violation_detail)
-
-        for violation_dict in plate_detail_dict["data"]:
-            _get_violation_detail(violation_dict)
-        return tuple(violations_details_set)
 
     async def _request(self, plate_info: PlateInfo) -> dict | None:
         payload: Final[dict[str, str]] = {"bienso": plate_info.plate}
@@ -110,7 +129,9 @@ class CheckPhatNguoiGetDataEngine(BaseGetDataEngine, HttpaioSession):
             plate=plate_info.plate,
             owner=plate_info.owner,
             type=type,
-            violations=self.get_violations(plate_detail_dict, type),
+            violations=_CheckPhatNguoiGetDataParseEngine(
+                plate_info=plate_info, plate_detail_dict=plate_detail_dict
+            ).parse(),
         )
 
     @override
