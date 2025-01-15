@@ -14,9 +14,9 @@ from check_phat_nguoi.constants import (
     GET_DATA_API_URL_CHECKPHATNGUOI as API_URL,
 )
 from check_phat_nguoi.context import (
+    PlateDetail,
     ViolationDetail,
 )
-from check_phat_nguoi.context.plates import PlateDetail
 from check_phat_nguoi.types import (
     ApiEnum,
     VehicleStrVieType,
@@ -80,7 +80,7 @@ class _CheckPhatNguoiGetDataParseEngine:
         )
         self._violations_details_set.add(violation_detail)
 
-    def parse_violations(self) -> tuple[ViolationDetail, ...] | None:
+    def parse(self) -> tuple[ViolationDetail, ...] | None:
         if not self._plate_detail_dict or not self._plate_detail_dict["data"]:
             return
         for violation_dict in self._plate_detail_dict["data"]:
@@ -131,7 +131,7 @@ class CheckPhatNguoiGetDataEngine(BaseGetDataEngine, HttpaioSession):
             type=type,
             violations=_CheckPhatNguoiGetDataParseEngine(
                 plate_info=plate_info, plate_detail_dict=plate_detail_dict
-            ).parse_violations(),
+            ).parse(),
         )
 
     @override
