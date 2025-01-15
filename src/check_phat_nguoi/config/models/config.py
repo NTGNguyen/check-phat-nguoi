@@ -34,6 +34,11 @@ class Config(BaseModel):
         default=(ApiEnum.checkphatnguoi_vn),
         min_length=1,
     )
+    print_console: bool = Field(
+        title="In thông tin ra console",
+        description="In thông tin của các biển ra console",
+        default=True,
+    )
     pending_fines_only: bool = Field(
         title="Lọc chưa nộp phạt",
         description="Chỉ lọc các thông tin vi phạm chưa nộp phạt",
