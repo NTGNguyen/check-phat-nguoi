@@ -1,4 +1,3 @@
-from .exceptions import NoConfigFoundException
 from .models import (
     BaseNotificationConfig,
     BaseNotificationEngineConfig,
@@ -11,7 +10,6 @@ from .models import (
 )
 
 __all__ = [
-    "NoConfigFoundException",
     "BaseNotificationConfig",
     "BaseNotificationEngineConfig",
     "Config",

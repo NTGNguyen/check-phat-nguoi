@@ -35,7 +35,7 @@ class _DiscordNotificationCoreEngine:
 
     async def send(self) -> None:
         try:
-            self.user = await self.bot.fetch_user(self.discord.user_id)
+            self.user = await self.bot.fetch_user(self.discord.chat_id)
             await asyncio.gather(
                 *(
                     self._send_message(message, messages.plate)
