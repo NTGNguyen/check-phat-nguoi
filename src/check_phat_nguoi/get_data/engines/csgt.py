@@ -226,7 +226,6 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
                 f"Plate {self._plate_info.plate}: Sending request again to get data..."
             )
             html_data: str = await self._get_html_data(captcha, phpsessid)
-            logger.debug(f"Plate {self._plate_info.plate} HTML data: {html_data}")
             if html_data.strip() == "404":
                 logger.error(f"Plate {self._plate_info.plate}: Wrong captcha")
                 return

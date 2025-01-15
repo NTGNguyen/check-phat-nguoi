@@ -54,7 +54,7 @@ class ViolationDetail(BaseModel):
     @override
     def __str__(self) -> str:
         return (
-            (f"Biển: {self.plate}" if self.plate else "")
+            (f"Biển vi phạm: {self.plate}" if self.plate else "")
             + (f"\nMàu biển: {self.color}" if self.color else "")
             + (f"\nLoại xe: {get_vehicle_str_vie(self.type)}" if self.type else "")
             + (f"\nThời điểm vi phạm: {self.date}" if self.date else "")
@@ -71,7 +71,13 @@ class ViolationDetail(BaseModel):
                 else ""
             )
             + (
-                "\n" + "\n".join(self.resolution_offices)
+                (
+                    "\n"
+                    + "\n".join(
+                        f"- {resolution_office}"
+                        for resolution_office in self.resolution_offices
+                    )
+                )
                 if self.resolution_offices
                 else ""
             )

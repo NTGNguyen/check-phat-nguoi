@@ -2,6 +2,8 @@ from .config import Config
 from .notifications import (
     BaseNotificationConfig,
     BaseNotificationEngineConfig,
+    DiscordNotificationConfig,
+    DiscordNotificationEngineConfig,
     TelegramNotificationConfig,
     TelegramNotificationEngineConfig,
 )
@@ -14,4 +16,6 @@ __all__ = [
     "PlateInfo",
     "TelegramNotificationEngineConfig",
     "TelegramNotificationConfig",
+    "DiscordNotificationConfig",
+    "DiscordNotificationEngineConfig",
 ]

@@ -52,7 +52,7 @@ class PlateDetail(BaseModel):
                 plate_detail
                 + "\n"
                 + "\n".join(
-                    f"Lỗi vi phạm #{order}:\n" + str(violation)
+                    f"Lỗi vi phạm #{order}:\n{violation}\n"
                     for order, violation in enumerate(self.violations, start=1)
                 )
             )
