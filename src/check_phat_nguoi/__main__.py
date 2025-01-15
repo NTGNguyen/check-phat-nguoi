@@ -1,7 +1,7 @@
 import asyncio
 from logging import getLogger
 
-from check_phat_nguoi.config.config_reader import config
+from check_phat_nguoi.config_reader import config
 from check_phat_nguoi.context import plates_context
 from check_phat_nguoi.get_data import GetData
 from check_phat_nguoi.notify import SendNotifications

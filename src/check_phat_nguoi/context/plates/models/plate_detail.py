@@ -75,9 +75,9 @@ class PlateDetail(BaseModel):
                 + "\n"
                 + "\n".join(
                     resolution_office_detail.strip()
-                    for resolution_office_detail in violation.resolution_offices_details
+                    for resolution_office_detail in violation.resolution_offices
                 )
-                if violation.resolution_offices_details
+                if violation.resolution_offices
                 else None
             )
             return violation_str + (resolution_offices if resolution_offices else "")

@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from check_phat_nguoi.config.config_reader import config
+from check_phat_nguoi.config_reader import config
 from check_phat_nguoi.context import PlateDetail, plates_context
 
 logger = getLogger(__name__)

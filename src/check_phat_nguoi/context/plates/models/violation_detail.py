@@ -3,12 +3,26 @@ from __future__ import annotations
 from datetime import datetime
 from typing import override
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
+
+from check_phat_nguoi.types import VehicleTypeEnum
 
 
 # NOTE: This class is used to store the get data's reponse. So it has None type in each field
 class ViolationDetail(BaseModel):
+    model_config = ConfigDict(
+        frozen=True,
+    )
+
+    plate: str | None = Field(
+        description="Biển định danh được trả về từ API",
+        default=None,
+    )
     color: str | None = Field(
+        description="Màu biển",
+        default=None,
+    )
+    type: VehicleTypeEnum | None = Field(
         description="Màu biển",
         default=None,
     )
@@ -32,7 +46,7 @@ class ViolationDetail(BaseModel):
         description="Đơn vị phát hiện vi phạm",
         default=None,
     )
-    resolution_offices_details: tuple[str, ...] | None = Field(
+    resolution_offices: tuple[str, ...] | None = Field(
         description="Nơi giải quyết vụ việc",
         default=None,
     )
