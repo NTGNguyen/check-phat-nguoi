@@ -1,4 +1,4 @@
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict
 
 from .base_notification import BaseNotificationConfig
 from .telegram_engine import TelegramNotificationEngineConfig
@@ -10,9 +10,7 @@ class TelegramNotificationConfig(BaseNotificationConfig):
         frozen=True,
     )
 
-    telegram: TelegramNotificationEngineConfig = Field(
-        description="Telegram",
-    )
+    telegram: TelegramNotificationEngineConfig
 
 
 __all__ = ["TelegramNotificationConfig"]

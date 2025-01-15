@@ -1,4 +1,4 @@
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict
 
 from .base_notification import BaseNotificationConfig
 from .discord_engine import DiscordNotificationEngineConfig
@@ -10,9 +10,7 @@ class DiscordNotificationConfig(BaseNotificationConfig):
         frozen=True,
     )
 
-    discord: DiscordNotificationEngineConfig = Field(
-        description="Discord",
-    )
+    discord: DiscordNotificationEngineConfig
 
 
 __all__ = ["DiscordNotificationConfig"]

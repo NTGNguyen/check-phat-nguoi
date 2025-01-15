@@ -33,7 +33,7 @@ class Config(BaseModel):
     )
     api: tuple[ApiEnum, ...] | ApiEnum = Field(
         title="API",
-        description="Sử dụng API từ trang web nào. Mặc định sẽ là list các API và dừng khi 1 API lấy dữ liệu thành công. Có thể điền giá trị trùng để retry. Hoặc chỉ dùng 1 API. Hiện tại API từ cgst.vn không đảm bảo có thể chạy.",
+        description="Sử dụng API từ trang web nào. Mặc định sẽ là list các API như trong schema hiển thị và dừng khi 1 API lấy dữ liệu thành công. Có thể điền giá trị trùng để retry. Hoặc chỉ dùng 1 API",
         default=(ApiEnum.phatnguoi_vn, ApiEnum.checkphatnguoi_vn),
         min_length=1,
     )
@@ -47,9 +47,9 @@ class Config(BaseModel):
         description="Chỉ lọc các thông tin vi phạm chưa nộp phạt",
         default=True,
     )
-    detail: bool = Field(
-        title="Hiển thị đầy đủ thông tin",
-        description="Hiển thị tất cả thông tin có thể hiển thị",
+    show_less_details: bool = Field(
+        title="Hiển thị ít thông tin",
+        description="Chỉ hiển thị những thông tin biển vi phạm cần thiết",
         default=False,
     )
     request_timeout: int = Field(
@@ -64,7 +64,7 @@ class Config(BaseModel):
     )
     detail_log: bool = Field(
         title="Log chi tiết",
-        description="Log chi tiết",
+        description="Log nhiều thông tin chi tiết hơn",
         default=False,
     )
     log_level: LogLevelEnum = Field(

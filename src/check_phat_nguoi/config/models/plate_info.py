@@ -13,7 +13,7 @@ from check_phat_nguoi.types import (
 
 class PlateInfo(BaseModel):
     model_config = ConfigDict(
-        title="Thông tin thiết lập cho biển số",
+        title="Thông tin biển số",
         frozen=True,
     )
 
