@@ -33,7 +33,7 @@ class SendNotifications:
             )
 
     async def send(self) -> None:
-        if config.notifications is None:
+        if not config.notifications:
             logger.debug("No notification was given. Skip notifying")
             return
         self._plate_messages = tuple(
