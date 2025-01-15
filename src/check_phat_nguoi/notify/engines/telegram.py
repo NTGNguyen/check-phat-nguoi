@@ -16,8 +16,8 @@ from .base import BaseNotificationEngine
 logger = getLogger(__name__)
 
 
-class TelegramNotificationEngine[BaseNotificationEngineConfig](
-    BaseNotificationEngine, HttpaioSession
+class TelegramNotificationEngine(
+    BaseNotificationEngine[TelegramNotificationEngineConfig], HttpaioSession
 ):
     def __init__(self) -> None:
         HttpaioSession.__init__(self)

@@ -6,7 +6,7 @@ from .base_engine import BaseNotificationEngineConfig
 
 
 class DiscordNotificationEngineConfig(BaseNotificationEngineConfig):
-    config_model: ConfigDict = ConfigDict(
+    model_config = ConfigDict(
         title="Discord",
         frozen=True,
     )

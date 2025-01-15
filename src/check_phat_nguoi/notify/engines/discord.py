@@ -56,7 +56,9 @@ class _DiscordNotificationCoreEngine:
         await self.bot.close()
 
 
-class DiscordNotificationEngine[BaseNotificationEngineConfig](BaseNotificationEngine):
+class DiscordNotificationEngine(
+    BaseNotificationEngine[DiscordNotificationEngineConfig]
+):
     @override
     async def send(
         self,
