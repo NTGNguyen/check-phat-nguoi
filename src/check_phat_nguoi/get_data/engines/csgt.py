@@ -15,7 +15,8 @@ from pytesseract import image_to_string
 
 from check_phat_nguoi.config import PlateInfo
 from check_phat_nguoi.constants import API_URL_CSGT_CAPTCHA as API_CAPTCHA
-from check_phat_nguoi.constants import API_URL_CSGT_QUERY as API_QUERY
+from check_phat_nguoi.constants import API_URL_CSGT_QUERY_1 as API_QUERY_1
+from check_phat_nguoi.constants import API_URL_CSGT_QUERY_2 as API_QUERY_2
 from check_phat_nguoi.constants import DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT
 from check_phat_nguoi.context import PlateDetail, ViolationDetail
 from check_phat_nguoi.types import ApiEnum, VehicleTypeEnum, get_vehicle_enum
@@ -36,6 +37,7 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
 
     def __init__(self, plate_info: PlateInfo) -> None:
         self._plate_info: PlateInfo = plate_info
+        self._vehicle_type: VehicleTypeEnum = get_vehicle_enum(self._plate_info.type)
         HttpaioSession.__init__(self)
         self._violations_details_set: set[ViolationDetail] = set()
 
@@ -56,24 +58,33 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
             logger.debug(f"Plate {self._plate_info.plate} PHPSESSID: {phpsessid}")
             return phpsessid, captcha_img
 
-    async def _get_html_data(self, captcha: str, phpsessid: str) -> str:
-        vehicle_type: VehicleTypeEnum = get_vehicle_enum(self._plate_info.type)
+    async def _get_html_check(self, captcha: str, phpsessid: str) -> str:
         payload: dict[str, str | int] = {
             "BienKS": self._plate_info.plate,
-            "Xe": vehicle_type.value,
+            "Xe": self._vehicle_type.value,
             "captcha": captcha,
             "ipClient": "9.9.9.91",
-            "cUrl": vehicle_type.value,
+            "cUrl": self._vehicle_type.value,
         }
         headers: dict[str, str] = {
             "Content-Type": "application/x-www-form-urlencoded",
         }
         cookies: SimpleCookie = SimpleCookie(f"PHPSESSID={phpsessid}")
         async with self._session.post(
-            url=API_QUERY,
+            url=API_QUERY_1,
             headers=headers,
             cookies=cookies,
             data=payload,
+            ssl=SSL_CONTEXT,
+        ) as response:
+            return await response.text()
+
+    async def _get_plate_data(self) -> str:
+        async with self._session.post(
+            url=API_QUERY_2.format(
+                vehicle_type=self._vehicle_type.value,
+                plate=self._plate_info.plate,
+            ),
             ssl=SSL_CONTEXT,
         ) as response:
             return await response.text()
@@ -104,7 +115,7 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
             type_tag.text.strip()
             if (
                 type_tag := soup.select_one(
-                    ".form-group:nth-child(2) > div > div:nth-child(2)"
+                    ".form-group:nth-child(3) > div > div:nth-child(2)"
                 )
             )
             else None
@@ -198,8 +209,8 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
             self._parse_violation(violation_data)
         return tuple(self._violations_details_set)
 
-    def _parse_html(self, html_data: str) -> PlateDetail | None:
-        soup: BeautifulSoup = BeautifulSoup(html_data, "html.parser")
+    def _parse_html(self, html: str) -> PlateDetail | None:
+        soup: BeautifulSoup = BeautifulSoup(html, "html.parser")
         violation_group_tag: Tag | NavigableString | None = soup.find(
             "div", id="bodyPrint123"
         )
@@ -223,13 +234,17 @@ class _GetDataCsgtCoreEngine(HttpaioSession):
             captcha: str = self._bypass_captcha(captcha_img)
             logger.debug(f"Plate {self._plate_info.plate} captcha resolved: {captcha}")
             logger.debug(
-                f"Plate {self._plate_info.plate}: Sending request again to get data..."
+                f"Plate {self._plate_info.plate}: Sending request again to get check..."
             )
-            html_data: str = await self._get_html_data(captcha, phpsessid)
+            html_data: str = await self._get_html_check(captcha, phpsessid)
             if html_data.strip() == "404":
                 logger.error(f"Plate {self._plate_info.plate}: Wrong captcha")
                 return
-            plate_detail: PlateDetail | None = self._parse_html(html_data)
+            logger.debug(
+                f"Plate {self._plate_info.plate}: Sending request again to get data..."
+            )
+            plate_data: str = await self._get_plate_data()
+            plate_detail: PlateDetail | None = self._parse_html(plate_data)
             return plate_detail
         except TimeoutError as e:
             logger.error(
