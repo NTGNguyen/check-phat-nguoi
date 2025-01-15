@@ -32,7 +32,7 @@
       "enable": false
     }
   ],
-  "api": ["checkphatnguoi.vn", "csgt.vn", "csgt.vn"],
+  "api": ["phatnguoi.vn", "checkphatnguoi.vn", "phatnguoi.vn", "csgt.vn"],
   "notifications": [
     {
       "telegram": {

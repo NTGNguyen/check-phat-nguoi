@@ -34,7 +34,7 @@ class Config(BaseModel):
     api: tuple[ApiEnum, ...] | ApiEnum = Field(
         title="API",
         description="Sử dụng API từ trang web nào. Mặc định sẽ là list các API và dừng khi 1 API lấy dữ liệu thành công. Có thể điền giá trị trùng để retry. Hoặc chỉ dùng 1 API. Hiện tại API từ cgst.vn không đảm bảo có thể chạy.",
-        default=(ApiEnum.checkphatnguoi_vn),
+        default=(ApiEnum.phatnguoi_vn, ApiEnum.checkphatnguoi_vn),
         min_length=1,
     )
     print_console: bool = Field(
