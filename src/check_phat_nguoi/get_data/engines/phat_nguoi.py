@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import re
 from asyncio import TimeoutError
 from logging import getLogger
+from re import DOTALL
 from typing import override
 
 from aiohttp import ClientError
@@ -35,7 +37,6 @@ class PhatNguoiGetDataEngine(HttpaioSession, BaseGetDataEngine):
         violation_detail_set: set[ViolationDetail] = set()
 
         def _get_violation(violation_html: Tag) -> None:
-            # FIXME: Use CSS Selector
             color: str | None = (
                 color_tag.text.strip()
                 if (
@@ -45,11 +46,56 @@ class PhatNguoiGetDataEngine(HttpaioSession, BaseGetDataEngine):
                 )
                 else None
             )
+            date: str | None = (
+                date_tag.text.strip()
+                if (
+                    date_tag := violation_html.select_one(
+                        "tr:nth-child(4) > td:nth-child(2)"
+                    )
+                )
+                else None
+            )
             location: str | None = (
                 location_tag.text.strip()
                 if (
                     location_tag := violation_html.select_one(
-                        "tr:nth-child(3) > td:nth-child(2)"
+                        "tr:nth-child(5) > td:nth-child(2)"
+                    )
+                )
+                else None
+            )
+            action: str | None = (
+                action_tag.text.strip()
+                if (
+                    action_tag := violation_html.select_one(
+                        "tr:nth-child(6) > td:nth-child(2)"
+                    )
+                )
+                else None
+            )
+            status: str | None = (
+                status_tag.text.strip()
+                if (
+                    status_tag := violation_html.select_one(
+                        "tr:nth-child(7) > td:nth-child(2)"
+                    )
+                )
+                else None
+            )
+            enforcement_unit: str | None = (
+                enforcement_unit_tag.text.strip()
+                if (
+                    enforcement_unit_tag := violation_html.select_one(
+                        "tr:nth-child(8) > td:nth-child(2)"
+                    )
+                )
+                else None
+            )
+            resolution_offices: str | None = (
+                resolution_offices_tag.text.strip()
+                if (
+                    resolution_offices_tag := violation_html.select_one(
+                        "tr:nth-child(9) > td:nth-child(2)"
                     )
                 )
                 else None
@@ -67,20 +113,21 @@ class PhatNguoiGetDataEngine(HttpaioSession, BaseGetDataEngine):
             # resolution_offices: ResultSet[BeautifulSoup] = details[8].find_all()
             # resolution_office_details: str = resolution_offices[1].text.strip()
             # # TODO: Split resolution_office as other api
-            # violation_detail_set.add(
-            #     ViolationDetail(
-            #         color=color,
-            #         location=location_detail,
-            #         violation=action_detail,
-            #         status=status_detail,
-            #         enforcement_unit=enforcement_unit_detail,
-            #         resolution_offices_details=tuple(
-            #             re.findall(
-            #                 r"\d\..*?(?=(?:\d\.|$))", resolution_office_details, DOTALL
-            #             )
-            #         ),
-            #     )
-            # )
+            violation_detail_set.add(
+                ViolationDetail(
+                    color=color,
+                    location=location,
+                    date=date,
+                    violation=action,
+                    status=True if status == "ĐÃ XỬ PHẠT" else False,
+                    enforcement_unit=enforcement_unit,
+                    resolution_offices_details=tuple(
+                        re.findall(r"\d\..*?(?=(?:\d\.|$))", resolution_offices, DOTALL)
+                    )
+                    if resolution_offices
+                    else None,
+                )
+            )
 
         for violation_html in violation_htmls:
             _get_violation(violation_html)
