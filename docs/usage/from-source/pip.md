@@ -6,17 +6,15 @@
 
 ---
 
-## Cài đặt dependencies
+## Thiết lập môi trường ảo
 
-### Thiết lập môi trường ảo
-
-#### Tạo môi trường ảo
+### Tạo môi trường ảo
 
 ```sh
 python -m venv .venv
 ```
 
-#### Kích hoạt môi trường ảo
+### Kích hoạt môi trường ảo
 
 === "Windows"
 
@@ -30,7 +28,9 @@ python -m venv .venv
     source .venv/bin/activate
     ```
 
-#### Cài đặt dependencies
+---
+
+## Cài đặt dependencies
 
 ```sh
 pip install -r requirements/requirements.txt

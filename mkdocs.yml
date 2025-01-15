@@ -22,9 +22,10 @@ nav:
   - 'Config schema': 'https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html'
   - 'Development':
       - dev/setup.md
-      - dev/csgt_vn.md
-      - dev/checkphatnguoi_vn.md
-      - dev/phatnguoi_vn.md
+      - 'API':
+          - dev/apis/csgt_vn.md
+          - dev/apis/checkphatnguoi_vn.md
+          - dev/apis/phatnguoi_vn.md
   - 'Khác':
       - other/references.md
       - other/disclaimer.md
@@ -103,3 +104,4 @@ extra:
   analytics:
     provider: google
     property: G-0GRV2FG8QZ
+  generator: false

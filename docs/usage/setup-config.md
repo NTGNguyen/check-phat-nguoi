@@ -1,11 +1,11 @@
 # Thiết lập file config
 
-Thiết lập file `config.json` (1)
+Thiết lập file `config.json` tại nơi đang đứng _(Nơi gọi chạy chương trình)_ (1)
 { .annotate }
 
 1.  Hoặc
     - `check-phat-nguoi.config.json` tại nơi đang đứng
-    - `~/check-phat-nguoi.config.json`
+    - `~/check-phat-nguoi.config.json` _(tại home)_
 
 !!! info
 
