@@ -1,4 +1,5 @@
 from re import match as re_match
+from typing import Literal
 
 from pydantic import ConfigDict, Field, field_validator
 
@@ -17,12 +18,13 @@ class DiscordNotificationEngineConfig(BaseNotificationEngineConfig):
             "MTMzNzg4Ujq0NDI0NDYgNTcyMA.GpITQg.beoF9OxJScbKJwEz5Udy6bzrQJ8zI4BvndbaBA",
         ],
     )
-    user_id: int = Field(
-        description="User ID",
+    chat_id: int = Field(
+        description="Chat ID",
         examples=[
             832930846182672436,
         ],
     )
+    chat_type: Literal["user", "channel"]
 
     @field_validator("bot_token", mode="after")
     @classmethod

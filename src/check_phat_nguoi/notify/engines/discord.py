@@ -15,6 +15,7 @@ from .base import BaseNotificationEngine
 logger = getLogger(__name__)
 
 
+# FIXME: @NTGNguyen: fetch channel, id bla bla bla. The command_prefix seem bruh? not relate
 class _DiscordNotificationCoreEngine:
     def __init__(
         self,

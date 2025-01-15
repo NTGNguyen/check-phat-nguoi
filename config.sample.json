@@ -43,7 +43,8 @@
     {
       "discord": {
         "bot_token": "MTMzNzg4Ujq0NDI0NDYgNTcyMA.GpITQg.beoF9OxJScbKJwEz5Udy6bzrQJ8zI4BvndbaBA",
-        "user_id": 832930846182672436
+        "chat_id": 832930846182672436,
+        "chat_type": "user"
       },
       "enabled": false
     }
