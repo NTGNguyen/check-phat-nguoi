@@ -50,6 +50,23 @@ def get_vehicle_str(type: VehicleTypeEnum | VehicleType | Any) -> VehicleStrType
             raise ValueError("Unknown vehicle type")
 
 
+def get_vehicle_str_vie(type: VehicleTypeEnum | VehicleType | Any) -> VehicleStrVieType:
+    match type:
+        case "car" | "Ô tô" | 1 | VehicleTypeEnum.car:
+            return "Ô tô"
+        case "motorbike" | "Xe máy" | 2 | VehicleTypeEnum.motorbike:
+            return "Xe máy"
+        case (
+            "electric_motorbike"
+            | "Xe máy điện"
+            | 3
+            | VehicleTypeEnum.electric_motorbike
+        ):
+            return "Xe máy điện"
+        case _:
+            raise ValueError("Unknown vehicle type")
+
+
 __all__ = [
     "VehicleIntType",
     "VehicleStrType",

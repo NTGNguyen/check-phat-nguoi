@@ -7,6 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from check_phat_nguoi.types import (
     ApiEnum,
     VehicleType,
+    get_vehicle_enum,
 )
 
 
@@ -43,13 +44,37 @@ class PlateInfo(BaseModel):
     )
 
     @override
-    def __hash__(self):
-        return hash(self.plate)
+    def __hash__(self) -> int:
+        return (
+            hash(self.plate)
+            + hash(self.type)
+            + hash(self.enabled)
+            + hash(self.api)
+            + hash(self.owner)
+        )
 
     @override
     def __eq__(self, other: Any):
         if isinstance(other, PlateInfo):
-            return self.plate == other.plate
+            return (
+                self.plate == other.plate
+                and get_vehicle_enum(self.type) == get_vehicle_enum(other.type)
+                and self.enabled == other.enabled
+                and self.owner == other.owner
+                and (
+                    all(
+                        x == y
+                        for x, y in zip(
+                            (self.api,) if isinstance(self.api, ApiEnum) else self.api,
+                            (other.api,)
+                            if isinstance(other.api, ApiEnum)
+                            else other.api,
+                        )
+                    )
+                    if self.api and other.api
+                    else (not self.api and not other.api)
+                )
+            )
         return False
 
 

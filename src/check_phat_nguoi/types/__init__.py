@@ -8,6 +8,7 @@ from .vehicle_type import (
     VehicleTypeEnum,
     get_vehicle_enum,
     get_vehicle_str,
+    get_vehicle_str_vie,
 )
 
 __all__ = [
@@ -20,4 +21,5 @@ __all__ = [
     "VehicleTypeEnum",
     "get_vehicle_enum",
     "get_vehicle_str",
+    "get_vehicle_str_vie",
 ]

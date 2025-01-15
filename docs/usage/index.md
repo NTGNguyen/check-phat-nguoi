@@ -3,16 +3,12 @@
 ## Yêu cầu
 
 - [Python](https://www.python.org/downloads/)
-- [Tesseact OCR CLI](https://tesseract-ocr.github.io/tessdoc/Installation.html) và [Tesseact data set](https://github.com/tesseract-ocr/tessdata) (Không bắt buộc)(1)
+- [Tesseact OCR CLI](https://tesseract-ocr.github.io/tessdoc/Installation.html) và [Tesseact data set](https://github.com/tesseract-ocr/tessdata) _(Không bắt buộc)_(1)
   { .annotate }
 
       1. Sử dụng để giải captcha đối với API csgt.vn
 
-??? note
-
-    Project được viết bằng python 3.13 nhưng có thể chạy với python 3.10 trở lên (không đảm bảo). Đối với discord notification yêu cầu phiên bản >= 3.13.
-
-???+ warning
+!!! warning
 
     - Hiện tại API từ csgt.vn không đảm bảo hoạt động.
     - checkphatnguoi.vn không cho truy cập từ IP nước ngoài? (Ảnh hưởng github action)
@@ -57,7 +53,7 @@ python -m venv .venv
 pip install -r requirements/requirements.txt
 ```
 
-???+note
+???- info "Tắt môi trường ảo"
 
     Để tắt môi trường khi không sử dụng chạy `deactivate`
 
@@ -74,19 +70,19 @@ Thiết lập file `config.json` (1)
     - `check-phat-nguoi.config.json` tại nơi đang đứng
     - `~/check-phat-nguoi.config.json`
 
+!!! info
+
+    Xem [Config Schema](https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html) để biết chi tiết config
+
 ??? example
 
     ```json title="config.json"
     --8<-- "config.sample.json"
     ```
 
-???+ note
-
-    Xem [Config Schema](https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.html) để biết chi tiết config
-
 ### Chạy chương trình
 
-???+ note
+!!! important ""
 
     Yêu cầu kích hoạt venv
 

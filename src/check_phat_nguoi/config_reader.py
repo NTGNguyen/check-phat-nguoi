@@ -4,9 +4,8 @@ from typing import Final
 
 from pydantic import ValidationError
 
-from check_phat_nguoi.constants.config import CONFIG_PATHS
-
-from .models import Config
+from check_phat_nguoi.config import Config
+from check_phat_nguoi.constants import CONFIG_PATHS
 
 
 def _config_reader() -> Config:

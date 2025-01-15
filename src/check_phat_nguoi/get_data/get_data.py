@@ -2,7 +2,7 @@ from asyncio import gather
 from logging import getLogger
 
 from check_phat_nguoi.config import PlateInfo
-from check_phat_nguoi.config.config_reader import config
+from check_phat_nguoi.config_reader import config
 from check_phat_nguoi.context import (
     PlateDetail,
     plates_context,
@@ -49,7 +49,7 @@ class GetData:
             plate_detail: PlateDetail | None = await engine.get_data(plate_info)
             if plate_detail:
                 self._plates_details.add(plate_detail)
-                return
+                break
 
     async def get_data(self) -> None:
         async with (
