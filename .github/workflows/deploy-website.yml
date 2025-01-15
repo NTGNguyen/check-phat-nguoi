@@ -9,6 +9,7 @@ on:
       - jsfh-conf.yaml
       - mkdocs.yml
       - requests/**
+      - src/check_phat_nguoi/config/**
   workflow_dispatch:
 
 permissions:
