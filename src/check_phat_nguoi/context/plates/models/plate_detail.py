@@ -44,20 +44,21 @@ class PlateDetail(BaseModel):
     # TODO: Handle show details later when main updates that option
     @override
     def __str__(self) -> str:
-        plate_detail: str = f"Biển số: {self.plate}" + (
+        plate_info: str = f"Biển số: {self.plate}" + (
             f"\nChủ sở hữu: {self.owner}" if self.owner else ""
         )
-        if self.violations:
-            return (
-                plate_detail
-                + "\n"
+        plate_detail: str = (
+            (
+                f"{plate_info}\n\n"
                 + "\n".join(
                     f"Lỗi vi phạm #{order}:\n{violation}\n"
                     for order, violation in enumerate(self.violations, start=1)
                 )
             )
-        else:
-            return plate_detail
+            if self.violations
+            else plate_info
+        )
+        return plate_detail.strip()
 
 
 __all__ = ["PlateDetail"]

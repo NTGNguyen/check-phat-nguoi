@@ -17,4 +17,6 @@ class PrintConsole:
             logger.info("No plate details. Skip printing")
             return
         # HACK: Have to convert each plate detail to str to use join method :v
-        print("\n---\n".join(str(plate_detail) for plate_detail in self.plate_details))
+        print(
+            "\n\n---\n\n".join(str(plate_detail) for plate_detail in self.plate_details)
+        )
