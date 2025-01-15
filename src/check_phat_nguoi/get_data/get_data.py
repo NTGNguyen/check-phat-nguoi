@@ -55,6 +55,7 @@ class GetData:
         async with (
             CheckPhatNguoiGetDataEngine() as self._checkphatnguoi_engine,
             CsgtGetDataEngine() as self._csgt_engine,
+            PhatNguoiGetDataEngine() as self._phatnguoi_engine,
         ):
             if config.asynchronous:
                 await gather(
