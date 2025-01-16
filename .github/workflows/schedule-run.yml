@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  APT_PKGS_PATH: '.github/apt_pkgs.txt'
+  APT_PKGS_PATH: '${{ github.workspace }}/.github/apt_pkgs.txt'
 
 jobs:
   run:
@@ -36,7 +36,7 @@ jobs:
       - name: Get required apt packages
         id: get-pkgs
         shell: bash
-        run: echo "pkgs=$( tr '\n' ' ' <'{{ env.APT_PKGS_PATH }}' )" > "$GITHUB_OUTPUT"
+        run: echo "pkgs=$( tr '\n' ' ' <'${{ env.APT_PKGS_PATH }}' )" > "$GITHUB_OUTPUT"
 
       - uses: awalsh128/cache-apt-pkgs-action@v1
         with:
