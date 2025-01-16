@@ -23,10 +23,8 @@ uv sync --no-dev
 === "uv run"
 
     ```sh
-    uv run check-phat-nguoi # (1)
+    uv run check-phat-nguoi
     ```
-
-    1. Có thể thêm arg `--frozen` để không mutate lock file
 
 === "actived venv"
 

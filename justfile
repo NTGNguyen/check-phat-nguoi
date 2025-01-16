@@ -8,32 +8,32 @@ alias re := restore-dev-env
 alias rpe := restore-production-env
 
 restore-production-env:
-  [ -d '.venv' ] || uv sync --frozen --no-dev
+  [ -d '.venv' ] || uv sync --no-dev --frozen
 
 restore-dev-env:
-  [ -d '.venv' ] || (uv sync --frozen --all-groups && uv run pre-commit install)
+  [ -d '.venv' ] || (uv sync --all-groups --frozen && uv run pre-commit install)
 
 run-check-phat-nguoi: restore-dev-env
-  uv run check-phat-nguoi --frozen
+  uv run --no-dev --frozen check-phat-nguoi
 
 gen-schemas: restore-dev-env
-  uv run generate-schemas --frozen
+  uv run --no-dev --frozen generate-schemas
 
 web-dev: restore-dev-env
   rm ./site/ -rf || true
-  uv run mkdocs serve
+  uv run --group build-website --frozen mkdocs serve
 
 build-web: restore-dev-env
   rm ./site/ -rf || true
-  uv run mkdocs build
+  uv run --group build-website --frozen mkdocs build
   rm ./site/schemas/ -rf || true
   mkdir ./site/schemas/ -p
-  uv run generate-schemas --frozen
+  uv run --group build-website --frozen generate-schemas
   cp ./schemas/* ./site/schemas
-  uv run generate-schema-doc --config-file jsfh-conf.yaml ./site/schemas/ ./site/schemas/
+  uv run --group build-website --frozen generate-schema-doc --config-file jsfh-conf.yaml ./site/schemas/ ./site/schemas/
 
 clean: restore-dev-env
   uvx cleanpy@0.5.1 .
 
 precommit-run-all: restore-dev-env
-  uvx run pre-commit run -a
+  uv run --frozen --only-dev pre-commit run -a

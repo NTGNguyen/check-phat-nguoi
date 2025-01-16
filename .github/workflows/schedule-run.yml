@@ -31,6 +31,8 @@ jobs:
           cache-dependency-path: |
             requirements/requirements.txt
 
+      - uses: extractions/setup-just@v2
+
       - name: Get required apt packages
         id: get-pkgs
         shell: bash
@@ -43,11 +45,11 @@ jobs:
           execute_install_scripts: true
 
       - name: Install production deps
-        run: uv sync --no-dev
+        run: just restore-production-env
 
       - name: Restore config
         if: ${{ env.config != '' }}
         run: curl -o config.json ${{ env.config }}
 
       - name: Run check phat nguoi
-        run: uv run check-phat-nguoi --frozen
+        run: just
