@@ -52,7 +52,7 @@ repos:
       - id: check-jsonschema
         stages:
           - manual
-        files: '^(check-phat-nguoi)?(\.)?config(\.)?(sample)?\.json$'
+        files: '^docs\/sample-config\/.*(?!cloudflare).*config\.json$'
         args: ['--schemafile', 'schemas/config.json']
 
   - repo: https://github.com/astral-sh/uv-pre-commit
