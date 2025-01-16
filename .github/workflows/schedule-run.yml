@@ -5,6 +5,9 @@ on:
   #   - cron: 0 0 * * 0
   workflow_dispatch:
 
+env:
+  APT_PKGS_PATH: '.github/apt_pkgs.txt'
+
 jobs:
   run:
     name: Run
@@ -31,12 +34,12 @@ jobs:
       - name: Get required apt packages
         id: get-pkgs
         shell: bash
-        run: echo "pkgs=$( tr '\n' ' ' <'./apt_pkgs.txt' )" > "$GITHUB_OUTPUT"
+        run: echo "pkgs=$( tr '\n' ' ' <'{{ env.APT_PKGS_PATH }}' )" > "$GITHUB_OUTPUT"
 
       - uses: awalsh128/cache-apt-pkgs-action@v1
         with:
           packages: ${{ steps.get-pkgs.outputs.pkgs }}
-          version: ${{ hashFiles('apt_pkgs.txt') }}
+          version: ${{ hashFiles(env.APT_PKGS_PATH) }}
           execute_install_scripts: true
 
       - name: Install production deps
@@ -44,7 +47,6 @@ jobs:
 
       - name: Restore config
         if: ${{ env.config != '' }}
-        shell: bash
         run: curl -o config.json ${{ env.config }}
 
       - name: Run check phat nguoi
