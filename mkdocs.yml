@@ -96,6 +96,9 @@ plugins:
         - stemmer
         - stopWordFilter
         - trimmer
+  - exclude:
+      glob:
+        - 'dev/requests/*'
 
 validation:
   nav:

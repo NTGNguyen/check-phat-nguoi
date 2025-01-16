@@ -268,6 +268,7 @@ dependencies = [
 [package.dev-dependencies]
 build-website = [
     { name = "json-schema-for-humans" },
+    { name = "mkdocs-exclude" },
     { name = "mkdocs-material" },
 ]
 dev = [
@@ -288,6 +289,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 build-website = [
     { name = "json-schema-for-humans", specifier = ">=1.3.4" },
+    { name = "mkdocs-exclude", specifier = ">=1.0.2" },
     { name = "mkdocs-material", specifier = ">=9.5.49" },
 ]
 dev = [{ name = "pre-commit", specifier = ">=4.0.1" }]
@@ -531,6 +533,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/bc/c6/bbd4f061bd16b3782
 wheels = [
     { url = "https://files.pythonhosted.org/packages/22/5b/dbc6a8cddc9cfa9c4971d59fb12bb8d42e161b7e7f8cc89e49137c5b279c/mkdocs-1.6.1-py3-none-any.whl", hash = "sha256:db91759624d1647f3f34aa0c3f327dd2601beae39a366d6e064c03468d35c20e", size = 3864451 },
 ]
+
+[[package]]
+name = "mkdocs-exclude"
+version = "1.0.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mkdocs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/54/b5/3a8e289282c9e8d7003f8a2f53d673d4fdaa81d493dc6966092d9985b6fc/mkdocs-exclude-1.0.2.tar.gz", hash = "sha256:ba6fab3c80ddbe3fd31d3e579861fd3124513708271180a5f81846da8c7e2a51", size = 6751 }
 
 [[package]]
 name = "mkdocs-get-deps"
