@@ -73,6 +73,7 @@ class GetData:
             self._plate_details.add(
                 PlateDetail(plate_info=plate_info, violations=violations)
             )
+            return
         logger.error(f"Plate {plate_info.plate}: Failed to get data!!!")
 
     async def get_data(self) -> tuple[PlateDetail, ...]:

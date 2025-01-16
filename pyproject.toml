@@ -5,7 +5,7 @@ authors = [
 ]
 description = "Check phạt nguội"
 name = "check-phat-nguoi"
-version = "0.1.0-dev.1"
+version = "0.1.0-dev.2"
 requires-python = ">=3.13"
 dependencies = [
   "aiohttp[speedups]>=3.11.11",
@@ -23,6 +23,9 @@ cpn-generate-schemas = "cpn_generate_schemas:__main__.main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cpn_cli"]
 
 [dependency-groups]
 dev = ["pre-commit>=4.0.1"]

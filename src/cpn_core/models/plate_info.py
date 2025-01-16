@@ -2,11 +2,7 @@ from typing import Any, override
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from cpn_core.types import (
-    ApiEnum,
-    VehicleType,
-    get_vehicle_enum,
-)
+from cpn_core.types import ApiEnum, VehicleType, get_vehicle_enum, get_vehicle_str_vie
 
 
 class PlateInfo(BaseModel):
@@ -40,6 +36,14 @@ class PlateInfo(BaseModel):
         examples=["@kevinnitro", "dad"],
         default=None,
     )
+
+    # TODO: Less details options later
+    @override
+    def __str__(self) -> str:
+        return f"Biển số: {self.plate}" + (
+            (f"\nChủ sở hữu: {self.owner}" if self.owner else "")
+            + (f"\nLoại phương tiện: {get_vehicle_str_vie(self.type)}")
+        )
 
     @override
     def __hash__(self) -> int:

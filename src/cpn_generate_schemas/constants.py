@@ -1,3 +1,3 @@
 from typing import LiteralString
 
-CONFIG_SCHEMA_PATH: LiteralString = "schemas/config.json"
+CLI_CONFIG_SCHEMA_PATH: LiteralString = "schemas/config.json"

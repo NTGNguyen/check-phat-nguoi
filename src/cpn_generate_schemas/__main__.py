@@ -1,8 +1,8 @@
-from . import generate_config_schema
+from .cli_config import generate_cli_config_schema
 
 
 def main() -> None:
-    generate_config_schema()
+    generate_cli_config_schema()
 
 
 if __name__ == "__main__":
