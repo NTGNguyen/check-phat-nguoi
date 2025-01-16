@@ -2,25 +2,26 @@
 
 ## Github Action
 
-<!--TODO: ref to ./../.github/workflows/schedule-run.yml-->
-
 - Fork repo này
-- Kích hoạt Github Action trong cài đặt của repo
+- Kích hoạt Github Action của repo
+- Bỏ comment 2 dòng sau
 
-<!--FIXME: This cannot included
-
-```yml title=".github/workflows/schedule-run.yml"
-{ %
-  include = "../../.github/workflows/schedule-run.yml"
-  start = "# user-config start"
-  end = "# user-config end"
-% }
+```yaml title=".github/workflows/schedule-run.yml" hl_lines="4 5"
+--8<-- ".github/workflows/schedule-run.yml:1:7"
 ```
--->
+
+???+ note "Tùy chỉnh thời gian schedule"
+
+    - <https://crontab.guru>
+    - <https://savvytime.com/converter/utc-to-vietnam-ho-chi-minh-city>
+
+---
 
 ## Windows
 
-- Dùng Task Scheduler
+- Task Scheduler
+
+---
 
 ## Linux
 

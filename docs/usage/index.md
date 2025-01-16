@@ -1,11 +1,11 @@
 # Hướng dẫn sử dụng
 
-## Yêu cầu
+## Yêu cầu chung
 
-- [Tesseact OCR CLI](https://tesseract-ocr.github.io/tessdoc/Installation.html) và [Tesseact data set](https://github.com/tesseract-ocr/tessdata) _(Không bắt buộc)_(1)
+- [Tesseract OCR CLI](https://tesseract-ocr.github.io/tessdoc/Installation.html) và [Tesseract data set](https://github.com/tesseract-ocr/tessdata) _(Không bắt buộc)_(1)
   { .annotate }
 
-      1. Sử dụng để giải captcha đối với API csgt.vn
+      1. Sử dụng để giải captcha đối với API `csgt.vn`
 
 !!! warning
 
@@ -16,15 +16,15 @@
 
 ## Thiết lập file config
 
-!!! note ""
+!!! note
 
-    Thiết lập file config trước khi chạy chương trình. Xem tại [thiết lập file config](./setup-config.md).
+    Thiết lập file config trước khi chạy chương trình
 
 ---
 
 ## Cài đặt
 
-- [Từ mã nguồn](./from-source/index.md)
+- Từ mã nguồn
 
 !!! info
 

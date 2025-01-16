@@ -23,11 +23,16 @@ def get_vehicle_enum(type: VehicleTypeEnum | VehicleType | Any) -> VehicleTypeEn
     if isinstance(type, VehicleTypeEnum):
         return type
     match type:
-        case "car" | "Ô tô" | 1:
+        case "car" | "Ô tô" | 1 | VehicleTypeEnum.car:
             return VehicleTypeEnum.car
-        case "motorbike" | "Xe máy" | 2:
+        case "motorbike" | "Xe máy" | 2 | VehicleTypeEnum.motorbike:
             return VehicleTypeEnum.motorbike
-        case "electric_motorbike" | "Xe máy điện" | 3:
+        case (
+            "electric_motorbike"
+            | "Xe máy điện"
+            | 3
+            | VehicleTypeEnum.electric_motorbike
+        ):
             return VehicleTypeEnum.electric_motorbike
         case _:
             raise ValueError("Unknown vehicle type")

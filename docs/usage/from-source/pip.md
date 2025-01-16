@@ -44,7 +44,7 @@ pip install -r requirements/requirements.txt
 
 ## Chạy chương trình
 
-!!! important ""
+!!! important
 
     Yêu cầu kích hoạt venv
 

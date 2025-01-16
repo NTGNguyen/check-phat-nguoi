@@ -1,5 +1,5 @@
 # csgt.vn
 
 ```http
---8<-- "requests/csgt_vn.http"
+--8<-- "dev/requests/csgt_vn.http"
 ```

@@ -2,7 +2,7 @@
 
 ## Yêu cầu
 
-!!! info ""
+!!! info
 
     Giống uv
 
