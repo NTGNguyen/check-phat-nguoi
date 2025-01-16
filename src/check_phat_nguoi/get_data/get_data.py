@@ -47,7 +47,7 @@ class GetData:
                 f"Plate {plate_info.plate}: Sucessfully got data with API: {api.value}..."
             )
             self._plates_details.add(plate_detail)
-            break
+            return
         logger.error(f"Plate {plate_info.plate}: Failed to get data!!!")
 
     async def get_data(self) -> None:
