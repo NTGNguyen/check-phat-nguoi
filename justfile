@@ -28,7 +28,7 @@ build-web: restore-dev-env
   uv run --group build-website --frozen mkdocs build
   rm ./site/schemas/ -rf || true
   mkdir ./site/schemas/ -p
-  uv run --group build-website --frozen generate-schemas
+  uv run --group build-website --frozen cpn-generate-schemas
   cp ./schemas/* ./site/schemas
   uv run --group build-website --frozen generate-schema-doc --config-file jsfh-conf.yaml ./site/schemas/ ./site/schemas/
 

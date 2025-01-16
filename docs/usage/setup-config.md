@@ -13,6 +13,14 @@ Thiết lập file `config.json` tại nơi đang đứng _(Nơi gọi chạy ch
 
 ???+ example "Config mẫu"
 
-    ```json title="config.json"
-    --8<-- "config.sample.json"
-    ```
+    === "Cơ bản"
+
+        ```json title="config.json"
+        --8<-- "sample-config/simple.config.json"
+        ```
+
+    === "Nâng cao"
+
+        ```json title="config.json"
+        --8<-- "sample-config/advanced.config.json"
+        ```

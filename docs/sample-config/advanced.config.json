@@ -18,7 +18,6 @@
     {
       "plate": "60A64685",
       "owner": "dad",
-      "apis": "checkphatnguoi.vn",
       "type": 1
     },
     {
@@ -50,9 +49,11 @@
     }
   ],
   "pending_fines_only": true,
+  "request_timeout": 20,
   "asynchronous": true,
   "detail": true,
   "detail_log": false,
   "print_console": true,
+  "show_less_details": false,
   "log_level": "INFO"
 }

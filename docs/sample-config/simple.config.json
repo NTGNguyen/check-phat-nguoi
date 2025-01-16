@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ntgnguyen.github.io/check-phat-nguoi/schemas/config.json",
+  "plates_infos": [
+    {
+      "plate": "59XA00000",
+      "type": "Xe máy"
+    },
+    {
+      "plate": "30F88251",
+      "type": "Ô tô",
+      "enable": false
+    },
+    {
+      "plate": "59XA00001",
+      "type": "Xe máy điện",
+      "owner": "@kevinnitro"
+    }
+  ],
+  "notifications": [
+    {
+      "telegram": {
+        "bot_token": "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB",
+        "chat_id": "-1001790012349"
+      }
+    }
+  ],
+  "pending_fines_only": true,
+  "print_console": true
+}

@@ -5,11 +5,10 @@ on:
     branches: [main]
     paths:
       - docs/**
-      - config.sample.json
       - jsfh-conf.yaml
       - mkdocs.yml
-      - requests/**
-      - src/check_phat_nguoi/config/**
+      - src/cpn_cli/models/config.py
+      - src/cpn_core/models/**
   workflow_dispatch:
 
 permissions:
