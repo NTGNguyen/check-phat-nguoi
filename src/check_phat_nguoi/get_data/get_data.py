@@ -24,15 +24,7 @@ class GetData:
 
     async def _get_data_for_plate(self, plate_info: PlateInfo) -> None:
         # NOTE: The config has constraint that config.api will be at least 1 api in tuple
-        apis: tuple[ApiEnum, ...] = (
-            plate_info.api
-            if isinstance(plate_info.api, tuple)
-            else (plate_info.api,)
-            if plate_info.api
-            else config.api
-            if isinstance(config.api, tuple)
-            else (config.api,)
-        )
+        apis: tuple[ApiEnum, ...] = plate_info.apis if plate_info.apis else config.apis
         engine: BaseGetDataEngine
         for api in apis:
             match api:

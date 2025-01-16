@@ -18,13 +18,13 @@
     {
       "plate": "60A64685",
       "owner": "dad",
-      "api": "checkphatnguoi.vn",
+      "apis": "checkphatnguoi.vn",
       "type": 1
     },
     {
       "plate": "98A56604",
       "type": "car",
-      "api": ["csgt.vn", "checkphatnguoi.vn"]
+      "apis": ["csgt.vn", "checkphatnguoi.vn"]
     },
     {
       "plate": "30F88251",
@@ -32,7 +32,7 @@
       "enable": false
     }
   ],
-  "api": ["phatnguoi.vn", "checkphatnguoi.vn", "phatnguoi.vn", "csgt.vn"],
+  "apis": ["phatnguoi.vn", "checkphatnguoi.vn", "phatnguoi.vn", "csgt.vn"],
   "notifications": [
     {
       "telegram": {

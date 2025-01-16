@@ -30,7 +30,7 @@ class PlateInfo(BaseModel):
         description="Kích hoạt",
         default=True,
     )
-    api: tuple[ApiEnum, ...] | ApiEnum | None = Field(
+    apis: tuple[ApiEnum, ...] | None = Field(
         description='Sử dụng API từ trang web nào. Config giống "api" ở ngoài .Để trống sẽ sử dụng API define ở scope ngoài.',
         title="API",
         default=None,
@@ -49,7 +49,7 @@ class PlateInfo(BaseModel):
             hash(self.plate)
             + hash(self.type)
             + hash(self.enabled)
-            + hash(self.api)
+            + hash(self.apis)
             + hash(self.owner)
         )
 
@@ -65,14 +65,16 @@ class PlateInfo(BaseModel):
                     all(
                         x == y
                         for x, y in zip(
-                            (self.api,) if isinstance(self.api, ApiEnum) else self.api,
-                            (other.api,)
-                            if isinstance(other.api, ApiEnum)
-                            else other.api,
+                            (self.apis,)
+                            if isinstance(self.apis, ApiEnum)
+                            else self.apis,
+                            (other.apis,)
+                            if isinstance(other.apis, ApiEnum)
+                            else other.apis,
                         )
                     )
-                    if self.api and other.api
-                    else (not self.api and not other.api)
+                    if self.apis and other.apis
+                    else (not self.apis and not other.apis)
                 )
             )
         return False

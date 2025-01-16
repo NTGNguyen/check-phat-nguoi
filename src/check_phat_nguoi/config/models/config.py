@@ -31,7 +31,7 @@ class Config(BaseModel):
         description="Danh sách các thiết lập để thông báo",
         default_factory=tuple,
     )
-    api: tuple[ApiEnum, ...] | ApiEnum = Field(
+    apis: tuple[ApiEnum, ...] = Field(
         title="API",
         description="Sử dụng API từ trang web nào. Mặc định sẽ là list các API như trong schema hiển thị và dừng khi 1 API lấy dữ liệu thành công. Có thể điền giá trị trùng để retry. Hoặc chỉ dùng 1 API",
         default=(ApiEnum.phatnguoi_vn, ApiEnum.checkphatnguoi_vn),
