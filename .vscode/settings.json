@@ -1,5 +1,7 @@
 {
   "code-runner.executorMap": {
     "python": "uv run check-phat-nguoi"
-  }
+  },
+  "python.analysis.typeCheckingMode": "off",
+  "basedpyright.disableLanguageServices": true
 }

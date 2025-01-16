@@ -14,10 +14,10 @@ restore-dev-env:
   [ -d '.venv' ] || (uv sync --all-groups --frozen && uv run pre-commit install)
 
 run-check-phat-nguoi: restore-dev-env
-  uv run --no-dev --frozen check-phat-nguoi
+  uv run --no-dev --frozen cpn-cli
 
 gen-schemas: restore-dev-env
-  uv run --no-dev --frozen generate-schemas
+  uv run --no-dev --frozen cpn-generate-schemas
 
 web-dev: restore-dev-env
   rm ./site/ -rf || true

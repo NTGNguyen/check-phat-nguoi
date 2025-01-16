@@ -14,13 +14,11 @@ dependencies = [
   "discord-py>=2.4.0",
   "pydantic>=2.10.4",
   "pytesseract>=0.3.13",
-  "truststore>=0.10.0",
 ]
 
 [project.scripts]
-check-phat-nguoi = "check_phat_nguoi:__main__.main"
-generate-schemas = "generate_schemas:__main__.main"
-generate-config-schema = "generate_schemas:generate_config_schema"
+cpn-cli = "cpn_cli:__main__.main"
+cpn-generate-schemas = "cpn_generate_schemas:__main__.main"
 
 [build-system]
 requires = ["hatchling"]
