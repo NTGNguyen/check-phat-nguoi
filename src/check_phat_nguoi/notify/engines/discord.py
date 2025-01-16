@@ -7,7 +7,7 @@ from discord.ext.commands import Bot
 
 from check_phat_nguoi.config import DiscordNotificationEngineConfig
 
-from ..markdown_message import MarkdownMessageDetail
+from ..models import MessageDetail
 from .base import BaseNotificationEngine
 
 logger = getLogger(__name__)
@@ -18,10 +18,10 @@ class _DiscordNotificationCoreEngine:
     def __init__(
         self,
         discord: DiscordNotificationEngineConfig,
-        plates_messages: tuple[MarkdownMessageDetail, ...],
+        plates_messages: tuple[MessageDetail, ...],
     ) -> None:
         self.discord: DiscordNotificationEngineConfig = discord
-        self.plates_messages: tuple[MarkdownMessageDetail, ...] = plates_messages
+        self.plates_messages: tuple[MessageDetail, ...] = plates_messages
         self.bot = Bot(command_prefix="!", intents=Intents.default())
         self.user: User
 
@@ -62,7 +62,7 @@ class DiscordNotificationEngine(
     async def send(
         self,
         engine_config: DiscordNotificationEngineConfig,
-        plates_messages: tuple[MarkdownMessageDetail, ...],
+        plates_messages: tuple[MessageDetail, ...],
     ) -> None:
         async with _DiscordNotificationCoreEngine(
             engine_config, plates_messages

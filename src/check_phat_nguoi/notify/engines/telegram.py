@@ -8,7 +8,7 @@ from check_phat_nguoi.config import TelegramNotificationEngineConfig
 from check_phat_nguoi.constants import SEND_MESSAGE_API_URL_TELEGRAM as API_URL
 from check_phat_nguoi.utils import HttpaioSession
 
-from ..markdown_message import MarkdownMessageDetail
+from ..models import MessageDetail
 from .base import BaseNotificationEngine
 
 logger = getLogger(__name__)
@@ -56,7 +56,7 @@ class TelegramNotificationEngine(
     async def send(
         self,
         engine_config: TelegramNotificationEngineConfig,
-        plates_messages: tuple[MarkdownMessageDetail, ...],
+        plates_messages: tuple[MessageDetail, ...],
     ) -> None:
         await asyncio.gather(
             *(

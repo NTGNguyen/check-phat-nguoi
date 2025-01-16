@@ -2,7 +2,7 @@ from check_phat_nguoi.config_reader import config
 from check_phat_nguoi.constants import MESSAGE_MARKDOWN_PATTERN
 from check_phat_nguoi.context import PlateDetail
 
-from .models import MarkdownMessageDetail
+from .models import MessageDetail
 
 
 class MarkdownMessage:
@@ -34,8 +34,8 @@ class MarkdownMessage:
             ]
         )
 
-    def generate_message(self) -> MarkdownMessageDetail:
-        return MarkdownMessageDetail(
+    def generate_message(self) -> MessageDetail:
+        return MessageDetail(
             plate=self._plate_detail.plate,
             messages=self._format_message(),
         )

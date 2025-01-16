@@ -11,14 +11,14 @@ from check_phat_nguoi.context import plates_context
 
 from .engines.discord import DiscordNotificationEngine
 from .engines.telegram import TelegramNotificationEngine
-from .markdown_message import MarkdownMessage, MarkdownMessageDetail
+from .markdown_message import MarkdownMessage, MessageDetail
 
 logger = getLogger(__name__)
 
 
 class SendNotifications:
     def __init__(self) -> None:
-        self._plate_messages: tuple[MarkdownMessageDetail, ...]
+        self._plate_messages: tuple[MessageDetail, ...]
         self._telegram_engine: TelegramNotificationEngine
         self._discord_engine: DiscordNotificationEngine
 

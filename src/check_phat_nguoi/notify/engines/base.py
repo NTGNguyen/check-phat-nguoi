@@ -4,7 +4,7 @@ from typing import Self, TypeVar
 
 from check_phat_nguoi.config import BaseNotificationEngineConfig
 
-from ..markdown_message import MarkdownMessageDetail
+from ..models import MessageDetail
 
 logger = getLogger(__name__)
 
@@ -22,5 +22,5 @@ class BaseNotificationEngine[T]:
     async def send(
         self,
         engine_config: T,
-        plates_messages: tuple[MarkdownMessageDetail, ...],
+        plates_messages: tuple[MessageDetail, ...],
     ) -> None: ...
