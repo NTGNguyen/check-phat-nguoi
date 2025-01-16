@@ -2,10 +2,10 @@ unsafe-fixes = true
 
 [lint]
 extend-select = [
-  "I",     # Isort
-  "F401",  # Unused imports
-  "FA100", # future-rewritable-type-annotation
-  "FA102", # future-required-type-annotation
+  "I",    # Isort
+  "F401", # Unused imports
+  # "FA100", # future-rewritable-type-annotation
+  # "FA102", # future-required-type-annotation
 ]
 extend-ignore = [
   # "F403", # import *

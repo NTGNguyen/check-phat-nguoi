@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from pydantic import BaseModel, ConfigDict, Field
 
 from check_phat_nguoi.types import ApiEnum

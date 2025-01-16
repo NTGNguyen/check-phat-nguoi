@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from datetime import datetime
 from http.cookies import SimpleCookie
 from io import BytesIO

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import json
 from asyncio import TimeoutError
 from datetime import datetime
