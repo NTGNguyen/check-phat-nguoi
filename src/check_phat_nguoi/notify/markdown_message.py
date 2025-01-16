@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from check_phat_nguoi.config_reader import config
 from check_phat_nguoi.constants import MESSAGE_MARKDOWN_PATTERN
 from check_phat_nguoi.context import PlateDetail
