@@ -135,7 +135,6 @@ class CheckPhatNguoiGetDataEngine(BaseGetDataEngine, HttpaioSession):
             ) as response:
                 response.raise_for_status()
                 response_data = await response.read()
-                logger.info(f"Plate {plate_info.plate}: Get data successfully")
                 return json.loads(response_data)
         except TimeoutError as e:
             logger.error(

@@ -37,11 +37,18 @@ class GetData:
             logger.info(
                 f"Plate {plate_info.plate}: Getting data with API: {api.value}..."
             )
-
             plate_detail: PlateDetail | None = await engine.get_data(plate_info)
-            if plate_detail:
-                self._plates_details.add(plate_detail)
-                break
+            if not plate_detail:
+                logger.info(
+                    f"Plate {plate_info.plate}: Failed to get data with API: {api.value}..."
+                )
+                continue
+            logger.info(
+                f"Plate {plate_info.plate}: Sucessfully got data with API: {api.value}..."
+            )
+            self._plates_details.add(plate_detail)
+            break
+        logger.error(f"Plate {plate_info.plate}: Failed to get data!!!")
 
     async def get_data(self) -> None:
         async with (
