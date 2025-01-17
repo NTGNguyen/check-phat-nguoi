@@ -6,7 +6,7 @@ from typing import TypeAlias, TypedDict, cast, override
 from aiohttp import ClientError
 
 from check_phat_nguoi.config import PlateInfo
-from check_phat_nguoi.constants import API_URL_ETRAFFIC
+from check_phat_nguoi.constants import API_URL_ZM_IO
 from check_phat_nguoi.constants import DATETIME_FORMAT_CHECKPHATNGUOI as DATETIME_FORMAT
 from check_phat_nguoi.context import PlateDetail, ViolationDetail
 from check_phat_nguoi.types import (
@@ -47,7 +47,7 @@ _NotFoundResponse = TypedDict(
 _Response: TypeAlias = _FoundResponse | _NotFoundResponse
 
 
-class _EtrafficGetDataParseEngine:
+class _ZMIOGetDataParseEngine:
     def __init__(self, plate_info: PlateInfo, plate_detail_dict: _Response) -> None:
         self._plate_info: PlateInfo = plate_info
         self._plate_detail_typed: _Response = plate_detail_dict
@@ -71,7 +71,6 @@ class _EtrafficGetDataParseEngine:
             plate=plate,
             color=color,
             type=parsed_type,
-            # Have to cast to string because lsp's warning
             date=datetime.strptime(str(date), DATETIME_FORMAT),
             location=location,
             status=status == "Đã xử phạt",
@@ -88,14 +87,14 @@ class _EtrafficGetDataParseEngine:
         return tuple(self._violations_details_set)
 
 
-class EtrafficGetDataEngine(HttpaioSession, BaseGetDataEngine):
-    api = ApiEnum.etraffic_gtelict_vn
+class ZMIOGetDataEngine(HttpaioSession, BaseGetDataEngine):
+    api = ApiEnum.zm_io_vn
 
     def __init__(self):
         HttpaioSession.__init__(self)
 
     async def _request(self, plate_info: PlateInfo) -> dict | None:
-        url = f"{API_URL_ETRAFFIC}?licensePlate={plate_info.plate}&vehicleType={get_vehicle_enum(plate_info.type)}"
+        url = f"{API_URL_ZM_IO}?licensePlate={plate_info.plate}&vehicleType={get_vehicle_enum(plate_info.type)}"
         try:
             async with self._session.get(url) as response:
                 json = await response.json()
@@ -124,7 +123,7 @@ class EtrafficGetDataEngine(HttpaioSession, BaseGetDataEngine):
             plate=plate_info.plate,
             owner=plate_info.owner,
             type=type,
-            violations=_EtrafficGetDataParseEngine(
+            violations=_ZMIOGetDataParseEngine(
                 plate_info=plate_info, plate_detail_dict=plate_detail_typed
             ).parse(),
         )
