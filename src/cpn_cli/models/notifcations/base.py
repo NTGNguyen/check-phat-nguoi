@@ -6,6 +6,3 @@ class BaseNotificationConfig(BaseModel):
         description="Kích hoạt",
         default=True,
     )
-
-
-__all__ = ["BaseNotificationConfig"]

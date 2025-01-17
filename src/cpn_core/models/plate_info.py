@@ -2,7 +2,12 @@ from typing import Any, override
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from cpn_core.types import ApiEnum, VehicleType, get_vehicle_enum, get_vehicle_str_vie
+from cpn_core.types.api import ApiEnum
+from cpn_core.types.vehicle_type import (
+    VehicleType,
+    get_vehicle_enum,
+    get_vehicle_str_vie,
+)
 
 
 class PlateInfo(BaseModel):
@@ -37,13 +42,41 @@ class PlateInfo(BaseModel):
         default=None,
     )
 
-    # TODO: Less details options later
-    @override
-    def __str__(self) -> str:
-        return f"Biển số: {self.plate}" + (
-            (f"\nChủ sở hữu: {self.owner}" if self.owner else "")
-            + (f"\nLoại phương tiện: {get_vehicle_str_vie(self.type)}")
-        )
+    def get_str(self, *, show_less_detail: bool, markdown: bool) -> str:
+        if markdown:
+            return self._get_markdown_message(show_less_detail)
+        else:
+            return self._get_raw_messages(show_less_detail)
+
+    def _get_raw_messages(self, show_less_detail: bool) -> str:
+        message: str
+        if show_less_detail:
+            message = (
+                (f"Biển số: {self.plate}")
+                + (f"\nChủ sở hữu: {self.owner}" if self.owner else "")
+            ).strip()
+        else:
+            message = (
+                (f"Biển số: {self.plate}")
+                + (f"\nChủ sở hữu: {self.owner}" if self.owner else "")
+                + (f"\nLoại phương tiện: {get_vehicle_str_vie(self.type)}")
+            ).strip()
+        return "Thông tin phương tiện:\n" + message
+
+    def _get_markdown_message(self, show_less_detail: bool) -> str:
+        message: str
+        if show_less_detail:
+            message = (
+                (f"*Biển số:* {self.plate}")
+                + (f"\n*Chủ sở hữu:* {self.owner}" if self.owner else "")
+            ).strip()
+        else:
+            message = (
+                (f"*Biển số:* {self.plate}")
+                + (f"\n*Chủ sở hữu:* {self.owner}" if self.owner else "")
+                + (f"\n*Loại phương tiện:* {get_vehicle_str_vie(self.type)}")
+            ).strip()
+        return "*🚗 **Thông tin phương tiện**:*\n" + message
 
     @override
     def __hash__(self) -> int:

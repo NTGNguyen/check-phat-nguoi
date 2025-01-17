@@ -2,7 +2,7 @@ from re import match as re_match
 
 from pydantic import ConfigDict, Field, field_validator
 
-from .base_engine import BaseNotificationEngineConfig
+from cpn_core.notifications.models.base import BaseNotificationEngineConfig
 
 
 class TelegramNotificationEngineConfig(BaseNotificationEngineConfig):
@@ -22,6 +22,10 @@ class TelegramNotificationEngineConfig(BaseNotificationEngineConfig):
         examples=[
             "-1001790012349",
         ],
+    )
+    markdown: bool = Field(
+        description="Gửi tin nhắn dạng markdown",
+        default=True,
     )
 
     @field_validator("bot_token", mode="after")

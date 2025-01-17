@@ -1,15 +1,46 @@
 from typing import Any, override
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 
-from cpn_core.models import PlateInfo, ViolationDetail
+from cpn_core.models.plate_info import PlateInfo
+from cpn_core.models.violation_detail import ViolationDetail
 
 
 class PlateDetail(BaseModel):
-    plate_info: PlateInfo
+    plate_info: PlateInfo = Field(
+        description="Thông tin biển số phương tiện",
+    )
     violations: tuple[ViolationDetail, ...] | None = Field(
         description="Danh sách các vi phạm của 1 biển xe",
     )
+
+    @computed_field
+    @property
+    def total_fines(self) -> int | None:
+        if not self.violations:
+            return None
+        return len(self.violations)
+
+    @computed_field
+    @property
+    def total_peding_fines(self) -> int | None:
+        if not self.violations:
+            return None
+        return len(
+            tuple(violation for violation in self.violations if not violation.status)
+        )
+
+    def get_strs(self, *, show_less_detail: bool, markdown: bool) -> tuple[str, ...]:
+        if not self.violations:
+            return ()
+        plate_info: str = self.plate_info.get_str(
+            show_less_detail=show_less_detail, markdown=markdown
+        )
+        violations: tuple[str, ...] = tuple(
+            violation.get_str(show_less_detail=show_less_detail, markdown=markdown)
+            for violation in self.violations
+        )
+        return tuple(f"{plate_info}\n{violation}" for violation in violations)
 
     @override
     def __hash__(self):

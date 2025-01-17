@@ -1,11 +1,10 @@
 from pydantic import BaseModel, ConfigDict, Field
 
-from cpn_core.models import (
-    DiscordNotificationConfig,
-    PlateInfo,
-    TelegramNotificationConfig,
-)
-from cpn_core.types import ApiEnum, LogLevelEnum
+from cpn_cli.models.notifcations.discord import DiscordNotificationConfig
+from cpn_cli.models.notifcations.telegram import TelegramNotificationConfig
+from cpn_core.models.plate_info import PlateInfo
+from cpn_core.types.api import ApiEnum
+from cpn_core.types.log_level import LogLevelEnum
 
 
 class Config(BaseModel):
@@ -68,6 +67,3 @@ class Config(BaseModel):
         description="Mức độ log",
         default=LogLevelEnum.warning,
     )
-
-
-__all__ = ["Config"]

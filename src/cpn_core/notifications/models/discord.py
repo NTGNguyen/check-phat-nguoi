@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import ConfigDict, Field, field_validator
 
-from .base_engine import BaseNotificationEngineConfig
+from cpn_core.notifications.models.base import BaseNotificationEngineConfig
 
 
 class DiscordNotificationEngineConfig(BaseNotificationEngineConfig):
@@ -25,6 +25,10 @@ class DiscordNotificationEngineConfig(BaseNotificationEngineConfig):
         ],
     )
     chat_type: Literal["user", "channel"]
+    markdown: bool = Field(
+        description="Gửi tin nhắn dạng markdown",
+        default=True,
+    )
 
     @field_validator("bot_token", mode="after")
     @classmethod

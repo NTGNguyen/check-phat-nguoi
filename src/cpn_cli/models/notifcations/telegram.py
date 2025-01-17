@@ -1,7 +1,9 @@
 from pydantic import ConfigDict
 
-from .base_notification import BaseNotificationConfig
-from .telegram_engine import TelegramNotificationEngineConfig
+from cpn_cli.models.notifcations.base import BaseNotificationConfig
+from cpn_core.notifications.models.telegram import (
+    TelegramNotificationEngineConfig,
+)
 
 
 class TelegramNotificationConfig(BaseNotificationConfig):
@@ -11,6 +13,3 @@ class TelegramNotificationConfig(BaseNotificationConfig):
     )
 
     telegram: TelegramNotificationEngineConfig
-
-
-__all__ = ["TelegramNotificationConfig"]

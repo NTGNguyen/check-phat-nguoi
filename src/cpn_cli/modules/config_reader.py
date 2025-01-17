@@ -5,7 +5,7 @@ from typing import Final
 from pydantic import ValidationError
 
 from cpn_cli.constants import CONFIG_PATHS
-from cpn_cli.models import Config
+from cpn_cli.models.config import Config
 
 
 def _config_reader() -> Config:
@@ -24,6 +24,3 @@ def _config_reader() -> Config:
 
 
 config: Final[Config] = _config_reader()
-
-
-__all__ = ["config"]

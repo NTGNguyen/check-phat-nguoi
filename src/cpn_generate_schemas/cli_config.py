@@ -4,7 +4,7 @@ from os.path import dirname
 
 from pydantic import TypeAdapter
 
-from cpn_cli.models import Config
+from cpn_cli.models.config import Config
 
 from .constants import CLI_CONFIG_SCHEMA_PATH
 

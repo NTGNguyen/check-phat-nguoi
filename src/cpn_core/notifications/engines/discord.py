@@ -5,7 +5,7 @@ from typing import override
 from discord import Intents, NotFound, User
 from discord.ext.commands import Bot
 
-from cpn_core.models import DiscordNotificationEngineConfig, MessageDetail
+from cpn_core.notifications.models.discord import DiscordNotificationEngineConfig
 
 from .base import BaseNotificationEngine
 
@@ -17,28 +17,25 @@ class _DiscordNotificationCoreEngine:
     def __init__(
         self,
         discord: DiscordNotificationEngineConfig,
-        plates_messages: tuple[MessageDetail, ...],
+        messages: tuple[str, ...],
     ) -> None:
         self.discord: DiscordNotificationEngineConfig = discord
-        self.plates_messages: tuple[MessageDetail, ...] = plates_messages
+        self._messages: tuple[str, ...] = messages
         self.bot = Bot(command_prefix="!", intents=Intents.default())
         self.user: User
 
-    async def _send_message(self, message: str, plate: str) -> None:
+    async def _send_message(self, message: str) -> None:
         try:
             await self.user.send(message)
         except Exception as e:
-            logger.error(f"Plate {plate}: Failed to send message to {self.user}. {e}")
+            logger.error(f"Failed to send message to {self.user}. {e}")
+            raise
 
     async def send(self) -> None:
         try:
             self.user = await self.bot.fetch_user(self.discord.chat_id)
             await asyncio.gather(
-                *(
-                    self._send_message(message, messages.plate)
-                    for messages in self.plates_messages
-                    for message in messages.messages
-                )
+                *(self._send_message(message) for message in self._messages)
             )
         # TODO: @NTGNguyen handle later
         except NotFound as _:
@@ -60,10 +57,8 @@ class DiscordNotificationEngine(
     @override
     async def send(
         self,
-        engine_config: DiscordNotificationEngineConfig,
-        plates_messages: tuple[MessageDetail, ...],
+        config: DiscordNotificationEngineConfig,
+        messages: tuple[str, ...],
     ) -> None:
-        async with _DiscordNotificationCoreEngine(
-            engine_config, plates_messages
-        ) as core_engine:
+        async with _DiscordNotificationCoreEngine(config, messages) as core_engine:
             await core_engine.send()

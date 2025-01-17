@@ -2,7 +2,7 @@ from abc import abstractmethod
 from logging import getLogger
 from typing import Self, TypeVar
 
-from cpn_core.models import BaseNotificationEngineConfig, MessageDetail
+from cpn_core.notifications.models.base import BaseNotificationEngineConfig
 
 logger = getLogger(__name__)
 
@@ -19,6 +19,6 @@ class BaseNotificationEngine[T]:
     @abstractmethod
     async def send(
         self,
-        engine_config: T,
-        plates_messages: tuple[MessageDetail, ...],
+        config: T,
+        messages: tuple[str, ...],
     ) -> None: ...

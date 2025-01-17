@@ -2,7 +2,8 @@ from abc import abstractmethod
 from logging import getLogger
 from typing import Self
 
-from cpn_core.models import PlateInfo, ViolationDetail
+from cpn_core.models.plate_info import PlateInfo
+from cpn_core.models.violation_detail import ViolationDetail
 
 logger = getLogger(__name__)
 

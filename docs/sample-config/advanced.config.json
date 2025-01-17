@@ -36,7 +36,8 @@
     {
       "telegram": {
         "bot_token": "2780473231:weiruAShGUUx4oLOMoUhd0GiREXSZcCq-uB",
-        "chat_id": "-1001790012349"
+        "chat_id": "-1001790012349",
+        "markdown": true
       }
     },
     {

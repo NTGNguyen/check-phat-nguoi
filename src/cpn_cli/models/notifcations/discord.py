@@ -1,7 +1,7 @@
 from pydantic import ConfigDict
 
-from .base_notification import BaseNotificationConfig
-from .discord_engine import DiscordNotificationEngineConfig
+from cpn_cli.models.notifcations.base import BaseNotificationConfig
+from cpn_core.notifications.models.discord import DiscordNotificationEngineConfig
 
 
 class DiscordNotificationConfig(BaseNotificationConfig):
@@ -11,6 +11,3 @@ class DiscordNotificationConfig(BaseNotificationConfig):
     )
 
     discord: DiscordNotificationEngineConfig
-
-
-__all__ = ["DiscordNotificationConfig"]

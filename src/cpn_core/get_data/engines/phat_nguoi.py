@@ -5,15 +5,16 @@ from logging import getLogger
 from re import DOTALL
 from typing import LiteralString, override
 
-from aiohttp import ClientError
+from aiohttp import ClientError, ClientSession, ClientTimeout
 from bs4 import BeautifulSoup, ResultSet, Tag
 
-from cpn_core.models import PlateInfo, ViolationDetail
-from cpn_core.types import ApiEnum, get_vehicle_enum
-from cpn_core.utils import HttpaioSession
-
-from ..exceptions import ParseDataError
-from .base import BaseGetDataEngine
+from cpn_core.get_data.engines.base import BaseGetDataEngine
+from cpn_core.models.plate_info import PlateInfo
+from cpn_core.models.violation_detail import ViolationDetail
+from cpn_core.types.api import ApiEnum
+from cpn_core.types.vehicle_type import (
+    get_vehicle_enum,
+)
 
 logger = getLogger(__name__)
 
@@ -141,27 +142,32 @@ class _PhatNguoiGetDataParseEngine:
             )
         )
 
-    def parse(self) -> tuple[ViolationDetail, ...]:
+    def parse(self) -> tuple[ViolationDetail, ...] | None:
         soup: BeautifulSoup = BeautifulSoup(self._html_data, "html.parser")
         if not soup.css:
-            raise ParseDataError("The data got doesn't have css selector ability")
+            logger.error("The data got doesn't have css selector ability")
+            return
         violation_htmls: ResultSet[Tag] | None = soup.css.select("tbody")
         if not violation_htmls:
-            raise ParseDataError("Cannot get the tbody tag")
+            logger.error("Cannot get the tbody tag")
+            return
         for violation_html in violation_htmls:
             self._parse_violation(violation_html)
         if len(self._violations_details_set) == 0:
-            raise ParseDataError("Cannot get violations data")
+            logger.info(f"Plate {self._plate_info.plate}: Don't find any violation")
         return tuple(self._violations_details_set)
 
 
-class PhatNguoiGetDataEngine(HttpaioSession, BaseGetDataEngine):
+class PhatNguoiGetDataEngine(BaseGetDataEngine):
     api: ApiEnum = ApiEnum.phatnguoi_vn
 
-    def __init__(self) -> None:
-        HttpaioSession.__init__(self)
+    def __init__(self, *, timeout: float) -> None:
+        self._timeout: float = timeout
+        self._session: ClientSession = ClientSession(
+            timeout=ClientTimeout(timeout),
+        )
 
-    async def _request(self, plate_info: PlateInfo) -> str:
+    async def _request(self, plate_info: PlateInfo) -> str | None:
         url: str = f"{API_URL}/{plate_info.plate}/{get_vehicle_enum(plate_info.type)}"
         try:
             async with self._session.get(url=url) as response:
@@ -169,29 +175,29 @@ class PhatNguoiGetDataEngine(HttpaioSession, BaseGetDataEngine):
             return html_data
         except TimeoutError as e:
             logger.error(
-                f"Plate {plate_info.plate}: Time out ({self.timeout}s) getting data from API {self.api.value}. {e}"
+                f"Plate {plate_info.plate}: Time out ({self._timeout}s) getting data from API {self.api.value}. {e}"
             )
-            raise
         except ClientError as e:
             logger.error(
                 f"Plate {plate_info.plate}: Error occurs while getting data from API {self.api.value}. {e}"
             )
-            raise
         except Exception as e:
             logger.error(
                 f"Plate {plate_info.plate}: Error occurs while getting data (internally) {self.api.value}. {e}"
             )
-            raise
 
     @override
-    async def get_data(self, plate_info: PlateInfo) -> tuple[ViolationDetail, ...]:
-        html_data: str = await self._request(plate_info)
-        violations: tuple[ViolationDetail, ...] = _PhatNguoiGetDataParseEngine(
+    async def get_data(
+        self, plate_info: PlateInfo
+    ) -> tuple[ViolationDetail, ...] | None:
+        html_data: str | None = await self._request(plate_info)
+        if html_data is None:
+            return
+        violations: tuple[ViolationDetail, ...] | None = _PhatNguoiGetDataParseEngine(
             plate_info=plate_info,
             html_data=html_data,
         ).parse()
         return violations
 
-    @override
     async def __aexit__(self, exc_type, exc_value, exc_traceback) -> None:
-        return await HttpaioSession.__aexit__(self, exc_type, exc_value, exc_traceback)
+        await self._session.close()

@@ -1,17 +1,15 @@
 from asyncio import gather
 from logging import getLogger
 
-from aiohttp import ClientError
-
-from cpn_cli.config_reader import config
-from cpn_cli.models import PlateDetail
-from cpn_core.get_data import GetDataError, ParseDataError
+from cpn_cli.models.plate_detail import PlateDetail
+from cpn_cli.modules.config_reader import config
 from cpn_core.get_data.engines.base import BaseGetDataEngine
 from cpn_core.get_data.engines.check_phat_nguoi import CheckPhatNguoiGetDataEngine
 from cpn_core.get_data.engines.csgt import CsgtGetDataEngine
 from cpn_core.get_data.engines.phat_nguoi import PhatNguoiGetDataEngine
-from cpn_core.models import PlateInfo, ViolationDetail
-from cpn_core.types import ApiEnum
+from cpn_core.models.plate_info import PlateInfo
+from cpn_core.models.violation_detail import ViolationDetail
+from cpn_core.types.api import ApiEnum
 
 logger = getLogger(__name__)
 
@@ -38,49 +36,41 @@ class GetData:
             logger.info(
                 f"Plate {plate_info.plate}: Getting data with API: {api.value}..."
             )
-            try:
-                violations: tuple[ViolationDetail, ...] = await engine.get_data(
-                    plate_info
-                )
-            except TimeoutError as e:
-                logger.error(
-                    f"Plate {plate_info.plate}: Time out ({config.request_timeout}s) getting data from API {api.value}. {e}"
-                )
+            violations: tuple[ViolationDetail, ...] | None = await engine.get_data(
+                plate_info
+            )
+            if violations is None:
                 continue
-            except ClientError as e:
-                logger.error(
-                    f"Plate {plate_info.plate}: Error occurs while getting data from API {api.value}. {e}"
-                )
-                continue
-            except GetDataError as e:
-                logger.error(
-                    f"Plate {plate_info.plate} - {api.value}: Error while getting data. {e}"
-                )
-                continue
-            except ParseDataError as e:
-                logger.error(
-                    f"Plate {plate_info.plate} - {api.value}: Error while parsing data. {e}"
-                )
-                continue
-            except Exception as e:
-                logger.error(
-                    f"Plate {plate_info.plate}: Error occurs while getting data (internally) {api.value}. {e}"
-                )
-                continue
+            logger.info(
+                f"Plate {plate_info.plate}: Failed to get data with API: {api.value}..."
+            )
             logger.info(
                 f"Plate {plate_info.plate}: Sucessfully got data with API: {api.value}..."
             )
             self._plate_details.add(
-                PlateDetail(plate_info=plate_info, violations=violations)
+                PlateDetail(
+                    plate_info=plate_info,
+                    violations=tuple(
+                        violation for violation in violations if violation.status
+                    )
+                    if config.pending_fines_only
+                    else violations,
+                )
             )
             return
         logger.error(f"Plate {plate_info.plate}: Failed to get data!!!")
 
     async def get_data(self) -> tuple[PlateDetail, ...]:
         async with (
-            CheckPhatNguoiGetDataEngine() as self._checkphatnguoi_engine,
-            CsgtGetDataEngine() as self._csgt_engine,
-            PhatNguoiGetDataEngine() as self._phatnguoi_engine,
+            CheckPhatNguoiGetDataEngine(
+                timeout=config.request_timeout,
+            ) as self._checkphatnguoi_engine,
+            CsgtGetDataEngine(
+                timeout=config.request_timeout,
+            ) as self._csgt_engine,
+            PhatNguoiGetDataEngine(
+                timeout=config.request_timeout,
+            ) as self._phatnguoi_engine,
         ):
             if config.asynchronous:
                 await gather(
