@@ -10,7 +10,12 @@ from check_phat_nguoi.context import (
 from check_phat_nguoi.get_data.engines.phat_nguoi import PhatNguoiGetDataEngine
 from check_phat_nguoi.types import ApiEnum
 
-from .engines import BaseGetDataEngine, CheckPhatNguoiGetDataEngine, CsgtGetDataEngine
+from .engines import (
+    BaseGetDataEngine,
+    CheckPhatNguoiGetDataEngine,
+    CsgtGetDataEngine,
+    EtrafficGetDataEngine,
+)
 
 logger = getLogger(__name__)
 
@@ -20,6 +25,7 @@ class GetData:
         self._checkphatnguoi_engine: CheckPhatNguoiGetDataEngine
         self._csgt_engine: CsgtGetDataEngine
         self._phatnguoi_engine: PhatNguoiGetDataEngine
+        self._etraffic_engine: EtrafficGetDataEngine
         self._plates_details: set[PlateDetail] = set()
 
     async def _get_data_for_plate(self, plate_info: PlateInfo) -> None:
@@ -34,6 +40,8 @@ class GetData:
                     engine = self._csgt_engine
                 case ApiEnum.phatnguoi_vn:
                     engine = self._phatnguoi_engine
+                case ApiEnum.etraffic_gtelict_vn:
+                    engine = self._etraffic_engine
             logger.info(
                 f"Plate {plate_info.plate}: Getting data with API: {api.value}..."
             )
