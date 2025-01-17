@@ -18,7 +18,7 @@ class PlateDetail(BaseModel):
     @property
     def total_fines(self) -> int | None:
         if not self.violations:
-            return None
+            return
         return len(self.violations)
 
     @computed_field
