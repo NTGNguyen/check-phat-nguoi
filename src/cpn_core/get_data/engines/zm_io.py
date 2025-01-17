@@ -123,6 +123,9 @@ class ZMIOGetDataEngine(BaseGetDataEngine):
         if not plate_detail_raw:
             return
         plate_detail_typed: _Response = cast(_Response, plate_detail_raw)
+        if plate_detail_typed["data"] is None:
+            logger.error(f"Plate {plate_info.plate}: Cannot get data")
+            return
         if plate_detail_typed["data"]["json"] is None:
             logger.info(
                 f"Plate {plate_info.plate}: Not found or don't have any violations"
