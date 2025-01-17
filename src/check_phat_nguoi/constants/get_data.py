@@ -12,7 +12,7 @@ API_URL_CSGT_QUERY_1: LiteralString = (
     "https://www.csgt.vn/?mod=contact&task=tracuu_post&ajax"
 )
 API_URL_CSGT_QUERY_2: LiteralString = "https://www.csgt.vn/tra-cuu-phuong-tien-vi-pham.html?&LoaiXe={vehicle_type}&BienKiemSoat={plate}"
-
+API_URL_ZM_IO: LiteralString = "https://api.zm.io.vn/v1/csgt/tracuu"
 DATETIME_FORMAT_CHECKPHATNGUOI: LiteralString = "%H:%M, %d/%m/%Y"
 
 OFFICE_NAME_PATTERN: LiteralString = r"^\d+\."
