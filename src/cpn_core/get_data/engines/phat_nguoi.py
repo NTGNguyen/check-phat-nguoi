@@ -153,9 +153,12 @@ class _PhatNguoiGetDataParseEngine:
             return
         for violation_html in violation_htmls:
             self._parse_violation(violation_html)
-        if len(self._violations_details_set) == 0:
+        violation_details: tuple[ViolationDetail, ...] = tuple(
+            self._violations_details_set
+        )
+        if not violation_details:
             logger.info(f"Plate {self._plate_info.plate}: Don't find any violation")
-        return tuple(self._violations_details_set)
+        return violation_details
 
 
 class PhatNguoiGetDataEngine(BaseGetDataEngine):

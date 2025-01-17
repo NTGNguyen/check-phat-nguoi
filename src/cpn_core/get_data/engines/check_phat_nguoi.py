@@ -106,14 +106,12 @@ class _CheckPhatNguoiGetDataParseEngine:
     def parse(self) -> tuple[ViolationDetail, ...] | None:
         if self._plate_detail_typed["status"] == 2:
             logger.info("Don't have any violations")
-            return
+            return ()
         if self._plate_detail_typed["status"] != 1:
             logger.error("Unknown Error with status = 1 from API")
             return
-        for data in self._plate_detail_typed["data"]:
-            self._parse_violation(data)
-        if len(self._violations_details_set) == 0:
-            logger.info(f"Plate {self._plate_info.plate}: Don't find any violation")
+        for violation in self._plate_detail_typed["data"]:
+            self._parse_violation(violation)
         return tuple(self._violations_details_set)
 
 

@@ -1,0 +1,6 @@
+# Config
+@plate = 30F88251
+@type = 1
+
+### Get data for {{plate}} with type {{type}}
+GET https://api.zm.io.vn/v1/csgt/tracuu?licensePlate={{plate}}&vehicleType={{type}}

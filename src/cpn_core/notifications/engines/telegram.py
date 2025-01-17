@@ -2,12 +2,11 @@ import asyncio
 from logging import getLogger
 from typing import LiteralString, override
 
-from aiohttp import ClientError
+from aiohttp import ClientError, ClientSession, ClientTimeout
 
 from cpn_core.notifications.models.telegram import (
     TelegramNotificationEngineConfig,
 )
-from cpn_core.utils.httpaio_session import HttpaioSession
 
 from .base import BaseNotificationEngine
 
@@ -18,10 +17,13 @@ logger = getLogger(__name__)
 
 
 class TelegramNotificationEngine(
-    BaseNotificationEngine[TelegramNotificationEngineConfig], HttpaioSession
+    BaseNotificationEngine[TelegramNotificationEngineConfig]
 ):
     def __init__(self, *, timeout: float) -> None:
-        HttpaioSession.__init__(self, timeout=timeout)
+        self._timeout: float = timeout
+        self._session: ClientSession = ClientSession(
+            timeout=ClientTimeout(timeout),
+        )
 
     async def _send_message(
         self,
@@ -43,7 +45,7 @@ class TelegramNotificationEngine(
             logger.info(f"Successfully sent to Telegram Chat ID: {telegram.chat_id}")
         except TimeoutError as e:
             logger.error(
-                f"Timeout ({self.timeout}s) sending to Telegram Chat ID: {telegram.chat_id}. {e}"
+                f"Timeout ({self._timeout}s) sending to Telegram Chat ID: {telegram.chat_id}. {e}"
             )
             raise
         except ClientError as e:
@@ -71,6 +73,5 @@ class TelegramNotificationEngine(
             )
         )
 
-    @override
     async def __aexit__(self, exc_type, exc_value, exc_traceback) -> None:
-        return await HttpaioSession.__aexit__(self, exc_type, exc_value, exc_traceback)
+        await self._session.close()

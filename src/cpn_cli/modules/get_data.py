@@ -7,6 +7,7 @@ from cpn_core.get_data.engines.base import BaseGetDataEngine
 from cpn_core.get_data.engines.check_phat_nguoi import CheckPhatNguoiGetDataEngine
 from cpn_core.get_data.engines.csgt import CsgtGetDataEngine
 from cpn_core.get_data.engines.phat_nguoi import PhatNguoiGetDataEngine
+from cpn_core.get_data.engines.zm_io import ZMIOGetDataEngine
 from cpn_core.models.plate_info import PlateInfo
 from cpn_core.models.violation_detail import ViolationDetail
 from cpn_core.types.api import ApiEnum
@@ -19,6 +20,7 @@ class GetData:
         self._checkphatnguoi_engine: CheckPhatNguoiGetDataEngine
         self._csgt_engine: CsgtGetDataEngine
         self._phatnguoi_engine: PhatNguoiGetDataEngine
+        self._zmio_engine: ZMIOGetDataEngine
         self._plate_details: set[PlateDetail] = set()
 
     async def _get_data_for_plate(self, plate_info: PlateInfo) -> None:
@@ -33,6 +35,8 @@ class GetData:
                     engine = self._csgt_engine
                 case ApiEnum.phatnguoi_vn:
                     engine = self._phatnguoi_engine
+                case ApiEnum.zm_io_vn:
+                    engine = self._zmio_engine
             logger.info(
                 f"Plate {plate_info.plate}: Getting data with API: {api.value}..."
             )
@@ -71,6 +75,7 @@ class GetData:
             PhatNguoiGetDataEngine(
                 timeout=config.request_timeout,
             ) as self._phatnguoi_engine,
+            ZMIOGetDataEngine(timeout=config.request_timeout) as self._zmio_engine,
         ):
             if config.asynchronous:
                 await gather(

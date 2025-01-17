@@ -205,9 +205,12 @@ class _GetDataCsgtCoreEngine:
     ) -> tuple[ViolationDetail, ...]:
         for violation_data in violations_data:
             self._parse_violation(violation_data)
-        if len(self._violations_details_set) == 0:
+        violation_details: tuple[ViolationDetail, ...] = tuple(
+            self._violations_details_set
+        )
+        if not violation_details:
             logger.info(f"Plate {self._plate_info.plate}: Don't find any violation")
-        return tuple(self._violations_details_set)
+        return violation_details
 
     def _parse_html(self, html: str) -> tuple[ViolationDetail, ...] | None:
         soup: BeautifulSoup = BeautifulSoup(html, "html.parser")

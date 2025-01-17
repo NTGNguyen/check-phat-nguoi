@@ -21,6 +21,12 @@
       "type": 1
     },
     {
+      "plate": "29A34809",
+      "owner": "Oreo",
+      "apis": "etraffic.gtelict.vn",
+      "type": 1
+    },
+    {
       "plate": "98A56604",
       "type": "car",
       "apis": ["csgt.vn", "checkphatnguoi.vn"]
