@@ -1,9 +1,14 @@
-import asyncio
 from logging import getLogger
 from typing import override
 
-from discord import Intents, NotFound, User
-from discord.ext.commands import Bot
+from discord import (
+    Client,
+    Forbidden,
+    HTTPException,
+    Intents,
+    TextChannel,
+    User,
+)
 
 from cpn_core.notifications.models.discord import DiscordNotificationEngineConfig
 
@@ -21,34 +26,53 @@ class _DiscordNotificationCoreEngine:
     ) -> None:
         self.discord: DiscordNotificationEngineConfig = discord
         self._messages: tuple[str, ...] = messages
-        self.bot = Bot(command_prefix="!", intents=Intents.default())
-        self.user: User
+        self._client = Client(intents=Intents.default())
 
-    async def _send_message(self, message: str) -> None:
+    async def _send_channel(self) -> None:
         try:
-            await self.user.send(message)
+            channel = await self._client.fetch_channel(self.discord.chat_id)
+            if channel is None:
+                logger.error(f"Discord channel ID {self.discord.chat_id}: Not found")
+                return
+            if not isinstance(channel, TextChannel):
+                logger.error(
+                    f"Discord channel ID {self.discord.chat_id}: Must be text channel"
+                )
+                return
+            for message in self._messages:
+                await channel.send(message)
+            logger.info(f"Successfully sent to Discord channel: {self.discord.chat_id}")
         except Exception as e:
-            logger.error(f"Failed to send message to {self.user}. {e}")
-            raise
+            logger.error(f"Discord channel ID {self.discord.chat_id}: {e}")
+
+    async def _send_user(self) -> None:
+        try:
+            user: User = await self._client.fetch_user(self.discord.chat_id)
+            for message in self._messages:
+                await user.send(message)
+            logger.info(f"Successfully sent to Discord user: {self.discord.chat_id}")
+        except Forbidden as e:
+            logger.error(
+                f"Discord bot doesn't have permission to send to user {self.discord.chat_id}. {e}"
+            )
+        except HTTPException as e:
+            logger.error(f"Failed to send message to {self.discord.chat_id}. {e}")
+        except Exception as e:
+            logger.error(
+                f"Failed to send message to {self.discord.chat_id} (internal). {e}"
+            )
 
     async def send(self) -> None:
-        try:
-            self.user = await self.bot.fetch_user(self.discord.chat_id)
-            await asyncio.gather(
-                *(self._send_message(message) for message in self._messages)
-            )
-        # TODO: @NTGNguyen handle later
-        except NotFound as _:
-            ...
-        except Exception as e:
-            print(e)
+        @self._client.event
+        async def on_ready() -> None:
+            match self.discord.chat_type:
+                case "user":
+                    await self._send_user()
+                case "channel":
+                    await self._send_channel()
+            await self._client.close()
 
-    async def __aenter__(self):
-        await self.bot.start(self.discord.bot_token)
-        return self
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self.bot.close()
+        await self._client.start(self.discord.bot_token)
 
 
 class DiscordNotificationEngine(
@@ -60,5 +84,5 @@ class DiscordNotificationEngine(
         config: DiscordNotificationEngineConfig,
         messages: tuple[str, ...],
     ) -> None:
-        async with _DiscordNotificationCoreEngine(config, messages) as core_engine:
-            await core_engine.send()
+        discord_engine = _DiscordNotificationCoreEngine(config, messages)
+        await discord_engine.send()
