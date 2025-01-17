@@ -1,7 +1,7 @@
 from asyncio import TimeoutError
 from datetime import datetime
 from logging import getLogger
-from typing import TypeAlias, TypedDict, cast, override
+from typing import Literal, TypedDict, cast, override
 
 from aiohttp import ClientError
 
@@ -11,7 +11,6 @@ from check_phat_nguoi.constants import DATETIME_FORMAT_CHECKPHATNGUOI as DATETIM
 from check_phat_nguoi.context import PlateDetail, ViolationDetail
 from check_phat_nguoi.types import (
     ApiEnum,
-    VehicleStrVieType,
     VehicleTypeEnum,
     get_vehicle_enum,
 )
@@ -20,31 +19,23 @@ from check_phat_nguoi.utils import HttpaioSession
 from .base import BaseGetDataEngine
 
 logger = getLogger(__name__)
-_DataResponse = TypedDict(
-    "_DataResponse",
-    {
-        "bienkiemsoat": str,
-        "maubien": str,
-        "loaiphuongtien": VehicleStrVieType,
-        "thoigianvipham": str,
-        "diadiemvipham": str,
-        "trangthai": str,
-        "donviphathienvipham": str,
-        "noigiaiquyetvuviec": str,
-    },
-)
-_FoundResponse = TypedDict(
-    "_FoundResponse",
-    {"json": tuple[_DataResponse, ...], "html": str, "css": str},
-)
 
 
-_NotFoundResponse = TypedDict(
-    "_NotFoundResponse",
-    {"json": None, "html": str, "css": str},
-)
+class _DataResponse(TypedDict):
+    bienkiemsoat: str
+    maubien: str
+    loaiphuongtien: Literal["Ô tô", "Xe máy", "Xe máy điện"]
+    thoigianvipham: str
+    diadiemvipham: str
+    trangthai: str
+    donviphathienvipham: str
+    noigiaiquyetvuviec: str
 
-_Response: TypeAlias = _FoundResponse | _NotFoundResponse
+
+class _Response(TypedDict):
+    json: tuple[_DataResponse, ...] | None
+    html: str
+    css: str
 
 
 class _ZMIOGetDataParseEngine:
@@ -54,23 +45,19 @@ class _ZMIOGetDataParseEngine:
         self._violations_details_set: set[ViolationDetail] = set()
 
     def _parse_violation(self, data: _DataResponse) -> None:
-        type: VehicleStrVieType | None = data["loaiphuongtien"]
-        # NOTE: this is for filtering the vehicle that doesn't match the plate info type. Because checkphatnguoi.vn return all of the type of the plate
-        parsed_type: VehicleTypeEnum = get_vehicle_enum(type)
-        if parsed_type != self._plate_info.type:
-            return
         plate: str = data["bienkiemsoat"]
         date: str = data["thoigianvipham"]
+        type: Literal["Ô tô", "Xe máy", "Xe máy điện"] = data["loaiphuongtien"]
         color: str = data["maubien"]
         location: str = data["diadiemvipham"]
         status: str = data["trangthai"]
         enforcement_unit: str = data["donviphathienvipham"]
         # NOTE: this api just responses 1 resolution_office
-        resolution_offices: tuple[str, ...] = tuple(data["noigiaiquyetvuviec"])
+        resolution_offices: tuple[str, ...] = (data["noigiaiquyetvuviec"],)
         violation_detail: ViolationDetail = ViolationDetail(
             plate=plate,
             color=color,
-            type=parsed_type,
+            type=get_vehicle_enum(type),
             date=datetime.strptime(str(date), DATETIME_FORMAT),
             location=location,
             status=status == "Đã xử phạt",
@@ -82,8 +69,8 @@ class _ZMIOGetDataParseEngine:
     def parse(self) -> tuple[ViolationDetail, ...] | None:
         if not self._plate_detail_typed["json"]:
             return
-        for json in self._plate_detail_typed["json"]:
-            self._parse_violation(json)
+        for data in self._plate_detail_typed["json"]:
+            self._parse_violation(data)
         return tuple(self._violations_details_set)
 
 
@@ -114,7 +101,7 @@ class ZMIOGetDataEngine(HttpaioSession, BaseGetDataEngine):
 
     @override
     async def get_data(self, plate_info: PlateInfo) -> PlateDetail | None:
-        plate_detail_raw = await self._request(plate_info)
+        plate_detail_raw: dict | None = await self._request(plate_info)
         if not plate_detail_raw:
             return
         plate_detail_typed: _Response = cast(_Response, plate_detail_raw)
