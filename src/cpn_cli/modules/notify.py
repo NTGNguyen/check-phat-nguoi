@@ -5,8 +5,8 @@ from logging import getLogger
 from cpn_cli.models.notifcations.base import BaseNotificationConfig
 from cpn_cli.models.notifcations.discord import DiscordNotificationConfig
 from cpn_cli.models.notifcations.telegram import TelegramNotificationConfig
-from cpn_cli.models.plate_detail import PlateDetail
 from cpn_cli.modules.config_reader import config
+from cpn_core.models.plate_detail import PlateDetail
 from cpn_core.notifications.engines.discord import DiscordNotificationEngine
 from cpn_core.notifications.engines.telegram import TelegramNotificationEngine
 

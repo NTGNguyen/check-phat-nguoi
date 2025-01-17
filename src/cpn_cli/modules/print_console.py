@@ -1,7 +1,7 @@
 from logging import getLogger
 
-from cpn_cli.models.plate_detail import PlateDetail
 from cpn_cli.modules.config_reader import config
+from cpn_core.models.plate_detail import PlateDetail
 
 logger = getLogger(__name__)
 

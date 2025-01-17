@@ -3,7 +3,9 @@ from typing import override
 
 from discord import (
     Client,
+    DMChannel,
     Forbidden,
+    GroupChannel,
     HTTPException,
     Intents,
     TextChannel,
@@ -34,7 +36,11 @@ class _DiscordNotificationCoreEngine:
             if channel is None:
                 logger.error(f"Discord channel ID {self.discord.chat_id}: Not found")
                 return
-            if not isinstance(channel, TextChannel):
+            if (
+                not isinstance(channel, TextChannel)
+                or not isinstance(channel, GroupChannel)
+                or not isinstance(channel, DMChannel)
+            ):
                 logger.error(
                     f"Discord channel ID {self.discord.chat_id}: Must be text channel"
                 )

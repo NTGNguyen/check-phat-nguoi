@@ -1,12 +1,12 @@
 import asyncio
 from logging import getLogger
 
-from cpn_cli.models.plate_detail import PlateDetail
 from cpn_cli.modules.config_reader import config
 from cpn_cli.modules.get_data import GetData
 from cpn_cli.modules.notify import Notify
 from cpn_cli.modules.print_console import PrintConsole
 from cpn_cli.modules.setup_logger import setup_logger
+from cpn_core.models.plate_detail import PlateDetail
 
 logger = getLogger(__name__)
 
